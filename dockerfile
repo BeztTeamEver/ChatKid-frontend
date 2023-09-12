@@ -1,8 +1,12 @@
-FROM node:lts-alpine
+FROM node:lts-alpine as build
 WORKDIR /chatkid-frontend
-COPY package*.json ./
-RUN npm install
-RUN npm run build
 COPY . .
+RUN yarn install
+RUN yarn build
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
+
+FROM nginx:latest
+COPY --from=build /chatkid-frontend/out /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
