@@ -34,7 +34,7 @@ An application aim for children from 3 year old can ask the curious questions.
 - `jest:watch`: starts jest watch
 - `test`: runs `jest`, `prettier:check`, `lint` and `typecheck` scripts
 
-### Storybook
+### Storybook (Not working yet)
 
 - `storybook`: starts storybook dev server
 - `storybook:build`: build production storybook bundle to `storybook-static`

@@ -5,7 +5,6 @@ module.exports = {
     "plugin:@next/next/recommended",
     "plugin:jest/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:storybook/recommended",
     "plugin:prettier/recommended",
   ],
 
