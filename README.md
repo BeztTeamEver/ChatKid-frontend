@@ -4,10 +4,10 @@ An application aim for children from 3 year old can ask the curious questions.
 
 ## Features
 
+- [ ] Beutiful and friendly UI for not only child but also the whole family to use
 - [ ] Simple talk with the bot by voice
 - [ ] Voice to parent for giving some hard question or chatting
 - [ ] An expert for filtering and answering the hardest question and answer for the bot
-- [ ] Beutiful and friendly UI for not only child but also the whole family to use
 
 ## Starting with the app
 
