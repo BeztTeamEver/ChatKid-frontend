@@ -1,4 +1,5 @@
 import "@/styles/global.css";
+import colorSchemeConfig from "@/utils/theme";
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { getCookie, setCookie } from "cookies-next";
@@ -31,7 +32,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       </Head>
 
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+        <MantineProvider
+          theme={{ colorScheme, ...colorSchemeConfig }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
           <main className={nunito.className}>
             <Component {...pageProps} />
           </main>
