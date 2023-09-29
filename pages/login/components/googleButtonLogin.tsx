@@ -1,3 +1,5 @@
+"use client";
+
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function GoogleButton({ content }: { content: string }) {
