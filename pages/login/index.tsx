@@ -6,7 +6,7 @@ import { Image } from "@mantine/core";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import React from "react";
 
-import { GoogleButton } from "./components/googleButtonLogin";
+import GoogleButton from "./components/googleButtonLogin";
 
 export default function Login() {
   return (

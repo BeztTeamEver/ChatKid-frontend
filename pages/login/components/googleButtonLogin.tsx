@@ -1,6 +1,6 @@
 import { useGoogleLogin } from "@react-oauth/google";
 
-export function GoogleButton({ content }: { content: string }) {
+export default function GoogleButton({ content }: { content: string }) {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => console.log(tokenResponse),
     onError: (error) => console.log(error),
