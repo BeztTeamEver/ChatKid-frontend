@@ -1,5 +1,8 @@
+"use client";
+
 import { createStyles, Header, Group, Button, Image } from "@mantine/core";
 import MenuIcon from "icons/MenuIcon";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   hiddenMobile: {
@@ -17,6 +20,7 @@ export default function HeaderLayout({
   toggleMenu: () => void;
 }) {
   const { classes, theme } = useStyles();
+  const router = useRouter();
 
   return (
     <Header height={60} px="md" sx={{ position: "relative", border: "none" }}>
@@ -35,16 +39,13 @@ export default function HeaderLayout({
             <MenuIcon color={isExpanded ? "#752B01" : "#252937"} />
           </Button>
           <a href="/">
-            <Image src="/images/logo.png" alt="Logo" />
+            <Image src="/logos/logo.png" alt="Logo" />
           </a>
         </Group>
 
         <Group className={classes.hiddenMobile}>
-          <Button variant="outline" color="yellow">
+          <Button variant="outline" color="yellow" onClick={() => router.push("/login")}>
             Log in
-          </Button>
-          <Button variant="filled" color="yellow">
-            Sign up
           </Button>
         </Group>
       </Group>

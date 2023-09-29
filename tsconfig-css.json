@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    // Add necessary options for CSS here
+  },
+  "include": ["styles/global.css"]
+}

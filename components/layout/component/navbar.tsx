@@ -1,3 +1,5 @@
+"use client";
+
 import { Navbar, ScrollArea, createStyles } from "@mantine/core";
 
 import { DataNavbar } from "../data/data";

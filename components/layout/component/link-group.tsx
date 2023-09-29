@@ -1,3 +1,5 @@
+"use client";
+
 import { Group, Box, Collapse, UnstyledButton, createStyles, rem } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight, IconPointFilled } from "@tabler/icons-react";
 import Link from "next/link";

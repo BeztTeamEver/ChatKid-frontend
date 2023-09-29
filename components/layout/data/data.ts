@@ -25,7 +25,7 @@ export const DataNavbar = {
         { label: "Item 4", link: "/item4" },
       ],
     },
-    { label: "Bé", link: "/", icon: IconMoodKid },
+    { label: "Bé", link: "/child", icon: IconMoodKid },
     { label: "Chuyên gia tư vấn", link: "/expert", icon: IconHeadset },
     { label: "Admin", link: "/admin", icon: IconDeviceDesktopAnalytics },
   ],
