@@ -1,28 +1,10 @@
 "use client";
 
-import { Navbar, ScrollArea, createStyles } from "@mantine/core";
+import { DataNavbar } from "@/constants/layout.constants";
+import { Navbar, ScrollArea } from "@mantine/core";
 
-import { DataNavbar } from "../data/data";
 import { LinksGroup } from "./link-group";
-
-const useStyles = createStyles((theme) => ({
-  navbar: {
-    backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-    paddingBottom: 0,
-    zIndex: 1,
-    border: "none",
-    width: "100%",
-    padding: "0 10px",
-    height: "fit-content",
-    minHeight: "calc(100vh - 60px)",
-  },
-
-  links: {
-    marginLeft: `calc(${theme.spacing.md} * -1)`,
-    marginRight: `calc(${theme.spacing.md} * -1)`,
-    height: "fit-content",
-  },
-}));
+import { useNavbarStyles } from "./styles";
 
 export function NavbarNested({
   isExpanded,
@@ -31,7 +13,7 @@ export function NavbarNested({
   isExpanded: boolean;
   expandMenu: () => void;
 }) {
-  const { classes } = useStyles();
+  const { classes } = useNavbarStyles();
   const navManageAccount = DataNavbar.manageAccount.map((item) => (
     <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
   ));

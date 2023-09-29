@@ -1,16 +1,11 @@
 "use client";
 
-import { createStyles, Header, Group, Button, Image } from "@mantine/core";
+import Logo from "@/icons/Logo";
+import { Header, Group, Button, Text } from "@mantine/core";
 import MenuIcon from "icons/MenuIcon";
 import { useRouter } from "next/router";
 
-const useStyles = createStyles((theme) => ({
-  hiddenMobile: {
-    [theme.fn.smallerThan("sm")]: {
-      display: "none",
-    },
-  },
-}));
+import { useHeaderStyles } from "./styles";
 
 export default function HeaderLayout({
   isExpanded,
@@ -19,7 +14,7 @@ export default function HeaderLayout({
   isExpanded: boolean;
   toggleMenu: () => void;
 }) {
-  const { classes, theme } = useStyles();
+  const { classes, theme } = useHeaderStyles();
   const router = useRouter();
 
   return (
@@ -39,7 +34,11 @@ export default function HeaderLayout({
             <MenuIcon color={isExpanded ? "#752B01" : "#252937"} />
           </Button>
           <a href="/">
-            <Image src="/logos/logo.png" alt="Logo" />
+            {/* <Image src="/logos/logo.png" alt="Logo" /> */}
+            <Group className="text-primary-500 w-fit" spacing="xs" position="center">
+              <Logo width={30} height={30} />
+              <Text className="font-extrabold text-xl">KidTalkie</Text>
+            </Group>
           </a>
         </Group>
 

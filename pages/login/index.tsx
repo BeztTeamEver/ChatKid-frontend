@@ -1,5 +1,6 @@
 "use client";
 
+import { GOOGLE_CLIENT_ID } from "@/config";
 import BgLogin from "@/public/backgrounds/bg_login.png";
 import BotImage from "@/public/images/bot_login.png";
 import { Image } from "@mantine/core";
@@ -10,7 +11,7 @@ import GoogleButton from "./components/googleButtonLogin";
 
 export default function Login() {
   return (
-    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID!}>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div
         className="w-screen h-screen absolute top-0 left-0 bg-cover bg-center flex justify-center items-center"
         style={{
