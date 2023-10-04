@@ -1,5 +1,6 @@
 "use client";
 
+import { ReduxProviders } from "@/redux/provider";
 import { Grid } from "@mantine/core";
 import { useEffect, useState } from "react";
 import utils from "utils";
@@ -38,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <NavbarNested isExpanded={isExpanded} expandMenu={expandMenu} />
         </Grid.Col>
         <Grid.Col span="auto" p={20} sx={{ overflow: "hidden" }}>
-          {children}
+          <ReduxProviders>{children}</ReduxProviders>
         </Grid.Col>
       </Grid>
     </>

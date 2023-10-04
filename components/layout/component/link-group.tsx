@@ -1,49 +1,12 @@
-import { Group, Box, Collapse, UnstyledButton, createStyles, rem } from "@mantine/core";
+"use client";
+
+import { Group, Box, Collapse, UnstyledButton, rem } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight, IconPointFilled } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const useStyles = createStyles((theme) => ({
-  control: {
-    fontWeight: 500,
-    display: "block",
-    width: "100%",
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-    fontSize: theme.fontSizes.sm,
-    transition: "all 0.2s",
-
-    "&:hover": {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
-  },
-
-  link: {
-    fontWeight: 500,
-    display: "flex",
-    gap: rem(10),
-    alignItems: "center",
-    textDecoration: "none",
-    padding: rem(8),
-    paddingLeft: rem(20),
-    margin: rem(10),
-    marginLeft: rem(20),
-    borderRadius: rem(8),
-    fontSize: theme.fontSizes.sm,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.colors.gray[7],
-
-    "&:hover": {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
-  },
-
-  chevron: {
-    transition: "transform 200ms ease",
-  },
-}));
+import { useLinkGroupStyles } from "./styles";
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -64,7 +27,7 @@ export function LinksGroup({
   isExpanded,
   expandMenu,
 }: LinksGroupProps) {
-  const { classes, theme } = useStyles();
+  const { classes, theme } = useLinkGroupStyles();
   const router = useRouter();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);

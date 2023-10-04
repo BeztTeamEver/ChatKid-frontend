@@ -4,6 +4,10 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 module.exports = withBundleAnalyzer({
   reactStrictMode: false,
+  env: {
+    API_URL: process.env.API_URL,
+    CLIENT_ID: process.env.CLIENT_ID,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
