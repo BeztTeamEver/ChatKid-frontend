@@ -3,7 +3,7 @@ import LocalStorage from "utils/localStore";
 
 type METHOD_TYPE = "GET" | "POST" | "PUT" | "DELETE";
 
-const defaultURL = process.env.NEXT_PUBLIC_API_URL;
+const defaultURL = process.env.API_URL;
 
 type ApiCallerType = {
   method: METHOD_TYPE;
