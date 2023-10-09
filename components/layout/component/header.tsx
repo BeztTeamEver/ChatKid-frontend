@@ -1,15 +1,17 @@
 "use client";
 
+import Logo from "@/icons/Logo";
 import { login } from "@/redux/features/userSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { AuthApi } from "@/utils/authApi";
-import { Header, Group, Button, Image } from "@mantine/core";
+import { Header, Group, Button, Text } from "@mantine/core";
 import MenuIcon from "icons/MenuIcon";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import NotiDropdown from "./notiDropdown";
+import { useHeaderStyles } from "./styles";
 import UserDropdown from "./userDropdown";
 
 export default function HeaderLayout({
@@ -19,6 +21,7 @@ export default function HeaderLayout({
   isExpanded: boolean;
   toggleMenu: () => void;
 }) {
+  const { classes, theme } = useHeaderStyles();
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useAppSelector((state) => state.UserReducer.user);
@@ -51,7 +54,11 @@ export default function HeaderLayout({
             <MenuIcon color={isExpanded ? "#752B01" : "#252937"} />
           </Button>
           <a href="/">
-            <Image src="logos/logo.svg" alt="Logo" />
+            {/* <Image src="/logos/logo.png" alt="Logo" /> */}
+            <Group className="text-primary-500 w-fit" spacing="xs" position="center">
+              <Logo width={30} height={30} />
+              <Text className="font-extrabold text-xl">KidTalkie</Text>
+            </Group>
           </a>
         </Group>
 

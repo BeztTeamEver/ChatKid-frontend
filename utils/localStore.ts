@@ -1,6 +1,6 @@
 "use client";
 
-class LocalStorage {
+class LocalStorage<TValue> {
   get(key: string) {
     try {
       if (typeof window !== undefined) {
@@ -13,7 +13,7 @@ class LocalStorage {
     }
   }
 
-  set(key: string, value: any) {
+  set(key: string, value: TValue) {
     try {
       if (typeof window !== undefined) {
         localStorage.setItem(key, JSON.stringify(value ?? ""));

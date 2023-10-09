@@ -1,4 +1,4 @@
-import { dataHeaderAccount } from "@/constant/dataTableHeadAccount";
+import { dataHeaderAccount } from "@/constants/dataTableHeadAccount";
 import { Pagination, Table } from "@mantine/core";
 import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
