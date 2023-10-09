@@ -4,30 +4,44 @@ class LocalStorage {
   get(key: string) {
     try {
       if (typeof window !== undefined) {
-        const res = window?.localStorage?.get(key);
-        return res ? JSON.parse(res) : undefined;
+        const res = window.localStorage.getItem(key);
+        return res ? JSON.parse(res) : "";
       }
-      return undefined;
+      return "";
     } catch (error) {
-      return undefined;
+      return "";
     }
   }
 
   set(key: string, value: any) {
     try {
-      localStorage.setItem(key, JSON.stringify(value ?? ""));
+      if (typeof window !== undefined) {
+        localStorage.setItem(key, JSON.stringify(value ?? ""));
+      }
     } catch (error) {
       console.log(error);
     }
   }
 
-  //   delete(key: string) {
-  //     localStorage.removeItem(key);
-  //   }
+  remove(key: string) {
+    try {
+      if (typeof window !== undefined) {
+        localStorage.removeItem(key);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  //   clear() {
-  //     localStorage.clear();
-  //   }
+  clear() {
+    try {
+      if (typeof window !== undefined) {
+        localStorage.clear();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default new LocalStorage();

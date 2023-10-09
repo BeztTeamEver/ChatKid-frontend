@@ -1,11 +1,28 @@
 "use client";
 
+import { useToast } from "@/hooks/useToast/toast";
+import { AuthApi } from "@/utils/authApi";
+import localStore from "@/utils/localStore";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useRouter } from "next/router";
 
 export default function GoogleButton({ content }: { content: string }) {
+  const router = useRouter();
+
   const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
-    onError: (error) => console.log(error),
+    onSuccess: async (response) => {
+      AuthApi.login(response.access_token)
+        .then((res) => {
+          localStore.set("token", res.data.token);
+          localStore.set("refreshToken", res.data.refreshToken);
+          router.push("/");
+        })
+        .catch((err) => useToast.error(err.response.data));
+    },
+    onError: (error) => {
+      console.log(error);
+      useToast.error("Something went wrong!!!");
+    },
   });
 
   return (

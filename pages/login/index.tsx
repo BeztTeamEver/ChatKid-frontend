@@ -12,7 +12,7 @@ export default function Login() {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID!}>
       <div
-        className="w-screen h-screen absolute top-0 left-0 bg-cover bg-center flex justify-center items-center"
+        className="w-screen h-screen absolute top-0 left-0 bg-cover bg-center flex justify-center items-center z-[-1]"
         style={{
           backgroundImage: `url(${BgLogin.src})`,
         }}

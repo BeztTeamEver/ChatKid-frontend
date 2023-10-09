@@ -39,6 +39,7 @@ module.exports = {
     "import/order": "off",
     "import/extensions": "off",
     "react/button-has-type": "off",
+    "@typescript-eslint/return-await": "off",
     "@typescript-eslint/ban-types": [
       "error",
       {

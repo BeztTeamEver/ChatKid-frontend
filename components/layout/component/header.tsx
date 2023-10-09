@@ -1,16 +1,16 @@
 "use client";
 
-import { createStyles, Header, Group, Button, Image } from "@mantine/core";
+import { login } from "@/redux/features/userSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { AuthApi } from "@/utils/authApi";
+import { Header, Group, Button, Image } from "@mantine/core";
 import MenuIcon from "icons/MenuIcon";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-const useStyles = createStyles((theme) => ({
-  hiddenMobile: {
-    [theme.fn.smallerThan("sm")]: {
-      display: "none",
-    },
-  },
-}));
+import NotiDropdown from "./notiDropdown";
+import UserDropdown from "./userDropdown";
 
 export default function HeaderLayout({
   isExpanded,
@@ -19,8 +19,20 @@ export default function HeaderLayout({
   isExpanded: boolean;
   toggleMenu: () => void;
 }) {
-  const { classes, theme } = useStyles();
   const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.UserReducer.user);
+
+  useEffect(() => {
+    AuthApi.getInfoUser()
+      .then((res) => {
+        res.data.data.role = "SUPER_ADMIN";
+        res.data.data.avatar =
+          "https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4";
+        dispatch(login(res.data.data));
+      })
+      .catch((err) => console.log(err.data));
+  }, []);
 
   return (
     <Header height={60} px="md" sx={{ position: "relative", border: "none" }}>
@@ -39,15 +51,16 @@ export default function HeaderLayout({
             <MenuIcon color={isExpanded ? "#752B01" : "#252937"} />
           </Button>
           <a href="/">
-            <Image src="/logos/logo.png" alt="Logo" />
+            <Image src="logos/logo.svg" alt="Logo" />
           </a>
         </Group>
 
-        <Group className={classes.hiddenMobile}>
-          <Button variant="outline" color="yellow" onClick={() => router.push("/login")}>
-            Log in
-          </Button>
-        </Group>
+        {user && (
+          <Group className="">
+            <NotiDropdown />
+            <UserDropdown user={user} />{" "}
+          </Group>
+        )}
       </Group>
       <div
         style={{

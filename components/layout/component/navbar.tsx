@@ -2,7 +2,7 @@
 
 import { Navbar, ScrollArea, createStyles } from "@mantine/core";
 
-import { DataNavbar } from "../data/data";
+import { DataNavbar } from "../../../constant/dataNavbar";
 import { LinksGroup } from "./link-group";
 
 const useStyles = createStyles((theme) => ({
@@ -51,12 +51,12 @@ export function NavbarNested({
           )}
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-          {navManageAccount}
+          {navManageKidTalkie}
         </div>
 
         <br />
 
-        <p
+        <div
           style={{ color: "#A5A8BB", margin: "0px 10px 5px", fontSize: "13px", fontWeight: "600" }}
         >
           {isExpanded ? (
@@ -64,8 +64,8 @@ export function NavbarNested({
           ) : (
             <div style={{ width: "100%", background: "#BFC1CF", height: "2px" }}></div>
           )}
-        </p>
-        <div>{navManageKidTalkie}</div>
+        </div>
+        <div>{navManageAccount}</div>
       </Navbar.Section>
     </Navbar>
   );
