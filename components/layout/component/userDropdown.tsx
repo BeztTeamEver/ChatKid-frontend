@@ -1,6 +1,5 @@
 import { logout } from "@/redux/features/userSlice";
 import { USER_TYPE } from "@/types/user.type";
-import localStore from "@/utils/localStore";
 import { Menu, Avatar } from "@mantine/core";
 import { IconUser, IconLogout2 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
@@ -11,8 +10,6 @@ export default function UserDropdown({ user }: { user: USER_TYPE }) {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStore.remove("token");
-    localStore.remove("refreshToken");
     dispatch(logout());
     router.push("/login");
   };

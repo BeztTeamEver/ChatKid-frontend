@@ -1,3 +1,4 @@
+import localStore from "@/utils/localStore";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { USER_TYPE } from "types/user.type";
 
@@ -25,6 +26,8 @@ export const user = createSlice({
     },
     logout: (state) => {
       state.user = null;
+      localStore.remove("token");
+      localStore.remove("refreshToken");
     },
   },
 });
