@@ -3,6 +3,7 @@ import { ADMIN_TYPE } from "@/types/admin.type";
 import { AdminApi } from "@/utils/adminApi";
 import { Pagination, Table } from "@mantine/core";
 import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 export default function TableAccountAdmin() {
@@ -37,7 +38,7 @@ export default function TableAccountAdmin() {
       <td>{`${admin?.lastName} ${admin.firstName}`}</td>
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>
-      <td>{admin.createdAt}</td>
+      <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
       <td>{admin.gender}</td>
       <td>{admin.status ? "Hoạt động" : "Bị cấm"}</td>
       <td className="flex gap-3 relative">
