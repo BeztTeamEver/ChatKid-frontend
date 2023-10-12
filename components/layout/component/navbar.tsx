@@ -24,7 +24,7 @@ export function NavbarNested({
 
   return (
     <Navbar className={classes.navbar}>
-      <Navbar.Section grow className={classes.links} p={10} component={ScrollArea}>
+      <Navbar.Section grow className={classes.links} p={15} component={ScrollArea}>
         <p style={{ color: "#A5A8BB", margin: "5px 10px", fontSize: "13px", fontWeight: "600" }}>
           {isExpanded ? (
             "QUẢN LÝ TÀI KHOẢN"
@@ -47,7 +47,9 @@ export function NavbarNested({
             <div style={{ width: "100%", background: "#BFC1CF", height: "2px" }}></div>
           )}
         </div>
-        <div>{navManageAccount}</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          {navManageAccount}
+        </div>
       </Navbar.Section>
     </Navbar>
   );

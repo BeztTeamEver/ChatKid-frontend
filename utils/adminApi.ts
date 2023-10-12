@@ -1,18 +1,19 @@
-import { get, post } from "./config/ApiCaller";
+import { BODY_CREATE_ADMIN } from "@/types/admin.type";
+
+import { get, post, remove } from "./config/ApiCaller";
 
 export const AdminApi = {
-  getListAdmin: async (pageNumber: number, pageSize: number, searchString: String = "") => {
+  getListAdmin: async (pageNumber: number, pageSize: number, search: String = "") => {
     return await get({
-      endpoint: "/admin/pagination",
-      params: {
-        pageNumber,
-        pageSize,
-        searchString,
-      },
+      endpoint: `/admins?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
     });
   },
 
-  createAdmin: async (accessToken: string) => {
-    return await post({ endpoint: "/auth/google-auth", body: { accessToken } }).then((res) => res);
+  createAdmin: async (body: BODY_CREATE_ADMIN) => {
+    return await post({ endpoint: "/admins", body });
+  },
+
+  removeAdmin: async (id: string) => {
+    return await remove({ endpoint: `/admins/${id}` });
   },
 };
