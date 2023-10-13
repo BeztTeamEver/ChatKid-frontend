@@ -11,7 +11,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import NotiDropdown from "./notiDropdown";
-import { useHeaderStyles } from "./styles";
 import UserDropdown from "./userDropdown";
 
 export default function HeaderLayout({
@@ -21,7 +20,6 @@ export default function HeaderLayout({
   isExpanded: boolean;
   toggleMenu: () => void;
 }) {
-  const { classes, theme } = useHeaderStyles();
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useAppSelector((state) => state.UserReducer.user);
@@ -39,7 +37,7 @@ export default function HeaderLayout({
   }, []);
 
   return (
-    <Header height={60} px="md" sx={{ position: "relative", border: "none" }}>
+    <Header height={60} px="md" sx={{ position: "relative", border: "none", zIndex: 2 }}>
       <Group position="apart" sx={{ height: "100%" }}>
         <Group>
           <Button

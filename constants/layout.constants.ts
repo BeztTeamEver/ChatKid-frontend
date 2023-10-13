@@ -12,7 +12,7 @@ import {
 
 export const DataNavbar = {
   manageKidTalkie: [
-    { label: "Thống kê", link: "/statistic", icon: IconChartPie },
+    { label: "Thống kê", link: "/", icon: IconChartPie },
     { label: "Lịch sử hoạt động chat bot", link: "/histories", icon: IconMessages },
     { label: "Giao dịch", link: "/transaction", icon: IconCoins },
     { label: "Quảng cáo", link: "/ads", icon: IconAdCircle },

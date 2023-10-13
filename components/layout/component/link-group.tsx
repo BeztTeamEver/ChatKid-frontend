@@ -64,13 +64,13 @@ export function LinksGroup({
             ? {
                 borderRadius: rem(8),
                 color: "#752B01",
-                background: "#FFEDD1",
+                background: "#FFEDD1 !important",
                 pointerEvents: "none",
               }
             : {}
         }
       >
-        <Group position="apart" spacing={0}>
+        <Group position="apart" spacing={0} onClick={() => router.push(link ?? "")}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Icon size="1.1rem" />
             {isExpanded ? <Box ml="md">{label}</Box> : ""}

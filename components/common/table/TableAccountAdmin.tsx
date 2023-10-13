@@ -1,4 +1,5 @@
 import { dataHeaderAccountAdmin } from "@/constants/dataTableHeadAccountAdmin";
+import { useToast } from "@/hooks/useToast/toast";
 import { ADMIN_TYPE } from "@/types/admin.type";
 import { AdminApi } from "@/utils/adminApi";
 import { Pagination, Table } from "@mantine/core";
@@ -6,7 +7,7 @@ import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default function TableAccountAdmin() {
+export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listAdmin, setListAdmin] = useState<Array<ADMIN_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
@@ -25,6 +26,18 @@ export default function TableAccountAdmin() {
     fetchData();
   }, [activePage]);
 
+  const handleRemoveAdmin = async (email: string) => {
+    await AdminApi.removeAdmin(email)
+      .then((res) => {
+        useToast.success("Remove admin successfully 🎉");
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+        useToast.error("Something went wrong!!!");
+      });
+  };
+
   const rows = listAdmin.map((admin, index) => (
     <tr
       key={admin.id}
@@ -39,14 +52,17 @@ export default function TableAccountAdmin() {
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>
       <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td>{admin.gender}</td>
+      <td className="capitalize">{admin.gender}</td>
       <td>{admin.status ? "Hoạt động" : "Bị cấm"}</td>
       <td className="flex gap-3 relative">
-        <button className="px-10 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all">
+        <button
+          className="px-10 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all"
+          onClick={() => handleRemoveAdmin(admin.id)}
+        >
           Ẩn
         </button>
         {/* <button className="px-5 pt-[6px] pb-1 text-xs bg-[#F1FEF1] border-[1px] border-[#00B203] text-[#00B203] rounded-full hover:bg-[#00B203] hover:text-white transition-all">
-          Xác nhận
+          Hiện
         </button> */}
         <IconDotsVertical className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer" />
       </td>
@@ -75,7 +91,10 @@ export default function TableAccountAdmin() {
             onClick={fetchData}
           />
         </form>
-        <button className="flex gap-3 items-center bg-[#FF9B06] rounded-full px-6 py-2 text-white">
+        <button
+          className="flex gap-3 items-center bg-[#FF9B06] rounded-full px-6 py-2 text-white"
+          onClick={() => openFunc()}
+        >
           <IconPlus />
           Tạo tài khoản mới
         </button>
