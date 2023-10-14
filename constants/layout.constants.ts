@@ -12,12 +12,15 @@ import {
 
 export const DataNavbar = {
   manageKidTalkie: [
-    { label: "Thống kê", link: "/", icon: IconChartPie },
-    { label: "Lịch sử hoạt động chat bot", link: "/histories", icon: IconMessages },
+    { label: "Dashboard", link: "/", icon: IconChartPie },
     { label: "Giao dịch", link: "/transaction", icon: IconCoins },
+    { label: "Gia đình", link: "/family", icon: IconCoins },
+    { label: "Chuyên gia tư vấn", link: "/expert", icon: IconHeadset },
+    { label: "Admin", link: "/admin", icon: IconDeviceDesktopAnalytics },
+    { label: "Lịch sử hoạt động chat bot", link: "/histories", icon: IconMessages },
+    { label: "Thông báo", link: "/notification", icon: IconBell },
     { label: "Quảng cáo", link: "/ads", icon: IconAdCircle },
     { label: "Blog", link: "/blog", icon: IconZoomQuestion },
-    { label: "Thông báo", link: "/notification", icon: IconBell },
   ],
   manageAccount: [
     {
@@ -25,7 +28,5 @@ export const DataNavbar = {
       icon: IconUsers,
       link: "/accounts-kidtalkie",
     },
-    { label: "Chuyên gia tư vấn", link: "/expert", icon: IconHeadset },
-    { label: "Admin", link: "/admin", icon: IconDeviceDesktopAnalytics },
   ],
 };

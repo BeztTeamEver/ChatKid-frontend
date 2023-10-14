@@ -1,6 +1,6 @@
 import { BODY_CREATE_ADMIN } from "@/types/admin.type";
 
-import { get, post, remove } from "./config/ApiCaller";
+import { get, post, put, remove } from "./config/ApiCaller";
 
 export const AdminApi = {
   getListAdmin: async (pageNumber: number, pageSize: number, search: String = "") => {
@@ -15,5 +15,9 @@ export const AdminApi = {
 
   removeAdmin: async (id: string) => {
     return await remove({ endpoint: `/admins/${id}` });
+  },
+
+  unbanAdmin: async (id: string) => {
+    return await put({ endpoint: `/admins/${id}`, body: { status: 1 } });
   },
 };

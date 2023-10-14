@@ -1,23 +1,24 @@
 import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
-import { ADMIN_TYPE } from "@/types/admin.type";
+import { EXPERT_TYPE } from "@/types/expert.type";
 import { AdminApi } from "@/utils/adminApi";
+import { ExpertApi } from "@/utils/expertApi";
 import { Pagination, Table } from "@mantine/core";
 import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) {
+export default function TableAccountExpert({ openFunc }: { openFunc: Function }) {
   const [activePage, setActivePage] = useState<number>(1);
-  const [listAdmin, setListAdmin] = useState<Array<ADMIN_TYPE>>([]);
+  const [listExpert, setListExpert] = useState<Array<EXPERT_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
-  const [totalAdmin, setTotalAdmin] = useState<number>(0);
+  const [totalExpert, setTotalExpert] = useState<number>(0);
 
   const fetchData = () => {
-    AdminApi.getListAdmin(activePage - 1, 10, search)
+    ExpertApi.getListExpert(activePage - 1, 10, search)
       .then((res) => {
-        setListAdmin(res.data.items);
-        setTotalAdmin(res.data.totalItem);
+        setListExpert(res.data.items);
+        setTotalExpert(res.data.totalItem);
       })
       .catch((err) => console.log(err));
   };
@@ -26,8 +27,8 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
     fetchData();
   }, [activePage]);
 
-  const handleRemoveAdmin = async (id: string) => {
-    await AdminApi.removeAdmin(id)
+  const handleRemoveExpert = async (id: string) => {
+    await ExpertApi.removeExpert(id)
       .then((res) => {
         useToast.success("Remove admin successfully 🎉");
         fetchData();
@@ -50,9 +51,9 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       });
   };
 
-  const rows = listAdmin.map((admin, index) => (
+  const rows = listExpert.map((expert, index) => (
     <tr
-      key={admin.id}
+      key={expert.id}
       className={
         index % 2 === 1
           ? "bg-[#FFFBF5] [&>td]:!p-4 [&>td]:!border-none [&>td]:!pl-[10px]"
@@ -60,24 +61,25 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{`${admin?.lastName} ${admin.firstName}`}</td>
-      <td>{admin.gmail}</td>
-      <td>{admin.phone}</td>
-      <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td className="capitalize">{admin.gender}</td>
-      <td>{admin.status ? "Hoạt động" : "Bị cấm"}</td>
+      <td>{`${expert?.lastName} ${expert.firstName}`}</td>
+      <td>{expert.gmail}</td>
+      <td>{moment(expert.dateOfBirth).format("DD.MM.YYYY")}</td>
+      <td>{expert.phone}</td>
+      <td>{moment(expert.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
+      <td className="capitalize">{expert.gender}</td>
+      <td>{expert.status ? "Hoạt động" : "Bị cấm"}</td>
       <td className="flex gap-3 relative">
-        {admin.status ? (
+        {expert.status ? (
           <button
             className="px-6 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all"
-            onClick={() => handleRemoveAdmin(admin.id)}
+            onClick={() => handleRemoveExpert(expert.id)}
           >
             Ẩn
           </button>
         ) : (
           <button
             className="px-5 pt-[6px] pb-1 text-xs bg-[#F1FEF1] border-[1px] border-[#00B203] text-[#00B203] rounded-full hover:bg-[#00B203] hover:text-white transition-all"
-            onClick={() => handleUnBanAdmin(admin.id)}
+            onClick={() => handleUnBanAdmin(expert.id)}
           >
             Hiện
           </button>
@@ -120,11 +122,11 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       <Table className="rounded-md overflow-hidden">
         <thead className="bg-[#FF9B06] p-[10px]">
           <tr>
-            {DataTable.AccountAdmin.map((item, index) => (
+            {DataTable.AccountExpert.map((item, index) => (
               <th
                 key={index}
                 className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.AccountAdmin.length - 1 ? "w-32" : ""
+                  index === DataTable.AccountExpert.length - 1 ? "w-32" : ""
                 }`}
               >
                 {item}
@@ -137,7 +139,7 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       <Pagination
         value={activePage}
         onChange={(e) => setActivePage(e)}
-        total={Math.ceil(totalAdmin / 10)}
+        total={Math.ceil(totalExpert / 10)}
         color="orange"
         className="mt-2 justify-center"
       />
