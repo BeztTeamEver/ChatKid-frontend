@@ -29,7 +29,7 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
   const handleRemoveAdmin = async (id: string) => {
     await AdminApi.removeAdmin(id)
       .then((res) => {
-        useToast.success("Remove admin successfully 🎉");
+        useToast.success("Hide admin successfully 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -64,7 +64,7 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>
       <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td className="capitalize">{admin.gender}</td>
+      <td className="capitalize">{admin.gender?.trim() === "male" ? "Nam" : "Nữ"}</td>
       <td>{admin.status ? "Hoạt động" : "Bị cấm"}</td>
       <td className="flex gap-3 relative">
         {admin.status ? (

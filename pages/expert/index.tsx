@@ -4,9 +4,9 @@ import TableAccountExpert from "@/components/common/table/TableAccountExpert";
 import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import CreateAExpertForm from "../admin/components/createExpertForm";
+import CreateExpertForm from "./components/createExpertForm";
 
-export default function Admin() {
+export default function Expert() {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
@@ -18,8 +18,8 @@ export default function Admin() {
       }}
     >
       <TableAccountExpert openFunc={open} />
-      <Modal opened={opened} onClose={close} withCloseButton={false} size="lg" centered>
-        <CreateAExpertForm close={close} />
+      <Modal opened={opened} onClose={close} withCloseButton={false} size="lg" radius="md" centered>
+        <CreateExpertForm close={close} />
       </Modal>
     </div>
   );

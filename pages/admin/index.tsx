@@ -4,7 +4,7 @@ import TableAccountAdmin from "@/components/common/table/TableAccountAdmin";
 import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import CreateAdminForm from "../expert/components/createAdminForm";
+import CreateAdminForm from "./components/createAdminForm";
 
 export default function Admin() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -18,7 +18,7 @@ export default function Admin() {
       }}
     >
       <TableAccountAdmin openFunc={open} />
-      <Modal opened={opened} onClose={close} withCloseButton={false} size="lg" centered>
+      <Modal opened={opened} onClose={close} withCloseButton={false} radius="md" size="lg" centered>
         <CreateAdminForm close={close} />
       </Modal>
     </div>

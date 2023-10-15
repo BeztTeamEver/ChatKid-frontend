@@ -6,7 +6,7 @@ import { DateInput } from "@mantine/dates";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-export default function CreateAExpertForm({ close }: { close: Function }) {
+export default function CreateExpertForm({ close }: { close: Function }) {
   const [state, setState] = useState<BODY_CREATE_EXPERT>({
     firstName: "",
     lastName: "",
@@ -96,8 +96,8 @@ export default function CreateAExpertForm({ close }: { close: Function }) {
         onChange={(e) => setState({ ...state, gender: e as "male" | "female" })}
         withAsterisk
         data={[
-          { value: "male", label: "Male" },
-          { value: "female", label: "Female" },
+          { value: "male", label: "Name" },
+          { value: "female", label: "Nữ" },
         ]}
       />
       <DateInput
@@ -107,7 +107,6 @@ export default function CreateAExpertForm({ close }: { close: Function }) {
         placeholder="Date input"
         className="col-span-1"
         withAsterisk
-        // size="xs"
       />
       <Button
         type="submit"
