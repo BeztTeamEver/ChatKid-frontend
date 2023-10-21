@@ -1,28 +1,43 @@
 "use client";
 
 import { useToast } from "@/hooks/useToast/toast";
-import { BODY_CREATE_BLOG } from "@/types/blog.type";
+import { BODY_CREATE_BLOG, LIST_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
 import { uploadApi } from "@/utils/commonApi";
 import { Button, FileInput, Select, TextInput, rem } from "@mantine/core";
 import { IconPhotoUp, IconUpload, IconX } from "@tabler/icons-react";
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-export default function CreateBlogForm({ close }: { close: Function }) {
+export default function CreateBlogForm({
+  close,
+  toggleStatus,
+}: {
+  close: Function;
+  toggleStatus: Function;
+}) {
   const [state, setState] = useState<BODY_CREATE_BLOG>({
     title: "",
     content: "",
     imageUrl: "",
     voiceUrl: "",
-    type: "",
+    typeBlogId: "",
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>();
   const [audio, setAudio] = useState<string | ArrayBuffer | null>();
   const [editorContent, setEditorContent] = useState<EditorState>(EditorState.createEmpty());
+  const [listType, setListType] = useState<Array<LIST_TYPE>>([]);
+
+  useEffect(() => {
+    BlogApi.getListTypeBlog()
+      .then((res) => {
+        setListType(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleUpload = async (base64): Promise<string> => {
     if (!base64) return "";
@@ -45,12 +60,16 @@ export default function CreateBlogForm({ close }: { close: Function }) {
     const imageUrl = await handleUpload(image);
     const voiceUrl = await handleUpload(audio);
 
-    console.log({ ...state, imageUrl, voiceUrl, content });
+    if (!voiceUrl || !imageUrl) {
+      useToast.error("Upload file failed please try again!!!");
+      return;
+    }
 
     await BlogApi.createBlog({ ...state, imageUrl, voiceUrl, content })
       .then((res) => {
         useToast.success("Create blog successfully 🎉");
         close();
+        toggleStatus();
       })
       .catch((err) => {
         console.log(err);
@@ -99,13 +118,13 @@ export default function CreateBlogForm({ close }: { close: Function }) {
       <Select
         label="Phân loại"
         placeholder="Động vật, Thực vật, ..."
-        value={state.type}
-        onChange={(e) => setState({ ...state, type: e ?? "" })}
+        value={state.typeBlogId}
+        onChange={(e) => setState({ ...state, typeBlogId: e ?? "" })}
         withAsterisk
-        data={[
-          { value: "animal", label: "Động vật" },
-          { value: "plant", label: "Thực vật" },
-        ]}
+        data={listType.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }))}
       />
       <FileInput
         label="Hình ảnh"

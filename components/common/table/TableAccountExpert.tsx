@@ -1,10 +1,9 @@
 import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
 import { EXPERT_TYPE } from "@/types/expert.type";
-import { AdminApi } from "@/utils/adminApi";
 import { ExpertApi } from "@/utils/expertApi";
 import { Pagination, Table } from "@mantine/core";
-import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
@@ -30,7 +29,7 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
   const handleRemoveExpert = async (id: string) => {
     await ExpertApi.removeExpert(id)
       .then((res) => {
-        useToast.success("Hide admin successfully 🎉");
+        useToast.success("Hide expert successfully 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -39,10 +38,10 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
       });
   };
 
-  const handleUnBanAdmin = async (id: string) => {
-    await AdminApi.unbanAdmin(id)
+  const handleUnBanExpert = async (id: string) => {
+    await ExpertApi.unbanExpert(id)
       .then((res) => {
-        useToast.success("Un-ban admin successfully 🎉");
+        useToast.success("Un-ban expert successfully 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -67,24 +66,25 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
       <td>{expert.phone}</td>
       <td>{moment(expert.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
       <td className="capitalize">{expert.gender?.trim() === "male" ? "Nam" : "Nữ"}</td>
-      <td>{expert.status ? "Hoạt động" : "Bị cấm"}</td>
+      <td className={expert.status ? "text-[#00B300]" : "text-[#B30000]"}>
+        {expert.status ? "Hoạt động" : "Cấm"}
+      </td>
       <td className="flex gap-3 relative">
         {expert.status ? (
           <button
-            className="px-6 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all"
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
             onClick={() => handleRemoveExpert(expert.id)}
           >
-            Ẩn
+            Cấm
           </button>
         ) : (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs bg-[#F1FEF1] border-[1px] border-[#00B203] text-[#00B203] rounded-full hover:bg-[#00B203] hover:text-white transition-all"
-            onClick={() => handleUnBanAdmin(expert.id)}
+            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            onClick={() => handleUnBanExpert(expert.id)}
           >
-            Hiện
+            Bỏ cấm
           </button>
         )}
-        <IconDotsVertical className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer" />
       </td>
     </tr>
   ));

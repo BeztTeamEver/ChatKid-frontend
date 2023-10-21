@@ -20,5 +20,5 @@ export const DataTable = {
     "Trạng thái",
     "Tác vụ",
   ],
-  Blog: ["STT", "Tựa đề", "Nội dung", "Thể loại", "Người đăng", "Ngày đăng", "Lượt xem", "Công bố"],
+  Blog: ["STT", "Tựa đề", "Phân loại", "Ngày đăng", "Người đăng", "Trạng thái", "Tác vụ"],
 };

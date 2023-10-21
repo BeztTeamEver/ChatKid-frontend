@@ -63,7 +63,7 @@ export default function HeaderLayout({
         {user && (
           <Group className="">
             <NotiDropdown />
-            <UserDropdown user={user} />{" "}
+            <UserDropdown user={user} />
           </Group>
         )}
       </Group>

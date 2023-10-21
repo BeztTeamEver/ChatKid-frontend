@@ -5,7 +5,9 @@ import { get, post, put, remove } from "./config/ApiCaller";
 export const ExpertApi = {
   getListExpert: async (pageNumber: number, pageSize: number, search: String = "") => {
     return await get({
-      endpoint: `/experts?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
+      endpoint: `/experts?page-number=${pageNumber}&page-size=${pageSize}${
+        search?.trim() ? `&search=${search}` : ""
+      }`,
     });
   },
 

@@ -5,7 +5,9 @@ import { get, post, put, remove } from "./config/ApiCaller";
 export const AdminApi = {
   getListAdmin: async (pageNumber: number, pageSize: number, search: String = "") => {
     return await get({
-      endpoint: `/admins?page-number=${pageNumber}&page-size=${pageSize}&search=${search}`,
+      endpoint: `/admins?page-number=${pageNumber}&page-size=${pageSize}${
+        search?.trim() ? `&search=${search}` : ""
+      }`,
     });
   },
 

@@ -7,7 +7,7 @@ import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default function TableBlog({ openFunc }: { openFunc: Function }) {
+export default function TableBlog({ openFunc, status }: { openFunc: Function; status: boolean }) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listBlog, setListBlog] = useState<Array<BLOG_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
@@ -24,10 +24,10 @@ export default function TableBlog({ openFunc }: { openFunc: Function }) {
 
   useEffect(() => {
     fetchData();
-  }, [activePage]);
+  }, [activePage, status]);
 
-  const handleRemoveBlog = async (id: string) => {
-    await BlogApi.removeBlog(id)
+  const handleHideBlog = async (id: string) => {
+    await BlogApi.hideBlog(id)
       .then((res) => {
         useToast.success("Hide blog successfully 🎉");
         fetchData();
@@ -38,8 +38,8 @@ export default function TableBlog({ openFunc }: { openFunc: Function }) {
       });
   };
 
-  const handleUnBanBlog = async (id: string) => {
-    await BlogApi.unbanBlog(id)
+  const handleShowBlog = async (id: string) => {
+    await BlogApi.showBlog(id)
       .then((res) => {
         useToast.success("Un-ban blog successfully 🎉");
         fetchData();
@@ -61,23 +61,22 @@ export default function TableBlog({ openFunc }: { openFunc: Function }) {
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>{blog.title}</td>
-      <td>{blog.content}</td>
       <td>{blog.type}</td>
-      <td>{blog.createdBy}</td>
       <td>{moment(blog.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{blog.createdBy}</td>
       <td>{blog.status ? "Hiện" : "Ẩn"}</td>
       <td className="flex gap-3 relative">
         {blog.status ? (
           <button
-            className="px-6 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all"
-            onClick={() => handleRemoveBlog(blog.id)}
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            onClick={() => handleHideBlog(blog.id)}
           >
             Ẩn
           </button>
         ) : (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs bg-[#F1FEF1] border-[1px] border-[#00B203] text-[#00B203] rounded-full hover:bg-[#00B203] hover:text-white transition-all"
-            onClick={() => handleUnBanBlog(blog.id)}
+            className="px-4 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            onClick={() => handleShowBlog(blog.id)}
           >
             Hiện
           </button>

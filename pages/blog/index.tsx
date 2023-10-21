@@ -13,10 +13,15 @@ const CreateBlogForm = dynamic(() => import("./components/createBlogForm"), {
 export default function Blog() {
   const [opened, { open, close }] = useDisclosure(false);
   const [isClient, setIsClient] = useState<boolean>(false);
+  const [status, setStatus] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const toggleStatus = () => {
+    setStatus((state) => !state);
+  };
 
   return isClient ? (
     <div
@@ -26,9 +31,9 @@ export default function Blog() {
           "0px 6px 12px 0px rgba(78, 41, 20, 0.04), 0px -1px 2px 0px rgba(78, 41, 20, 0.02), 0px 2px 4px 0px rgba(117, 43, 1, 0.04)",
       }}
     >
-      <TableBlog openFunc={open} />
+      <TableBlog openFunc={open} status={status} />
       <Modal opened={opened} onClose={close} withCloseButton={false} size="xl" radius="md" centered>
-        <CreateBlogForm close={close} />
+        <CreateBlogForm close={close} toggleStatus={toggleStatus} />
       </Modal>
     </div>
   ) : (

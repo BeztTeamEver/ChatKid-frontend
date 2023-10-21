@@ -103,8 +103,8 @@ export default function CreateExpertForm({ close }: { close: Function }) {
       <DateInput
         value={state.dateOfBirth}
         onChange={(e) => setState({ ...state, dateOfBirth: e ?? new Date() })}
-        label="Date input"
-        placeholder="Date input"
+        label="Date of birth"
+        placeholder="Date of birth"
         className="col-span-1"
         withAsterisk
       />

@@ -15,5 +15,10 @@ export type BODY_CREATE_BLOG = {
   content: string;
   imageUrl: string;
   voiceUrl: string;
-  type: string;
+  typeBlogId: string;
+};
+
+export type LIST_TYPE = {
+  id: string;
+  name: string;
 };
