@@ -2,12 +2,28 @@ import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
 import { BLOG_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
-import { Pagination, Table } from "@mantine/core";
-import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
+import { Menu, Pagination, Table } from "@mantine/core";
+import {
+  IconEdit,
+  IconEyeOff,
+  IconDotsVertical,
+  IconPlus,
+  IconSearch,
+  IconEye,
+  IconInfoCircle,
+} from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default function TableBlog({ openFunc, status }: { openFunc: Function; status: boolean }) {
+export default function TableBlog({
+  openFunc,
+  status,
+  setTypeModal,
+}: {
+  openFunc: Function;
+  status: boolean;
+  setTypeModal: Function;
+}) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listBlog, setListBlog] = useState<Array<BLOG_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
@@ -61,27 +77,51 @@ export default function TableBlog({ openFunc, status }: { openFunc: Function; st
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>{blog.title}</td>
-      <td>{blog.type}</td>
+      <td>{blog.typeBlog.name}</td>
       <td>{moment(blog.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td>{blog.createdBy}</td>
-      <td>{blog.status ? "Hiện" : "Ẩn"}</td>
-      <td className="flex gap-3 relative">
-        {blog.status ? (
-          <button
-            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
-            onClick={() => handleHideBlog(blog.id)}
-          >
-            Ẩn
-          </button>
-        ) : (
-          <button
-            className="px-4 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
-            onClick={() => handleShowBlog(blog.id)}
-          >
-            Hiện
-          </button>
-        )}
-        <IconDotsVertical className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer" />
+      <td>{`${blog.createAdmin.lastName} ${blog.createAdmin.firstName}`}</td>
+      <td className={blog.status ? "text-[#00B300]" : "text-[#B30000]"}>
+        {blog.status ? "Hiện" : "Ẩn"}
+      </td>
+      <td className="">
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <IconDotsVertical className="cursor-pointer mx-auto" />
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <Menu.Item
+              icon={<IconInfoCircle size={18} />}
+              className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+            >
+              Chi tiết
+            </Menu.Item>
+            <Menu.Item
+              icon={<IconEdit size={18} />}
+              className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+              onClick={() => {
+                setTypeModal({ method: "UPDATE", data: blog });
+                openFunc();
+              }}
+            >
+              Chỉnh sửa
+            </Menu.Item>
+            <Menu.Item
+              icon={blog.status ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+              className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+              onClick={() => (blog.status ? handleHideBlog(blog.id) : handleShowBlog(blog.id))}
+            >
+              {blog.status ? "Ẩn" : "Hiện"}
+            </Menu.Item>
+            {/* TODO: fix this feature
+            <Menu.Item
+              icon={<IconTrash size={18} />}
+              className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+            >
+              Xóa
+            </Menu.Item> */}
+          </Menu.Dropdown>
+        </Menu>
       </td>
     </tr>
   ));
@@ -110,10 +150,13 @@ export default function TableBlog({ openFunc, status }: { openFunc: Function; st
         </form>
         <button
           className="flex gap-3 items-center bg-[#FF9B06] rounded-full px-6 py-2 text-white"
-          onClick={() => openFunc()}
+          onClick={() => {
+            setTypeModal({ method: "CREATE", data: null });
+            openFunc();
+          }}
         >
           <IconPlus />
-          Tạo tài khoản mới
+          Tạo bài blog mới
         </button>
       </div>
       <Table className="rounded-md overflow-hidden">
@@ -123,7 +166,7 @@ export default function TableBlog({ openFunc, status }: { openFunc: Function; st
               <th
                 key={index}
                 className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.Blog.length - 1 ? "w-32" : ""
+                  index === DataTable.Blog.length - 1 ? "w-20" : ""
                 }`}
               >
                 {item}

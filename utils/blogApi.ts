@@ -21,6 +21,10 @@ export const BlogApi = {
     return await post({ endpoint: "/blogs", body });
   },
 
+  updateBlog: async (id: string, body: BODY_CREATE_BLOG) => {
+    return await put({ endpoint: `/blogs/${id}`, body });
+  },
+
   hideBlog: async (id: string) => {
     return await remove({ endpoint: `/blogs/${id}` });
   },

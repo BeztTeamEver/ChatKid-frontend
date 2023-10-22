@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/hooks/useToast/toast";
-import { BODY_CREATE_BLOG, LIST_TYPE } from "@/types/blog.type";
+import { BLOG_FORM_REQUEST, BODY_CREATE_BLOG, LIST_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
 import { uploadApi } from "@/utils/commonApi";
 import { Button, FileInput, Select, TextInput, rem } from "@mantine/core";
@@ -15,16 +15,19 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 export default function CreateBlogForm({
   close,
   toggleStatus,
+  typeModal,
 }: {
   close: Function;
   toggleStatus: Function;
+  typeModal: BLOG_FORM_REQUEST;
 }) {
+  const { method, data } = typeModal;
   const [state, setState] = useState<BODY_CREATE_BLOG>({
-    title: "",
-    content: "",
-    imageUrl: "",
-    voiceUrl: "",
-    typeBlogId: "",
+    title: data ? data.title : "",
+    content: data ? data.content : "",
+    imageUrl: data ? data.imageUrl : "",
+    voiceUrl: data ? data.voiceUrl : "",
+    typeBlogId: data ? data.typeBlogId : "",
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>();
   const [audio, setAudio] = useState<string | ArrayBuffer | null>();
@@ -57,24 +60,46 @@ export default function CreateBlogForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const content = draftToHtml(convertToRaw(editorContent.getCurrentContent()));
-    const imageUrl = await handleUpload(image);
-    const voiceUrl = await handleUpload(audio);
+    let imageUrl = await handleUpload(image);
+    let voiceUrl = await handleUpload(audio);
+
+    if (!voiceUrl && method === "UPDATE") voiceUrl = data?.voiceUrl ?? "";
+    if (!imageUrl && method === "UPDATE") imageUrl = data?.imageUrl ?? "";
 
     if (!voiceUrl || !imageUrl) {
       useToast.error("Upload file failed please try again!!!");
       return;
     }
 
-    await BlogApi.createBlog({ ...state, imageUrl, voiceUrl, content })
-      .then((res) => {
-        useToast.success("Create blog successfully 🎉");
-        close();
-        toggleStatus();
-      })
-      .catch((err) => {
-        console.log(err);
-        useToast.error("Something went wrong!!!");
-      });
+    switch (method) {
+      case "CREATE":
+        await BlogApi.createBlog({ ...state, imageUrl, voiceUrl, content })
+          .then((res) => {
+            useToast.success("Create blog successfully 🎉");
+            close();
+            toggleStatus();
+          })
+          .catch((err) => {
+            console.log(err);
+            useToast.error("Something went wrong!!!");
+          });
+        break;
+
+      case "UPDATE":
+        data
+          ? await BlogApi.updateBlog(data.id, { ...state, imageUrl, voiceUrl, content })
+              .then((res) => {
+                useToast.success("Update blog successfully 🎉");
+                close();
+                toggleStatus();
+              })
+              .catch((err) => {
+                console.log(err);
+                useToast.error("Something went wrong!!!");
+              })
+          : useToast.error("Something went wrong!!!");
+        break;
+    }
   };
 
   function getBase64(file, type: "image" | "audio") {
@@ -105,7 +130,9 @@ export default function CreateBlogForm({
         className="absolute -top-1 -right-1 w-5 h-5 cursor-pointer hover:rotate-90 hover:text-red-500 transition-all"
         onClick={() => close()}
       />
-      <h2 className="text-center font-bold mb-[2px] text-xl col-span-2">Tạo bài viết mới</h2>
+      <h2 className="text-center font-bold mb-[2px] text-xl col-span-2">
+        {method === "CREATE" ? "Tạo bài viết mới" : "Cập nhật bài viết"}
+      </h2>
       <TextInput
         type="text"
         label="Tựa đề"
