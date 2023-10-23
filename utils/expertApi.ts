@@ -11,6 +11,12 @@ export const ExpertApi = {
     });
   },
 
+  getDetailExpert: async (id: string) => {
+    return await get({
+      endpoint: `/expert/${id}`,
+    });
+  },
+
   createExpert: async (body: BODY_CREATE_EXPERT) => {
     return await post({ endpoint: "/expert", body });
   },

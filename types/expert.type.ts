@@ -9,6 +9,7 @@ export type EXPERT_TYPE = {
   gender: string;
   createdAt: string;
   status: number;
+  avatarUrl: string;
 };
 
 export type BODY_CREATE_EXPERT = {

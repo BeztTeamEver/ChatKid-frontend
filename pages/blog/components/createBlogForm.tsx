@@ -4,13 +4,13 @@ import { useToast } from "@/hooks/useToast/toast";
 import { BLOG_FORM_REQUEST, BODY_CREATE_BLOG, LIST_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
 import { uploadApi } from "@/utils/commonApi";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
+import "@ckeditor/ckeditor5-build-decoupled-document/build/translations/es";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Button, FileInput, Select, TextInput, rem } from "@mantine/core";
 import { IconPhotoUp, IconUpload, IconX } from "@tabler/icons-react";
-import { EditorState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import { useEffect, useState } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 export default function CreateBlogForm({
   close,
@@ -27,11 +27,10 @@ export default function CreateBlogForm({
     content: data ? data.content : "",
     imageUrl: data ? data.imageUrl : "",
     voiceUrl: data ? data.voiceUrl : "",
-    typeBlogId: data ? data.typeBlogId : "",
+    typeBlogId: data ? data.typeBlog.id : "",
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>();
   const [audio, setAudio] = useState<string | ArrayBuffer | null>();
-  const [editorContent, setEditorContent] = useState<EditorState>(EditorState.createEmpty());
   const [listType, setListType] = useState<Array<LIST_TYPE>>([]);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ export default function CreateBlogForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const content = draftToHtml(convertToRaw(editorContent.getCurrentContent()));
     let imageUrl = await handleUpload(image);
     let voiceUrl = await handleUpload(audio);
 
@@ -67,37 +65,37 @@ export default function CreateBlogForm({
     if (!imageUrl && method === "UPDATE") imageUrl = data?.imageUrl ?? "";
 
     if (!voiceUrl || !imageUrl) {
-      useToast.error("Upload file failed please try again!!!");
+      useToast.error("Tải tệp lên không thành công, vui lòng thử lại!!!");
       return;
     }
 
     switch (method) {
       case "CREATE":
-        await BlogApi.createBlog({ ...state, imageUrl, voiceUrl, content })
+        await BlogApi.createBlog({ ...state, imageUrl, voiceUrl })
           .then((res) => {
-            useToast.success("Create blog successfully 🎉");
+            useToast.success("Tạo bài viết thành công 🎉");
             close();
             toggleStatus();
           })
           .catch((err) => {
             console.log(err);
-            useToast.error("Something went wrong!!!");
+            useToast.error("Đã xảy ra sự cố!!!");
           });
         break;
 
       case "UPDATE":
         data
-          ? await BlogApi.updateBlog(data.id, { ...state, imageUrl, voiceUrl, content })
+          ? await BlogApi.updateBlog(data.id, { ...state, imageUrl, voiceUrl })
               .then((res) => {
-                useToast.success("Update blog successfully 🎉");
+                useToast.success("Cập nhật bài viết thành công 🎉");
                 close();
                 toggleStatus();
               })
               .catch((err) => {
                 console.log(err);
-                useToast.error("Something went wrong!!!");
+                useToast.error("Đã xảy ra sự cố!!!");
               })
-          : useToast.error("Something went wrong!!!");
+          : useToast.error("Đã xảy ra sự cố!!!");
         break;
     }
   };
@@ -145,7 +143,7 @@ export default function CreateBlogForm({
       <Select
         label="Phân loại"
         placeholder="Động vật, Thực vật, ..."
-        value={state.typeBlogId}
+        defaultValue={state.typeBlogId}
         onChange={(e) => setState({ ...state, typeBlogId: e ?? "" })}
         withAsterisk
         data={listType.map((item) => ({
@@ -172,20 +170,42 @@ export default function CreateBlogForm({
       <p className="text-sm font-semibold -mb-[6px]">
         Nội dung <span className="text-red-400">*</span>
       </p>
-      <Editor
+      {/* <Editor
         editorState={editorContent}
         wrapperClassName="demo-wrapper col-span-2 rounded-md"
         editorClassName="demo-editor border-[1px] rounded-md px-2 !h-72 box-border"
         onEditorStateChange={(e) => setEditorContent(e)}
         placeholder="Tại vì như thế này ..."
-      />
+      /> */}
+      <div className="col-span-2 [&>.ck-content]:!border-[1px] [&>.ck-content]:!border-[#00000030] [&>.ck-content]:max-h-80 [&>.ck-content]:min-h-[200px]">
+        <CKEditor
+          editor={DecoupledEditor}
+          onReady={(editor) => {
+            console.log("Editor is ready to use!", editor);
+
+            // Insert the toolbar before the editable area.
+            editor.ui
+              .getEditableElement()
+              ?.parentElement?.insertBefore(
+                editor.ui.view.toolbar.element,
+                editor.ui.getEditableElement(),
+              );
+          }}
+          data={state.content}
+          onChange={(event, editor) => {
+            const temp = editor.getData();
+            setState({ ...state, content: temp });
+          }}
+        />
+      </div>
+
       <Button
         type="submit"
         color="orange"
         radius="md"
         className="w-fit px-5 col-span-2 mx-auto bg-[#FF9B06] text-base"
       >
-        Tạo
+        {method === "CREATE" ? "Tạo" : "Cập nhật"}
       </Button>
     </form>
   );

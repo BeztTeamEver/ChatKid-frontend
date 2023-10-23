@@ -13,7 +13,10 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import moment from "moment";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
+import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableBlog({
   openFunc,
@@ -28,14 +31,18 @@ export default function TableBlog({
   const [listBlog, setListBlog] = useState<Array<BLOG_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalBlog, setTotalBlog] = useState<number>(0);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchData = () => {
-    BlogApi.getListBlog(activePage - 1, 10, search)
+  const fetchData = async () => {
+    setIsLoading(true);
+    await BlogApi.getListBlog(activePage - 1, 10, search)
       .then((res) => {
         setListBlog(res.data.items);
         setTotalBlog(res.data.totalItem);
       })
       .catch((err) => console.log(err));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -45,7 +52,7 @@ export default function TableBlog({
   const handleHideBlog = async (id: string) => {
     await BlogApi.hideBlog(id)
       .then((res) => {
-        useToast.success("Hide blog successfully 🎉");
+        useToast.success("Hide bài viết successfully 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -57,7 +64,7 @@ export default function TableBlog({
   const handleShowBlog = async (id: string) => {
     await BlogApi.showBlog(id)
       .then((res) => {
-        useToast.success("Un-ban blog successfully 🎉");
+        useToast.success("Un-ban bài viết successfully 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -76,7 +83,11 @@ export default function TableBlog({
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{blog.title}</td>
+      <td>
+        <a href={`/blog/${blog.id}`} className="hover:text-blue-400 hover:underline transition-all">
+          {blog.title}
+        </a>
+      </td>
       <td>{blog.typeBlog.name}</td>
       <td>{moment(blog.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
       <td>{`${blog.createAdmin.lastName} ${blog.createAdmin.firstName}`}</td>
@@ -93,6 +104,7 @@ export default function TableBlog({
             <Menu.Item
               icon={<IconInfoCircle size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+              onClick={() => router.push(`/blog/${blog.id}`)}
             >
               Chi tiết
             </Menu.Item>
@@ -156,7 +168,7 @@ export default function TableBlog({
           }}
         >
           <IconPlus />
-          Tạo bài blog mới
+          Tạo bài bài viết mới
         </button>
       </div>
       <Table className="rounded-md overflow-hidden">
@@ -174,7 +186,7 @@ export default function TableBlog({
             ))}
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}

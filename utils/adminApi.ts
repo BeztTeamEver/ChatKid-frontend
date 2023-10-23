@@ -11,6 +11,12 @@ export const AdminApi = {
     });
   },
 
+  getDetailAdmin: async (id: string) => {
+    return await get({
+      endpoint: `/admin/${id}`,
+    });
+  },
+
   createAdmin: async (body: BODY_CREATE_ADMIN) => {
     return await post({ endpoint: "/admin", body });
   },

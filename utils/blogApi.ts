@@ -13,7 +13,13 @@ export const BlogApi = {
 
   getListTypeBlog: async () => {
     return await get({
-      endpoint: `/blogs/blog-types`,
+      endpoint: `/blog-types`,
+    });
+  },
+
+  getDetailBlog: async (id: string) => {
+    return await get({
+      endpoint: `/blogs/${id}`,
     });
   },
 

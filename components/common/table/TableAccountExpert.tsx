@@ -7,19 +7,24 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
+import SkeletonFunction from "../skeleton/skeletonTable";
+
 export default function TableAccountExpert({ openFunc }: { openFunc: Function }) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listExpert, setListExpert] = useState<Array<EXPERT_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalExpert, setTotalExpert] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchData = () => {
-    ExpertApi.getListExpert(activePage - 1, 10, search)
+  const fetchData = async () => {
+    setIsLoading(true);
+    await ExpertApi.getListExpert(activePage - 1, 10, search)
       .then((res) => {
         setListExpert(res.data.items);
         setTotalExpert(res.data.totalItem);
       })
       .catch((err) => console.log(err));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -29,24 +34,24 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
   const handleRemoveExpert = async (id: string) => {
     await ExpertApi.removeExpert(id)
       .then((res) => {
-        useToast.success("Hide expert successfully 🎉");
+        useToast.success("Cấm chuyên gia thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
   const handleUnBanExpert = async (id: string) => {
     await ExpertApi.unbanExpert(id)
       .then((res) => {
-        useToast.success("Un-ban expert successfully 🎉");
+        useToast.success("Bỏ cấm chuyên gia thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
@@ -60,7 +65,12 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{`${expert?.lastName} ${expert.firstName}`}</td>
+      <td>
+        <a
+          href={`/expert/${expert.id}`}
+          className="hover:text-blue-400 hover:underline transition-all"
+        >{`${expert?.lastName} ${expert.firstName}`}</a>
+      </td>
       <td>{expert.gmail}</td>
       <td>{moment(expert.dateOfBirth).format("DD.MM.YYYY")}</td>
       <td>{expert.phone}</td>
@@ -134,7 +144,7 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
             ))}
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}

@@ -9,7 +9,7 @@ export type ADMIN_TYPE = {
   createdAt: string;
   status: number;
   role: string;
-  avatar: string;
+  avatarUrl: string;
 };
 
 export type BODY_CREATE_ADMIN = {

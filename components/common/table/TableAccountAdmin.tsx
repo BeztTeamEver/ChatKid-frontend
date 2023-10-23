@@ -7,19 +7,24 @@ import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
+import SkeletonFunction from "../skeleton/skeletonTable";
+
 export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listAdmin, setListAdmin] = useState<Array<ADMIN_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalAdmin, setTotalAdmin] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchData = () => {
-    AdminApi.getListAdmin(activePage - 1, 10, search)
+  const fetchData = async () => {
+    setIsLoading(true);
+    await AdminApi.getListAdmin(activePage - 1, 10, search)
       .then((res) => {
         setListAdmin(res.data.items);
         setTotalAdmin(res.data.totalItem);
       })
       .catch((err) => console.log(err));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -29,24 +34,24 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
   const handleRemoveAdmin = async (id: string) => {
     await AdminApi.removeAdmin(id)
       .then((res) => {
-        useToast.success("Hide admin successfully 🎉");
+        useToast.success("Ẩn admin thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
   const handleUnBanAdmin = async (id: string) => {
     await AdminApi.unbanAdmin(id)
       .then((res) => {
-        useToast.success("Un-ban admin successfully 🎉");
+        useToast.success("Bỏ cấm admin thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
@@ -60,7 +65,12 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{`${admin?.lastName} ${admin.firstName}`}</td>
+      <td>
+        <a
+          href={`/admin/${admin.id}`}
+          className="hover:text-blue-400 hover:underline transition-all"
+        >{`${admin?.lastName} ${admin.firstName}`}</a>
+      </td>
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>
       <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
@@ -133,7 +143,7 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
             ))}
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}

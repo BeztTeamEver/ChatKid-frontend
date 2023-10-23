@@ -22,7 +22,7 @@ export default function GoogleButton({ content }: { content: string }) {
     },
     onError: (error) => {
       console.log(error);
-      useToast.error("Something went wrong!!!");
+      useToast.error("Đã xảy ra sự cố!!!");
     },
   });
 

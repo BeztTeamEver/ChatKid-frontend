@@ -19,12 +19,12 @@ export default function CreateAdminForm({ close }: { close: Function }) {
     e.preventDefault();
     await AdminApi.createAdmin(state)
       .then((res) => {
-        useToast.success("Create admin successfully 🎉");
+        useToast.success("Tạo tài khoản thành công 🎉");
         close();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
