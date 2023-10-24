@@ -24,7 +24,7 @@ export default function UserDropdown({ user }: { user: USER_TYPE }) {
               {user.role.split("_").join(" ").toLowerCase()}
             </p>
           </div>
-          <Avatar src={user.avatar} alt="it's me" />
+          <Avatar src={user.avatarUrl} className="rounded-full" alt="avatar" />
         </div>
       </Menu.Target>
 

@@ -1,47 +1,50 @@
 import { useToast } from "@/hooks/useToast/toast";
-import { BODY_CREATE_EXPERT } from "@/types/expert.type";
-import { ExpertApi } from "@/utils/expertApi";
+import { BODY_CREATE_ADMIN } from "@/types/admin.type";
+import { AdminApi } from "@/utils/adminApi";
 import { Button, NumberInput, Select, TextInput } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-export default function CreateAExpertForm({ close }: { close: Function }) {
-  const [state, setState] = useState<BODY_CREATE_EXPERT>({
+export default function CreateAdminForm({
+  close,
+  toggleStatus,
+}: {
+  close: Function;
+  toggleStatus: Function;
+}) {
+  const [state, setState] = useState<BODY_CREATE_ADMIN>({
     firstName: "",
     lastName: "",
     gmail: "",
     phone: "",
     age: 0,
-    dateOfBirth: new Date(),
     gender: "male",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await ExpertApi.createExpert(state)
+    await AdminApi.createAdmin(state)
       .then((res) => {
-        useToast.success("Create admin successfully 🎉");
+        useToast.success("Tạo tài khoản thành công 🎉");
+        toggleStatus();
         close();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-2 gap-2 p-10 pb-5 justify-between relative"
+      className="grid grid-cols-2 gap-2 py-2 px-5 justify-between relative"
     >
       <IconX
         className="absolute top-0 right-0 cursor-pointer hover:rotate-90 hover:text-red-500 transition-all"
         onClick={() => close()}
       />
-      <h2 className="text-center font-bold mb-3 text-xl col-span-2">
-        Tạo tài khoản chuyên gia tư vấn
-      </h2>
+      <h2 className="text-center font-bold mb-3 text-xl col-span-2">Tạo tài khoản admin</h2>
       <TextInput
         type="text"
         label="Họ"
@@ -73,7 +76,7 @@ export default function CreateAExpertForm({ close }: { close: Function }) {
       <TextInput
         type="text"
         label="Phone"
-        className="col-span-1"
+        className="col-span-2"
         placeholder="0123456789"
         value={state.phone}
         onChange={(e) => setState({ ...state, phone: e.target.value })}
@@ -94,20 +97,10 @@ export default function CreateAExpertForm({ close }: { close: Function }) {
         placeholder="Male/Female"
         value={state.gender}
         onChange={(e) => setState({ ...state, gender: e as "male" | "female" })}
-        withAsterisk
         data={[
           { value: "male", label: "Male" },
           { value: "female", label: "Female" },
         ]}
-      />
-      <DateInput
-        value={state.dateOfBirth}
-        onChange={(e) => setState({ ...state, dateOfBirth: e ?? new Date() })}
-        label="Date input"
-        placeholder="Date input"
-        className="col-span-1"
-        withAsterisk
-        // size="xs"
       />
       <Button
         type="submit"

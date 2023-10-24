@@ -1,53 +1,67 @@
 import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
 import { EXPERT_TYPE } from "@/types/expert.type";
-import { AdminApi } from "@/utils/adminApi";
 import { ExpertApi } from "@/utils/expertApi";
 import { Pagination, Table } from "@mantine/core";
-import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default function TableAccountExpert({ openFunc }: { openFunc: Function }) {
+import ModalConfirm from "../modal/confirmModal";
+import SkeletonFunction from "../skeleton/skeletonTable";
+
+export default function TableAccountExpert({
+  openFunc,
+  status,
+}: {
+  openFunc: Function;
+  status: boolean;
+}) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listExpert, setListExpert] = useState<Array<EXPERT_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalExpert, setTotalExpert] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [tempId, setTempId] = useState<string>("");
 
-  const fetchData = () => {
-    ExpertApi.getListExpert(activePage - 1, 10, search)
+  const fetchData = async () => {
+    setIsLoading(true);
+    await ExpertApi.getListExpert(activePage - 1, 10, search)
       .then((res) => {
         setListExpert(res.data.items);
         setTotalExpert(res.data.totalItem);
       })
       .catch((err) => console.log(err));
+    setTimeout(() => setIsLoading(false), 200);
   };
 
   useEffect(() => {
     fetchData();
-  }, [activePage]);
+  }, [activePage, status]);
 
   const handleRemoveExpert = async (id: string) => {
     await ExpertApi.removeExpert(id)
       .then((res) => {
-        useToast.success("Remove admin successfully 🎉");
+        useToast.success("Cấm chuyên gia thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
-  const handleUnBanAdmin = async (id: string) => {
-    await AdminApi.unbanAdmin(id)
+  const handleUnBanExpert = async (id: string) => {
+    await ExpertApi.unbanExpert(id)
       .then((res) => {
-        useToast.success("Un-ban admin successfully 🎉");
+        useToast.success("Bỏ cấm chuyên gia thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
@@ -61,30 +75,39 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{`${expert?.lastName} ${expert.firstName}`}</td>
+      <td>
+        <a
+          href={`/expert/${expert.id}`}
+          className="hover:text-blue-400 hover:underline transition-all"
+        >{`${expert?.lastName} ${expert.firstName}`}</a>
+      </td>
       <td>{expert.gmail}</td>
       <td>{moment(expert.dateOfBirth).format("DD.MM.YYYY")}</td>
       <td>{expert.phone}</td>
       <td>{moment(expert.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td className="capitalize">{expert.gender}</td>
-      <td>{expert.status ? "Hoạt động" : "Bị cấm"}</td>
+      <td className="capitalize">{expert.gender?.trim() === "male" ? "Nam" : "Nữ"}</td>
+      <td className={expert.status ? "text-[#00B300]" : "text-[#B30000]"}>
+        {expert.status ? "Hoạt động" : "Cấm"}
+      </td>
       <td className="flex gap-3 relative">
         {expert.status ? (
           <button
-            className="px-6 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all"
-            onClick={() => handleRemoveExpert(expert.id)}
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            onClick={() => {
+              setTempId(expert.id);
+              open();
+            }}
           >
-            Ẩn
+            Cấm
           </button>
         ) : (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs bg-[#F1FEF1] border-[1px] border-[#00B203] text-[#00B203] rounded-full hover:bg-[#00B203] hover:text-white transition-all"
-            onClick={() => handleUnBanAdmin(expert.id)}
+            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            onClick={() => handleUnBanExpert(expert.id)}
           >
-            Hiện
+            Bỏ cấm
           </button>
         )}
-        <IconDotsVertical className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer" />
       </td>
     </tr>
   ));
@@ -134,7 +157,7 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
             ))}
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
@@ -142,6 +165,13 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
         total={Math.ceil(totalExpert / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+      <ModalConfirm
+        title="Bạn có chắc muốn cấm chuyên gia tư vấn này?"
+        buttonContent="Cấm"
+        opened={opened}
+        onOk={() => handleRemoveExpert(tempId)}
+        onCancel={close}
       />
     </div>
   );

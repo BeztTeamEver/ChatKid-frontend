@@ -1,3 +1,10 @@
+export type DISCUSS_ROOM = {
+  id: string;
+  voiceUrl: string;
+  createdTime: string;
+  expertId: string;
+};
+
 export type EXPERT_TYPE = {
   id: string;
   firstName: string;
@@ -9,6 +16,8 @@ export type EXPERT_TYPE = {
   gender: string;
   createdAt: string;
   status: number;
+  avatarUrl: string;
+  discussRooms: Array<DISCUSS_ROOM>;
 };
 
 export type BODY_CREATE_EXPERT = {

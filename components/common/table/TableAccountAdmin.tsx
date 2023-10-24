@@ -3,50 +3,65 @@ import { useToast } from "@/hooks/useToast/toast";
 import { ADMIN_TYPE } from "@/types/admin.type";
 import { AdminApi } from "@/utils/adminApi";
 import { Pagination, Table } from "@mantine/core";
-import { IconDotsVertical, IconPlus, IconSearch } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) {
+import ModalConfirm from "../modal/confirmModal";
+import SkeletonFunction from "../skeleton/skeletonTable";
+
+export default function TableAccountAdmin({
+  openFunc,
+  status,
+}: {
+  openFunc: Function;
+  status: boolean;
+}) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listAdmin, setListAdmin] = useState<Array<ADMIN_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalAdmin, setTotalAdmin] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [tempId, setTempId] = useState<string>("");
 
-  const fetchData = () => {
-    AdminApi.getListAdmin(activePage - 1, 10, search)
+  const fetchData = async () => {
+    setIsLoading(true);
+    await AdminApi.getListAdmin(activePage - 1, 10, search)
       .then((res) => {
         setListAdmin(res.data.items);
         setTotalAdmin(res.data.totalItem);
       })
       .catch((err) => console.log(err));
+    setTimeout(() => setIsLoading(false), 200);
   };
 
   useEffect(() => {
     fetchData();
-  }, [activePage]);
+  }, [activePage, status]);
 
   const handleRemoveAdmin = async (id: string) => {
     await AdminApi.removeAdmin(id)
       .then((res) => {
-        useToast.success("Remove admin successfully 🎉");
+        useToast.success("Ẩn admin thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
   const handleUnBanAdmin = async (id: string) => {
     await AdminApi.unbanAdmin(id)
       .then((res) => {
-        useToast.success("Un-ban admin successfully 🎉");
+        useToast.success("Bỏ cấm admin thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
@@ -60,29 +75,38 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{`${admin?.lastName} ${admin.firstName}`}</td>
+      <td>
+        <a
+          href={`/admin/${admin.id}`}
+          className="hover:text-blue-400 hover:underline transition-all"
+        >{`${admin?.lastName} ${admin.firstName}`}</a>
+      </td>
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>
       <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td className="capitalize">{admin.gender}</td>
-      <td>{admin.status ? "Hoạt động" : "Bị cấm"}</td>
+      <td className="capitalize">{admin.gender?.trim() === "male" ? "Nam" : "Nữ"}</td>
+      <td className={admin.status ? "text-[#00B300]" : "text-[#B30000]"}>
+        {admin.status ? "Hoạt động" : "Cấm"}
+      </td>
       <td className="flex gap-3 relative">
         {admin.status ? (
           <button
-            className="px-6 pt-[6px] pb-1 text-xs bg-[#FDECEC] border-[1px] border-[#FF5757] text-[#FF5757] rounded-full hover:bg-[#FF5757] hover:text-white transition-all"
-            onClick={() => handleRemoveAdmin(admin.id)}
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            onClick={() => {
+              setTempId(admin.id);
+              open();
+            }}
           >
-            Ẩn
+            Cấm
           </button>
         ) : (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs bg-[#F1FEF1] border-[1px] border-[#00B203] text-[#00B203] rounded-full hover:bg-[#00B203] hover:text-white transition-all"
+            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
             onClick={() => handleUnBanAdmin(admin.id)}
           >
-            Hiện
+            Bỏ cấm
           </button>
         )}
-        <IconDotsVertical className="absolute top-1/2 right-0 -translate-y-1/2 cursor-pointer" />
       </td>
     </tr>
   ));
@@ -124,7 +148,7 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
               <th
                 key={index}
                 className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.AccountAdmin.length - 1 ? "w-32" : ""
+                  index === DataTable.AccountAdmin.length - 1 ? "w-24" : ""
                 }`}
               >
                 {item}
@@ -132,7 +156,7 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
             ))}
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
@@ -140,6 +164,13 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
         total={Math.ceil(totalAdmin / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+      <ModalConfirm
+        title="Bạn có chắc muốn cấm admin này?"
+        buttonContent="Cấm"
+        opened={opened}
+        onOk={() => handleRemoveAdmin(tempId)}
+        onCancel={close}
       />
     </div>
   );

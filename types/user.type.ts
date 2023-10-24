@@ -6,6 +6,6 @@ export type USER_TYPE = {
   phone: string;
   age: number;
   gender: string;
-  avatar: string;
+  avatarUrl: string;
   role: "ADMIN" | "SUPER_ADMIN";
 };

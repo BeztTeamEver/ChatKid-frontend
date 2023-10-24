@@ -9,7 +9,7 @@ export const AuthApi = {
 
   getInfoUser: async () => {
     return await get({
-      endpoint: "/admins/admin",
+      endpoint: "/auth/info",
     });
   },
 };
