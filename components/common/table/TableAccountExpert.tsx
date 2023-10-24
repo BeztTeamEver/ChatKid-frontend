@@ -3,18 +3,28 @@ import { useToast } from "@/hooks/useToast/toast";
 import { EXPERT_TYPE } from "@/types/expert.type";
 import { ExpertApi } from "@/utils/expertApi";
 import { Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
+import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
-export default function TableAccountExpert({ openFunc }: { openFunc: Function }) {
+export default function TableAccountExpert({
+  openFunc,
+  status,
+}: {
+  openFunc: Function;
+  status: boolean;
+}) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listExpert, setListExpert] = useState<Array<EXPERT_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalExpert, setTotalExpert] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [tempId, setTempId] = useState<string>("");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -24,12 +34,12 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
         setTotalExpert(res.data.totalItem);
       })
       .catch((err) => console.log(err));
-    setIsLoading(false);
+    setTimeout(() => setIsLoading(false), 200);
   };
 
   useEffect(() => {
     fetchData();
-  }, [activePage]);
+  }, [activePage, status]);
 
   const handleRemoveExpert = async (id: string) => {
     await ExpertApi.removeExpert(id)
@@ -83,7 +93,10 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
         {expert.status ? (
           <button
             className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
-            onClick={() => handleRemoveExpert(expert.id)}
+            onClick={() => {
+              setTempId(expert.id);
+              open();
+            }}
           >
             Cấm
           </button>
@@ -152,6 +165,13 @@ export default function TableAccountExpert({ openFunc }: { openFunc: Function })
         total={Math.ceil(totalExpert / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+      <ModalConfirm
+        title="Bạn có chắc muốn cấm chuyên gia tư vấn này?"
+        buttonContent="Cấm"
+        opened={opened}
+        onOk={() => handleRemoveExpert(tempId)}
+        onCancel={close}
       />
     </div>
   );

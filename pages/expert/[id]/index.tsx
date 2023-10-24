@@ -45,7 +45,7 @@ export default function DetailExpert() {
       </Breadcrumbs>
       <div className="grid grid-cols-4 mt-5 gap-5">
         <DetailExpertCard infoExpert={infoExpert} setInfoExpert={setInfoExpert} />
-        <TableHistoryAdvise />
+        <TableHistoryAdvise listAdvise={infoExpert?.discussRooms} />
       </div>
     </div>
   );

@@ -6,7 +6,13 @@ import { DateInput } from "@mantine/dates";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-export default function CreateExpertForm({ close }: { close: Function }) {
+export default function CreateExpertForm({
+  close,
+  toggleStatus,
+}: {
+  close: Function;
+  toggleStatus: Function;
+}) {
   const [state, setState] = useState<BODY_CREATE_EXPERT>({
     firstName: "",
     lastName: "",
@@ -22,6 +28,7 @@ export default function CreateExpertForm({ close }: { close: Function }) {
     await ExpertApi.createExpert(state)
       .then((res) => {
         useToast.success("Tạo tài khoản thành công 🎉");
+        toggleStatus();
         close();
       })
       .catch((err) => {

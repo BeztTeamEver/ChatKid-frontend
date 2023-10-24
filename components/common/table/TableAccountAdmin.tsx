@@ -3,18 +3,28 @@ import { useToast } from "@/hooks/useToast/toast";
 import { ADMIN_TYPE } from "@/types/admin.type";
 import { AdminApi } from "@/utils/adminApi";
 import { Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import { useEffect, useState } from "react";
 
+import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
-export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) {
+export default function TableAccountAdmin({
+  openFunc,
+  status,
+}: {
+  openFunc: Function;
+  status: boolean;
+}) {
   const [activePage, setActivePage] = useState<number>(1);
   const [listAdmin, setListAdmin] = useState<Array<ADMIN_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalAdmin, setTotalAdmin] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [tempId, setTempId] = useState<string>("");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -24,12 +34,12 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
         setTotalAdmin(res.data.totalItem);
       })
       .catch((err) => console.log(err));
-    setIsLoading(false);
+    setTimeout(() => setIsLoading(false), 200);
   };
 
   useEffect(() => {
     fetchData();
-  }, [activePage]);
+  }, [activePage, status]);
 
   const handleRemoveAdmin = async (id: string) => {
     await AdminApi.removeAdmin(id)
@@ -82,7 +92,10 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
         {admin.status ? (
           <button
             className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
-            onClick={() => handleRemoveAdmin(admin.id)}
+            onClick={() => {
+              setTempId(admin.id);
+              open();
+            }}
           >
             Cấm
           </button>
@@ -151,6 +164,13 @@ export default function TableAccountAdmin({ openFunc }: { openFunc: Function }) 
         total={Math.ceil(totalAdmin / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+      <ModalConfirm
+        title="Bạn có chắc muốn cấm admin này?"
+        buttonContent="Cấm"
+        opened={opened}
+        onOk={() => handleRemoveAdmin(tempId)}
+        onCancel={close}
       />
     </div>
   );

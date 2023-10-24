@@ -5,7 +5,13 @@ import { Button, NumberInput, Select, TextInput } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
-export default function CreateAdminForm({ close }: { close: Function }) {
+export default function CreateAdminForm({
+  close,
+  toggleStatus,
+}: {
+  close: Function;
+  toggleStatus: Function;
+}) {
   const [state, setState] = useState<BODY_CREATE_ADMIN>({
     firstName: "",
     lastName: "",
@@ -20,6 +26,7 @@ export default function CreateAdminForm({ close }: { close: Function }) {
     await AdminApi.createAdmin(state)
       .then((res) => {
         useToast.success("Tạo tài khoản thành công 🎉");
+        toggleStatus();
         close();
       })
       .catch((err) => {

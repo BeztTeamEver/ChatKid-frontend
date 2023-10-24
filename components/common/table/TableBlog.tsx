@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/useToast/toast";
 import { BLOG_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
 import { Menu, Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconEdit,
   IconEyeOff,
@@ -16,6 +17,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableBlog({
@@ -33,6 +35,8 @@ export default function TableBlog({
   const [totalBlog, setTotalBlog] = useState<number>(0);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [tempId, setTempId] = useState<string>("");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -42,17 +46,21 @@ export default function TableBlog({
         setTotalBlog(res.data.totalItem);
       })
       .catch((err) => console.log(err));
-    setIsLoading(false);
+    setTimeout(() => setIsLoading(false), 200);
   };
 
   useEffect(() => {
     fetchData();
   }, [activePage, status]);
 
+  useEffect(() => {
+    tempId && open();
+  }, [tempId]);
+
   const handleHideBlog = async (id: string) => {
     await BlogApi.hideBlog(id)
       .then((res) => {
-        useToast.success("Hide bài viết successfully 🎉");
+        useToast.success("Ẩn bài viết successfully 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -121,7 +129,7 @@ export default function TableBlog({
             <Menu.Item
               icon={blog.status ? <IconEyeOff size={18} /> : <IconEye size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => (blog.status ? handleHideBlog(blog.id) : handleShowBlog(blog.id))}
+              onClick={() => (blog.status ? setTempId(blog.id) : handleShowBlog(blog.id))}
             >
               {blog.status ? "Ẩn" : "Hiện"}
             </Menu.Item>
@@ -194,6 +202,13 @@ export default function TableBlog({
         total={Math.ceil(totalBlog / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+      <ModalConfirm
+        title="Bạn có chắc muốn ẩn bài viết này?"
+        buttonContent="Ẩn"
+        opened={opened}
+        onOk={() => handleHideBlog(tempId)}
+        onCancel={close}
       />
     </div>
   );
