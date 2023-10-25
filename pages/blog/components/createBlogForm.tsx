@@ -4,17 +4,14 @@ import { useToast } from "@/hooks/useToast/toast";
 import { BLOG_FORM_REQUEST, BODY_CREATE_BLOG, LIST_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
 import { uploadApi } from "@/utils/commonApi";
-import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
-import "@ckeditor/ckeditor5-build-decoupled-document/build/translations/es";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Button, FileInput, Select, TextInput, rem } from "@mantine/core";
 import { IconPhotoUp, IconUpload, IconX } from "@tabler/icons-react";
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-// dynamic(() => import("@ckeditor/ckeditor5-build-decoupled-document/build/translations/es"), {
-//   ssr: false,
-// });
+const MyEditor = dynamic(() => import("@/components/common/CKEditor/CKEditor"), {
+  ssr: false,
+});
 export default function CreateBlogForm({
   close,
   toggleStatus,
@@ -177,25 +174,7 @@ export default function CreateBlogForm({
         Nội dung <span className="text-red-400">*</span>
       </p>
       <div className="col-span-2 [&>.ck-content]:!border-[1px] [&>.ck-content]:!border-[#00000030] [&>.ck-content]:max-h-80 [&>.ck-content]:min-h-[200px]">
-        <CKEditor
-          editor={DecoupledEditor}
-          onReady={(editor) => {
-            const editorElement = editor.ui.getEditableElement();
-            const toolbarElement = editor?.ui.view.toolbar.element;
-
-            if (editorElement && toolbarElement) {
-              const parentElement = editorElement?.parentElement;
-              if (parentElement) {
-                parentElement.insertBefore(toolbarElement, editorElement);
-              }
-            }
-          }}
-          data={state.content}
-          onChange={(event, editor) => {
-            const temp = editor.getData();
-            setState({ ...state, content: temp });
-          }}
-        />
+        <MyEditor state={state} setState={setState} />
       </div>
 
       <Button

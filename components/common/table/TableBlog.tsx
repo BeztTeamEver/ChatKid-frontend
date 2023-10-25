@@ -194,7 +194,7 @@ export default function TableBlog({
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
