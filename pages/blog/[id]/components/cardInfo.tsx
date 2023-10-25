@@ -71,7 +71,7 @@ export default function DetailBlogCard({
           >
             <p>Phân loại</p>
             <p>{infoBlog.typeBlog.name}</p>
-            <p>Nghười đăng</p>
+            <p>Người đăng</p>
             <p>{`${infoBlog.createAdmin.lastName} ${infoBlog.createAdmin.firstName}`}</p>
             <p>Ngày đăng</p>
             <p>{moment(infoBlog.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
