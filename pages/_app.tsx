@@ -1,6 +1,5 @@
 import "@/styles/global.css";
-import colorSchemeConfig from "@/utils/theme";
-import { MantineProvider, ColorScheme } from "@mantine/core";
+import { ColorScheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { getCookie, setCookie } from "cookies-next";
 import NextApp, { AppProps, AppContext } from "next/app";
@@ -31,16 +30,10 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
 
-      <MantineProvider
-        theme={{ colorScheme, ...colorSchemeConfig }}
-        withGlobalStyles
-        withNormalizeCSS
-      >
-        <main className={nunito.className}>
-          <Component {...pageProps} />
-        </main>
-        <Notifications />
-      </MantineProvider>
+      <main className={nunito.className}>
+        <Component {...pageProps} />
+      </main>
+      <Notifications />
     </Layout>
   );
 }
