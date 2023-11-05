@@ -6,6 +6,7 @@ import { Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import ModalConfirm from "../modal/confirmModal";
@@ -76,10 +77,10 @@ export default function TableAccountExpert({
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>
-        <a
+        <Link
           href={`/expert/${expert.id}`}
           className="hover:text-blue-400 hover:underline transition-all"
-        >{`${expert?.lastName} ${expert.firstName}`}</a>
+        >{`${expert?.lastName} ${expert.firstName}`}</Link>
       </td>
       <td>{expert.gmail}</td>
       <td>{moment(expert.dateOfBirth).format("DD.MM.YYYY")}</td>

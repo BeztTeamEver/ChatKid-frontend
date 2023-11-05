@@ -1,7 +1,7 @@
 import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
-import { BLOG_TYPE } from "@/types/blog.type";
-import { BlogApi } from "@/utils/blogApi";
+import { ADS_TYPE } from "@/types/ads.type";
+import { AdsApi } from "@/utils/adsApi";
 import { Menu, Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
-export default function TableBlog({
+export default function TableAds({
   openFunc,
   status,
   setTypeModal,
@@ -31,9 +31,9 @@ export default function TableBlog({
   setTypeModal: Function;
 }) {
   const [activePage, setActivePage] = useState<number>(1);
-  const [listBlog, setListBlog] = useState<Array<BLOG_TYPE>>([]);
+  const [listAds, setListAds] = useState<Array<ADS_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
-  const [totalBlog, setTotalBlog] = useState<number>(0);
+  const [totalAds, setTotalAds] = useState<number>(0);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [opened, { open, close }] = useDisclosure(false);
@@ -41,10 +41,10 @@ export default function TableBlog({
 
   const fetchData = async () => {
     setIsLoading(true);
-    await BlogApi.getListBlog(activePage - 1, 10, search)
+    await AdsApi.getListAds(activePage - 1, 10, search)
       .then((res) => {
-        setListBlog(res.data.items);
-        setTotalBlog(res.data.totalItem);
+        setListAds(res.data.items);
+        setTotalAds(res.data.totalItem);
       })
       .catch((err) => console.log(err));
     setTimeout(() => setIsLoading(false), 200);
@@ -58,8 +58,8 @@ export default function TableBlog({
     tempId && open();
   }, [tempId]);
 
-  const handleHideBlog = async (id: string) => {
-    await BlogApi.hideBlog(id)
+  const handleHideAds = async (id: string) => {
+    await AdsApi.hideAds(id)
       .then((res) => {
         useToast.success("Ẩn bài viết successfully 🎉");
         fetchData();
@@ -70,8 +70,8 @@ export default function TableBlog({
       });
   };
 
-  const handleShowBlog = async (id: string) => {
-    await BlogApi.showBlog(id)
+  const handleShowAds = async (id: string) => {
+    await AdsApi.showAds(id)
       .then((res) => {
         useToast.success("Un-ban bài viết successfully 🎉");
         fetchData();
@@ -82,9 +82,9 @@ export default function TableBlog({
       });
   };
 
-  const rows = listBlog.map((blog, index) => (
+  const rows = listAds.map((ads, index) => (
     <tr
-      key={blog.id}
+      key={ads.id}
       className={
         index % 2 === 1
           ? "bg-[#FFFBF5] [&>td]:!p-4 [&>td]:!border-none [&>td]:!pl-[10px]"
@@ -94,17 +94,19 @@ export default function TableBlog({
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>
         <Link
-          href={`/blog/${blog.id}`}
+          href={`/advertising/${ads.id}`}
           className="hover:text-blue-400 hover:underline transition-all"
         >
-          {blog.title}
+          {ads.title}
         </Link>
       </td>
-      <td>{blog.typeBlog.name}</td>
-      <td>{moment(blog.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
-      <td>{`${blog.createAdmin?.lastName ?? ""} ${blog.createAdmin?.firstName ?? ""}`}</td>
-      <td className={blog.status ? "text-[#00B300]" : "text-[#B30000]"}>
-        {blog.status ? "Hiện" : "Ẩn"}
+      <td>{ads.type === "popup" ? "Popup" : "Trang chủ"}</td>
+      <td>{ads.company}</td>
+      <td>{moment(ads.startDate).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(ads.endDate).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{ads.clicks}</td>
+      <td className={ads.status ? "text-[#00B300]" : "text-[#B30000]"}>
+        {ads.status ? "Hiện" : "Ẩn"}
       </td>
       <td className="">
         <Menu shadow="md" width={200}>
@@ -116,7 +118,7 @@ export default function TableBlog({
             <Menu.Item
               icon={<IconInfoCircle size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => router.push(`/blog/${blog.id}`)}
+              onClick={() => router.push(`/advertising/${ads.id}`)}
             >
               Chi tiết
             </Menu.Item>
@@ -124,18 +126,18 @@ export default function TableBlog({
               icon={<IconEdit size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
               onClick={() => {
-                setTypeModal({ method: "UPDATE", data: blog });
+                setTypeModal({ method: "UPDATE", data: ads });
                 openFunc();
               }}
             >
               Chỉnh sửa
             </Menu.Item>
             <Menu.Item
-              icon={blog.status ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+              icon={ads.status ? <IconEyeOff size={18} /> : <IconEye size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => (blog.status ? setTempId(blog.id) : handleShowBlog(blog.id))}
+              onClick={() => (ads.status ? setTempId(ads.id) : handleShowAds(ads.id))}
             >
-              {blog.status ? "Ẩn" : "Hiện"}
+              {ads.status ? "Ẩn" : "Hiện"}
             </Menu.Item>
             {/* TODO: fix this feature
             <Menu.Item
@@ -162,7 +164,7 @@ export default function TableBlog({
         >
           <input
             type="text"
-            placeholder="Tìm kiếm tài khoản"
+            placeholder="Tìm kiếm bài quảng cáo"
             className="w-full bg-transparent focus:outline-none py-3 px-5"
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -180,17 +182,17 @@ export default function TableBlog({
           }}
         >
           <IconPlus />
-          Tạo bài viết mới
+          Tạo bài quảng cáo mới
         </button>
       </div>
       <Table className="rounded-md overflow-hidden">
         <thead className="bg-[#FF9B06] p-[10px]">
           <tr>
-            {DataTable.Blog.map((item, index) => (
+            {DataTable.Ads.map((item, index) => (
               <th
                 key={index}
                 className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.Blog.length - 1 ? "w-20" : ""
+                  index === DataTable.Ads.length - 1 ? "w-20" : ""
                 }`}
               >
                 {item}
@@ -198,20 +200,20 @@ export default function TableBlog({
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
         onChange={(e) => setActivePage(e)}
-        total={Math.ceil(totalBlog / 10)}
+        total={Math.ceil(totalAds / 10)}
         color="orange"
         className="mt-2 justify-center"
       />
       <ModalConfirm
-        title="Bạn có chắc muốn ẩn bài viết này?"
+        title="Bạn có chắc muốn ẩn bài quảng cáo này?"
         buttonContent="Ẩn"
         opened={opened}
-        onOk={() => handleHideBlog(tempId)}
+        onOk={() => handleHideAds(tempId)}
         onCancel={close}
       />
     </div>

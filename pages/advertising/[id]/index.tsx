@@ -1,28 +1,27 @@
 "use client";
 
-import { BLOG_TYPE } from "@/types/blog.type";
-import { BlogApi } from "@/utils/blogApi";
-import { Breadcrumbs, Skeleton } from "@mantine/core";
+import { ADS_TYPE } from "@/types/ads.type";
+import { AdsApi } from "@/utils/adsApi";
+import { Breadcrumbs, Image, Skeleton } from "@mantine/core";
 import parse from "html-react-parser";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-import DetailBlogCard from "./components/cardInfo";
+import DetailAdsCard from "./components/cardInfo";
 
-export default function DetailBlog() {
+export default function DetailAds() {
   const router = useRouter();
   const { id } = router.query;
-  const [infoBlog, setInfoBlog] = useState<BLOG_TYPE>();
+  const [infoAds, setInfoAds] = useState<ADS_TYPE>();
   const [status, setStatus] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
-      BlogApi.getDetailBlog(id as string)
+      AdsApi.getDetailAds(id as string)
         .then((res) => {
-          setInfoBlog(res.data);
+          setInfoAds(res.data);
         })
         .catch((err) => console.log(err));
     }
@@ -42,17 +41,17 @@ export default function DetailBlog() {
         }}
       >
         <Link
-          href="/blog"
+          href="/advertising"
           className="text-[#0000008c] hover:text-black transition-all hover:no-underline"
         >
-          Danh sách bài đăng
+          Danh sách quảng cáo
         </Link>
         <Link href="" className="text-black hover:no-underline">
-          Chi tiết bài đăng
+          Chi tiết quảng cáo
         </Link>
       </Breadcrumbs>
       <div className="flex mt-5 gap-5">
-        <DetailBlogCard infoBlog={infoBlog} setInfoBlog={setInfoBlog} toggleStatus={toggleStatus} />
+        <DetailAdsCard infoAds={infoAds} setInfoAds={setInfoAds} toggleStatus={toggleStatus} />
         <div
           className="w-full h-fit bg-white p-8 rounded-lg"
           style={{
@@ -60,14 +59,14 @@ export default function DetailBlog() {
               "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
           }}
         >
-          {infoBlog?.content ? (
+          {infoAds?.content ? (
             <div>
-              <h3 className="text-center text-[#252937] text-2xl font-semibold mb-5">
-                {infoBlog.title}
+              <Image src={infoAds.imageUrl} className="rounded-md mb-5" />
+              <h3 className="text-center text-[#252937] text-2xl font-semibold my-5">
+                {infoAds.title}
               </h3>
-              <AudioPlayer src={infoBlog.voiceUrl} className="rounded-md mb-5" />
               <div>
-                {parse(infoBlog.content.replaceAll("<img", "<img className='mx-auto my-3'"))}
+                {parse(infoAds.content.replaceAll("<img", "<img className='mx-auto my-3'"))}
               </div>
             </div>
           ) : (

@@ -1,8 +1,7 @@
 "use client";
 
-import { Group, Box, Collapse, UnstyledButton, rem } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight, IconPointFilled } from "@tabler/icons-react";
-import Link from "next/link";
+import { Group, Box, UnstyledButton, rem } from "@mantine/core";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -32,20 +31,6 @@ export function LinksGroup({
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
-  const items = (hasLinks ? links : []).map((item) => (
-    <Link
-      className={classes.link}
-      href={item.link}
-      key={item.label}
-      style={router.pathname === item.link ? { background: "#FFEDD1", color: "#752B01" } : {}}
-    >
-      <IconPointFilled
-        style={router.pathname === item.link ? { color: "#752B01" } : { color: "#E9EAF2" }}
-        size="1.2rem"
-      />
-      {item.label}
-    </Link>
-  ));
 
   useEffect(() => {
     !isExpanded && setOpened(isExpanded);
@@ -60,7 +45,7 @@ export function LinksGroup({
         }}
         className={classes.control}
         sx={
-          router.pathname === link
+          router.pathname.includes(link && link !== "/" ? link : "#")
             ? {
                 borderRadius: rem(8),
                 color: "#752B01",
@@ -88,7 +73,6 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
-      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
   );
 }

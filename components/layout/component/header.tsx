@@ -6,6 +6,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { AuthApi } from "@/utils/authApi";
 import { Header, Group, Button, Text } from "@mantine/core";
 import MenuIcon from "icons/MenuIcon";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -52,12 +53,12 @@ export default function HeaderLayout({
           >
             <MenuIcon color={isExpanded ? "#752B01" : "#252937"} />
           </Button>
-          <a href="/">
+          <Link href="/">
             <Group className="text-primary-500 w-fit" spacing="xs" position="center">
               <Logo width={30} height={30} />
               <Text className="font-bold text-xl">KidTalkie</Text>
             </Group>
-          </a>
+          </Link>
         </Group>
 
         {user && (

@@ -1,31 +1,31 @@
 import { useToast } from "@/hooks/useToast/toast";
-import { BLOG_TYPE } from "@/types/blog.type";
-import { BlogApi } from "@/utils/blogApi";
-import { BackgroundImage, Modal, Skeleton } from "@mantine/core";
+import { ADS_TYPE } from "@/types/ads.type";
+import { AdsApi } from "@/utils/adsApi";
+import { Modal, Skeleton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import moment from "moment";
 import dynamic from "next/dynamic";
 
-const CreateBlogForm = dynamic(() => import("../../components/createBlogForm"), {
+const CreateAdsForm = dynamic(() => import("../../components/createAdsForm"), {
   ssr: false,
 });
 
-export default function DetailBlogCard({
-  infoBlog,
-  setInfoBlog,
+export default function DetailAdsCard({
+  infoAds,
+  setInfoAds,
   toggleStatus,
 }: {
-  infoBlog?: BLOG_TYPE;
-  setInfoBlog: Function;
+  infoAds?: ADS_TYPE;
+  setInfoAds: Function;
   toggleStatus: Function;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
 
-  const handleHideBlog = async (id: string) => {
-    await BlogApi.hideBlog(id)
+  const handleHideAds = async (id: string) => {
+    await AdsApi.hideAds(id)
       .then((res) => {
         useToast.success("Ẩn bài viết thành công 🎉");
-        setInfoBlog({ ...infoBlog, status: 0 });
+        setInfoAds({ ...infoAds, status: 0 });
       })
       .catch((err) => {
         console.log(err);
@@ -33,11 +33,11 @@ export default function DetailBlogCard({
       });
   };
 
-  const handleShowBlog = async (id: string) => {
-    await BlogApi.showBlog(id)
+  const handleShowAds = async (id: string) => {
+    await AdsApi.showAds(id)
       .then((res) => {
         useToast.success("Hiện bài viết thành công 🎉");
-        setInfoBlog({ ...infoBlog, status: 1 });
+        setInfoAds({ ...infoAds, status: 1 });
       })
       .catch((err) => {
         console.log(err);
@@ -53,31 +53,34 @@ export default function DetailBlogCard({
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
       }}
     >
-      {infoBlog ? (
+      {infoAds ? (
         <div>
-          <div className="w-full h-0 border-[1px] border-[#E9EAF2] relative my-2">
+          <div className="w-full h-0 border-[1px] border-[#E9EAF2] relative my-2 mb-6">
             <p className="absolute uppercase bg-white top-0 -translate-y-1/2 p-2 text-[#5B607C]">
               Thông tin chung
             </p>
           </div>
-          <BackgroundImage
-            src={infoBlog.imageUrl}
-            className="w-[120px] h-[120px] mx-auto my-6"
-            radius="md"
-          />
           <div
-            className="grid grid-cols-5 gap-2 break-words [&>*:nth-child(odd)]:col-span-2 [&>*:nth-child(odd)]:font-semibold [&>*:nth-child(odd)]:text-[#252937]
-            [&>*:nth-child(even)]:col-span-3 [&>*:nth-child(even)]:font-normal [&>*:nth-child(even)]:text-[#464C62]"
+            className="grid grid-cols-2 gap-2 break-words [&>*:nth-child(odd)]:col-span-1 [&>*:nth-child(odd)]:font-semibold [&>*:nth-child(odd)]:text-[#252937]
+            [&>*:nth-child(even)]:col-span-1 [&>*:nth-child(even)]:font-normal [&>*:nth-child(even)]:text-[#464C62]"
           >
-            <p>Phân loại</p>
-            <p>{infoBlog.typeBlog.name}</p>
-            <p>Người đăng</p>
-            <p>{`${infoBlog.createAdmin.lastName} ${infoBlog.createAdmin.firstName}`}</p>
+            <p>Loại quảng cáo</p>
+            <p>{infoAds.type === "popup" ? "Popup" : "Trang chủ"}</p>
+            <p>Công ty</p>
+            <p>{infoAds.company}</p>
+            <p>Email</p>
+            <p>{infoAds.companyEmail}</p>
             <p>Ngày đăng</p>
-            <p>{moment(infoBlog.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoAds.startDate).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>Ngày kết thúc</p>
+            <p>{moment(infoAds.endDate).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>Lượt bấm</p>
+            <p>{infoAds.clicks}</p>
+            <p>Giá trị</p>
+            <p>{infoAds.price.toLocaleString("it-IT", { style: "currency", currency: "VND" })}</p>
             <p>Trạng thái</p>
-            <p className={infoBlog.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
-              {infoBlog.status ? "Hiện" : "Ẩn"}
+            <p className={infoAds.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
+              {infoAds.status ? "Hiện" : "Ẩn"}
             </p>
           </div>
           <div className="w-full mt-6 flex gap-3">
@@ -87,17 +90,17 @@ export default function DetailBlogCard({
             >
               Chỉnh sửa
             </button>
-            {infoBlog.status ? (
+            {infoAds.status ? (
               <button
                 className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
-                onClick={() => handleHideBlog(infoBlog.id)}
+                onClick={() => handleHideAds(infoAds.id)}
               >
                 Ẩn
               </button>
             ) : (
               <button
                 className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
-                onClick={() => handleShowBlog(infoBlog.id)}
+                onClick={() => handleShowAds(infoAds.id)}
               >
                 Hiện
               </button>
@@ -111,10 +114,10 @@ export default function DetailBlogCard({
             radius="md"
             centered
           >
-            <CreateBlogForm
+            <CreateAdsForm
               close={close}
               toggleStatus={toggleStatus}
-              typeModal={{ method: "UPDATE", data: infoBlog }}
+              typeModal={{ method: "UPDATE", data: infoAds }}
             />
           </Modal>
         </div>

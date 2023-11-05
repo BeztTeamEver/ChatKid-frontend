@@ -37,7 +37,7 @@ export default function DetailExpertCard({
 
   return (
     <div
-      className="p-6 rounded-lg bg-white col-span-1 h-fit"
+      className="p-6 rounded-lg bg-white col-span-1 h-fit w-[500px]"
       style={{
         boxShadow:
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -68,7 +68,7 @@ export default function DetailExpertCard({
             <p>Ngày tạo</p>
             <p>{moment(infoExpert.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
             <p>Giới tính</p>
-            <p>{infoExpert.gender.trim() === "male" ? "Nam" : "Nữ"}</p>
+            <p>{infoExpert.gender === "male" ? "Nam" : "Nữ"}</p>
             <p>Trạng thái</p>
             <p className={infoExpert.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
               {infoExpert.status ? "Hoạt động" : "Cấm"}

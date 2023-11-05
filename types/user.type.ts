@@ -8,4 +8,5 @@ export type USER_TYPE = {
   gender: string;
   avatarUrl: string;
   role: "ADMIN" | "SUPER_ADMIN";
+  position: string;
 };

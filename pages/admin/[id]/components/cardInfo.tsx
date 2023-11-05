@@ -69,7 +69,7 @@ export default function DetailAdminCard({
               <p>{infoAdmin.gmail}</p>
               <p>{infoAdmin.phone}</p>
               <p>{moment(infoAdmin.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
-              <p>{infoAdmin.gender.trim() === "male" ? "Nam" : "Nữ"}</p>
+              <p>{infoAdmin.gender === "male" ? "Nam" : "Nữ"}</p>
               <p className={infoAdmin.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
                 {infoAdmin.status ? "Hoạt động" : "Cấm"}
               </p>

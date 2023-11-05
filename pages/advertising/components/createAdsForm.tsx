@@ -1,48 +1,41 @@
 "use client";
 
 import { useToast } from "@/hooks/useToast/toast";
-import { BLOG_FORM_REQUEST, BODY_CREATE_BLOG, LIST_TYPE } from "@/types/blog.type";
-import { BlogApi } from "@/utils/blogApi";
+import { ADS_FORM_REQUEST, BODY_CREATE_ADS, LIST_TYPE_ADS } from "@/types/ads.type";
+import { AdsApi } from "@/utils/adsApi";
 import { uploadApi } from "@/utils/commonApi";
-import { Button, FileInput, Select, TextInput, rem } from "@mantine/core";
-import { IconPhotoUp, IconUpload, IconX } from "@tabler/icons-react";
+import { Button, FileInput, NumberInput, Select, TextInput, rem } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
+import { IconCurrencyDong, IconPhotoUp, IconX } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const MyEditor = dynamic(() => import("@/components/common/CKEditor/CKEditor"), {
   ssr: false,
 });
-export default function CreateBlogForm({
+export default function CreateAdsForm({
   close,
   toggleStatus,
   typeModal,
 }: {
   close: Function;
   toggleStatus: Function;
-  typeModal: BLOG_FORM_REQUEST;
+  typeModal: ADS_FORM_REQUEST;
 }) {
   const { method, data } = typeModal;
-  const [state, setState] = useState<BODY_CREATE_BLOG>({
+  const [state, setState] = useState<BODY_CREATE_ADS>({
     title: data ? data.title : "",
     content: data ? data.content : "",
+    company: data ? data.company : "",
+    companyEmail: data ? data.companyEmail : "",
+    startDate: data ? new Date(data.startDate) : new Date(),
+    endDate: data ? new Date(data.endDate) : new Date(),
     imageUrl: data ? data.imageUrl : "",
-    voiceUrl: data ? data.voiceUrl : "",
-    typeBlogId: data ? data.typeBlog.id : "",
+    destinationUrl: data ? data.destinationUrl : "",
+    type: data ? data.type?.toLowerCase() : "",
+    price: data ? data.price : 0,
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>();
-  const [audio, setAudio] = useState<string | ArrayBuffer | null>();
-  const [listType, setListType] = useState<Array<LIST_TYPE>>([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      await BlogApi.getListTypeBlog()
-        .then((res) => {
-          setListType(res.data);
-        })
-        .catch((err) => console.log(err));
-    };
-    fetch();
-  }, []);
 
   const handleUpload = async (base64): Promise<string> => {
     if (!base64) return "";
@@ -62,19 +55,17 @@ export default function CreateBlogForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let imageUrl = await handleUpload(image);
-    let voiceUrl = await handleUpload(audio);
 
-    if (!voiceUrl && method === "UPDATE") voiceUrl = data?.voiceUrl ?? "";
     if (!imageUrl && method === "UPDATE") imageUrl = data?.imageUrl ?? "";
 
-    if (!voiceUrl || !imageUrl) {
+    if (!imageUrl) {
       useToast.error("Tải tệp lên không thành công, vui lòng thử lại!!!");
       return;
     }
 
     switch (method) {
       case "CREATE":
-        await BlogApi.createBlog({ ...state, imageUrl, voiceUrl })
+        await AdsApi.createAds({ ...state, imageUrl })
           .then((res) => {
             useToast.success("Tạo bài viết thành công 🎉");
             close();
@@ -88,7 +79,7 @@ export default function CreateBlogForm({
 
       case "UPDATE":
         data
-          ? await BlogApi.updateBlog(data.id, { ...state, imageUrl, voiceUrl })
+          ? await AdsApi.updateAds(data.id, { ...state, imageUrl })
               .then((res) => {
                 useToast.success("Cập nhật bài viết thành công 🎉");
                 close();
@@ -103,12 +94,11 @@ export default function CreateBlogForm({
     }
   };
 
-  function getBase64(file, type: "image" | "audio") {
+  function getBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      if (type === "image") setImage(reader.result);
-      else setAudio(reader.result);
+      setImage(reader.result);
     };
     reader.onerror = (error) => {
       console.log("Error: ", error);
@@ -116,13 +106,8 @@ export default function CreateBlogForm({
   }
 
   const handleImageChange = (e) => {
-    if (e) getBase64(e, "image");
+    if (e) getBase64(e);
     else setImage(null);
-  };
-
-  const handleAudioChange = (e) => {
-    if (e) getBase64(e, "audio");
-    else setAudio(null);
   };
 
   return (
@@ -132,48 +117,96 @@ export default function CreateBlogForm({
         onClick={() => close()}
       />
       <h2 className="text-center font-bold mb-[2px] text-xl col-span-2">
-        {method === "CREATE" ? "Tạo bài viết mới" : "Cập nhật bài viết"}
+        {method === "CREATE" ? "Tạo bài quảng cáo mới" : "Cập nhật bài quảng cáo"}
       </h2>
       <TextInput
         type="text"
         label="Tựa đề"
-        placeholder="Tại sao ..."
+        placeholder="Chiến lược mới cho ..."
+        className="col-span-2"
         value={state.title}
         onChange={(e) => setState({ ...state, title: e.target.value })}
         withAsterisk
         required
       />
+      <TextInput
+        type="text"
+        label="Công ty"
+        placeholder="Cty TNHH ABC"
+        value={state.company}
+        onChange={(e) => setState({ ...state, company: e.target.value })}
+        withAsterisk
+        required
+      />
+      <TextInput
+        type="email"
+        label="Email công ty"
+        placeholder="example@company.com"
+        value={state.companyEmail}
+        onChange={(e) => setState({ ...state, companyEmail: e.target.value })}
+        withAsterisk
+        required
+      />
+      <DateInput
+        valueFormat="DD/MM/YYYY"
+        defaultValue={state.startDate}
+        label="Ngày bắt đầu"
+        placeholder="Date input"
+        className="col-span-1"
+        readOnly
+      />
+      <DateInput
+        valueFormat="DD/MM/YYYY"
+        defaultValue={state.endDate}
+        onChange={(e) => setState({ ...state, endDate: e ?? new Date() })}
+        label="Ngày kết thúc"
+        placeholder="Date input"
+        className="col-span-1"
+        minDate={state.startDate}
+        withAsterisk
+        required
+      />
       <Select
         label="Phân loại"
-        placeholder="Động vật, Thực vật, ..."
-        defaultValue={state.typeBlogId}
-        onChange={(e) => setState({ ...state, typeBlogId: e ?? "" })}
+        placeholder="Cửa số, trang chủ"
+        defaultValue={state.type}
+        onChange={(e) => setState({ ...state, type: e ?? "" })}
         withAsterisk
-        data={listType.map((item) => ({
-          label: item.name,
-          value: item.id,
-        }))}
+        data={LIST_TYPE_ADS}
+        required
+      />
+      <NumberInput
+        type="number"
+        label="Giá trị"
+        placeholder="8000000"
+        defaultValue={state.price}
+        onChange={(e) => setState({ ...state, price: e !== "" ? e : 0 })}
+        icon={<IconCurrencyDong size={rem(20)} />}
+        className="[&>div>input]:pr-9 [&>div>input]:!pl-4 first:[&>div>div]:left-full first:[&>div>div]:-translate-x-full last:[&>div>div]:hidden"
+        withAsterisk
+        required
       />
       <FileInput
         label="Hình ảnh"
-        placeholder="Hình ảnh xem trước blog"
+        placeholder="Hình ảnh xem trước quảng cáo"
         icon={<IconPhotoUp size={rem(20)} />}
         onChange={handleImageChange}
         withAsterisk
         accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
       />
-      <FileInput
-        label="Âm thanh"
-        placeholder="Bài đọc của blog"
-        icon={<IconUpload size={rem(14)} />}
-        onChange={handleAudioChange}
+      <TextInput
+        type="text"
+        label="Trang đích đến"
+        placeholder="http://example.com"
+        value={state.destinationUrl}
+        onChange={(e) => setState({ ...state, destinationUrl: e.target.value })}
         withAsterisk
-        accept="audio/*"
+        required
       />
       <p className="text-sm font-semibold -mb-[6px]">
         Nội dung <span className="text-red-400">*</span>
       </p>
-      <div className="col-span-2 [&>.ck-content]:!border-[1px] [&>.ck-content]:!border-[#00000030] [&>.ck-content]:max-h-80 [&>.ck-content]:min-h-[200px]">
+      <div className="col-span-2 [&>.ck-content]:!border-[1px] [&>.ck-content]:!border-[#00000030] [&>.ck-content]:max-h-[300px] [&>.ck-content]:min-h-[200px]">
         <MyEditor
           state={state.content}
           onChange={(value) => setState({ ...state, content: value })}

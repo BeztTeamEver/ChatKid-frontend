@@ -2,7 +2,8 @@
 
 import { ADMIN_TYPE } from "@/types/admin.type";
 import { AdminApi } from "@/utils/adminApi";
-import { Anchor, Breadcrumbs } from "@mantine/core";
+import { Breadcrumbs } from "@mantine/core";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -32,15 +33,15 @@ export default function DetailAdmin() {
             "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01);",
         }}
       >
-        <Anchor
+        <Link
           href="/admin"
           className="text-[#0000008c] hover:text-black transition-all hover:no-underline"
         >
           Danh sách admin
-        </Anchor>
-        <Anchor href="" className="text-black hover:no-underline">
+        </Link>
+        <Link href="" className="text-black hover:no-underline">
           Chi tiết admin
-        </Anchor>
+        </Link>
       </Breadcrumbs>
 
       <DetailAdminCard infoAdmin={infoAdmin} setInfoAdmin={setInfoAdmin} />

@@ -3,7 +3,8 @@
 import TableHistoryAdvise from "@/components/common/table/TableHistoryAdvise";
 import { EXPERT_TYPE } from "@/types/expert.type";
 import { ExpertApi } from "@/utils/expertApi";
-import { Anchor, Breadcrumbs } from "@mantine/core";
+import { Breadcrumbs } from "@mantine/core";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -33,17 +34,17 @@ export default function DetailExpert() {
             "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
         }}
       >
-        <Anchor
+        <Link
           href="/expert"
           className="text-[#0000008c] hover:text-black transition-all hover:no-underline"
         >
-          Danh sách expert
-        </Anchor>
-        <Anchor href="" className="text-black hover:no-underline">
-          Chi tiết expert
-        </Anchor>
+          Danh sách chuyên gia tư vấn
+        </Link>
+        <Link href="" className="text-black hover:no-underline">
+          Chi tiết chuyên gia tư vấn
+        </Link>
       </Breadcrumbs>
-      <div className="grid grid-cols-4 mt-5 gap-5">
+      <div className="flex mt-5 gap-5">
         <DetailExpertCard infoExpert={infoExpert} setInfoExpert={setInfoExpert} />
         <TableHistoryAdvise listAdvise={infoExpert?.discussRooms} />
       </div>

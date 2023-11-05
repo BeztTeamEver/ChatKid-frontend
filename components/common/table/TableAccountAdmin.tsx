@@ -6,6 +6,7 @@ import { Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import ModalConfirm from "../modal/confirmModal";
@@ -76,10 +77,10 @@ export default function TableAccountAdmin({
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>
-        <a
+        <Link
           href={`/admin/${admin.id}`}
           className="hover:text-blue-400 hover:underline transition-all"
-        >{`${admin?.lastName} ${admin.firstName}`}</a>
+        >{`${admin?.lastName} ${admin.firstName}`}</Link>
       </td>
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>

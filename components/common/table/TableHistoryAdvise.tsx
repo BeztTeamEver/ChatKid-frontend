@@ -7,6 +7,8 @@ import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
+import SkeletonFunction from "../skeleton/skeletonTable";
+
 export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<DISCUSS_ROOM> }) {
   const [activePage, setActivePage] = useState<number>(1);
   const [temp, setTemp] = useState<DISCUSS_ROOM>();
@@ -41,7 +43,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
 
   return (
     <div
-      className="bg-white p-6 rounded-lg col-span-3 h-fit"
+      className="bg-white p-6 rounded-lg col-span-3 h-fit w-full"
       style={{
         boxShadow:
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -60,7 +62,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
             ))}
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>{listAdvise ? rows : <SkeletonFunction col={10} row={4} />}</tbody>
       </Table>
       <Pagination
         value={activePage}

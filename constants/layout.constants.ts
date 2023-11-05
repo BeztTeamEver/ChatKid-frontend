@@ -17,9 +17,9 @@ export const DataNavbar = {
     { label: "Gia đình", link: "/family", icon: IconCoins },
     { label: "Chuyên gia tư vấn", link: "/expert", icon: IconHeadset },
     { label: "Admin", link: "/admin", icon: IconDeviceDesktopAnalytics },
-    { label: "Lịch sử hoạt động chat bot", link: "/histories", icon: IconMessages },
+    { label: "Lịch sử hoạt động", link: "/histories", icon: IconMessages },
     { label: "Thông báo", link: "/notification", icon: IconBell },
-    { label: "Quảng cáo", link: "/ads", icon: IconAdCircle },
+    { label: "Quảng cáo", link: "/advertising", icon: IconAdCircle },
     { label: "Blog", link: "/blog", icon: IconZoomQuestion },
   ],
   manageAccount: [

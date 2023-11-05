@@ -1,9 +1,8 @@
-import { BODY_CREATE_BLOG } from "@/types/blog.type";
 import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 import "@ckeditor/ckeditor5-build-decoupled-document/build/translations/es";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 
-const MyEditor = ({ state, setState }: { state: BODY_CREATE_BLOG; setState: Function }) => {
+const MyEditor = ({ state, onChange }: { state: string; onChange: Function }) => {
   return (
     <CKEditor
       editor={DecoupledEditor}
@@ -18,10 +17,10 @@ const MyEditor = ({ state, setState }: { state: BODY_CREATE_BLOG; setState: Func
           }
         }
       }}
-      data={state.content}
+      data={state}
       onChange={(event, editor) => {
         const temp = editor.getData();
-        setState({ ...state, content: temp });
+        onChange(temp);
       }}
     />
   );
