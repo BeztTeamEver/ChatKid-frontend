@@ -74,7 +74,7 @@ export default function DetailBlogCard({
             <p>Người đăng</p>
             <p>{`${infoBlog.createAdmin.lastName} ${infoBlog.createAdmin.firstName}`}</p>
             <p>Ngày đăng</p>
-            <p>{moment(infoBlog.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoBlog.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Trạng thái</p>
             <p className={infoBlog.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
               {infoBlog.status ? "Hiện" : "Ẩn"}

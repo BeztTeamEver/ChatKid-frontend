@@ -62,7 +62,7 @@ export default function TableNotification({
           .replace(DataReceiver[1].value, DataReceiver[1].label)
           .replace(DataReceiver[2].value, DataReceiver[2].label)}
       </td>
-      <td>{moment(noti.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(noti.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
     </tr>
   ));
 

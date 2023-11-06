@@ -102,8 +102,8 @@ export default function TableAds({
       </td>
       <td>{ads.type === "popup" ? "Popup" : "Trang chủ"}</td>
       <td>{ads.company}</td>
-      <td>{moment(ads.startDate).format("HH:mm, DD.MM.YYYY")}</td>
-      <td>{moment(ads.endDate).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(ads.startDate).format("HH:mm, DD/MM/YYYY")}</td>
+      <td>{moment(ads.endDate).format("HH:mm, DD/MM/YYYY")}</td>
       <td>{ads.clicks}</td>
       <td className={ads.status ? "text-[#00B300]" : "text-[#B30000]"}>
         {ads.status ? "Hiện" : "Ẩn"}

@@ -1,28 +1,27 @@
 import { DataTable } from "@/constants/dataTable";
-import { HISTORY_TYPE } from "@/types/history.type";
-import { HistoryApi } from "@/utils/historyApi";
+import { TRANSACTION_TYPE } from "@/types/transaction.type";
+import { TransactionApi } from "@/utils/transactionApi";
 import { Pagination, Table } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import moment from "moment";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
 import SkeletonFunction from "../skeleton/skeletonTable";
 
-export default function TableHistory() {
+export default function TableTransaction() {
   const [activePage, setActivePage] = useState<number>(1);
-  const [listHistory, setListHistory] = useState<HISTORY_TYPE[]>([]);
-  const [totalHistory, setTotalHistory] = useState<number>(0);
+  const [listTransaction, setListTransaction] = useState<TRANSACTION_TYPE[]>([]);
+  const [totalTransaction, setTotalTransaction] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async () => {
     setIsLoading(true);
-    await HistoryApi.getListHistory(activePage - 1, 10, searchRef.current?.value ?? "")
+    await TransactionApi.getListTransaction(activePage - 1, 10, searchRef.current?.value ?? "")
       .then((res) => {
-        setListHistory(res.data.items);
-        setTotalHistory(res.data.totalItem);
+        setListTransaction(res.data.items);
+        setTotalTransaction(res.data.totalItem);
       })
       .catch((err) => console.log(err));
     setTimeout(() => setIsLoading(false), 200);
@@ -32,7 +31,7 @@ export default function TableHistory() {
     fetchData();
   }, [activePage]);
 
-  const rows = listHistory?.map((history, index) => (
+  const rows = listTransaction?.map((transaction, index) => (
     <tr
       key={index}
       className={
@@ -42,12 +41,11 @@ export default function TableHistory() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{history.userId}</td>
-      <td>{history.serviceName}</td>
-      <td>{moment(history.createdTime).format("HH:mm, DD/MM/YYYY")}</td>
-      <td className="text-[#FF9B06]">
-        <Link href={`/histories/${history.id}`}>Xem</Link>
-      </td>
+      <td>{transaction.type}</td>
+      <td>{moment(transaction.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
+      <td>{transaction.id}</td>
+      <td>{transaction.discountDescription}</td>
+      <td>{transaction.price}</td>
     </tr>
   ));
 
@@ -82,7 +80,7 @@ export default function TableHistory() {
       <Table className="rounded-md overflow-hidden">
         <thead className="bg-[#FF9B06] p-[10px]">
           <tr>
-            {DataTable.History.map((item, index) => (
+            {DataTable.Transaction.map((item, index) => (
               <th
                 key={index}
                 className="!text-white !font-bold !text-base leading-[21.7px] last:w-32"
@@ -92,12 +90,12 @@ export default function TableHistory() {
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={5} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={6} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
         onChange={(e) => setActivePage(e)}
-        total={Math.ceil(totalHistory / 10)}
+        total={Math.ceil(totalTransaction / 10)}
         color="orange"
         className="mt-2 justify-center"
       />

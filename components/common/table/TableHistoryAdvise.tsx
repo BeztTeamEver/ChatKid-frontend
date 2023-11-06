@@ -25,7 +25,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{moment(advise.createdTime).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(advise.createdTime).format("HH:mm, DD/MM/YYYY")}</td>
       <td>{advise.id}</td>
       <td>
         <button
@@ -85,7 +85,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
         <div className="w-full grid grid-cols-4 gap-1">
           <p className="text-[#252937] col-span-1 font-semibold">Thời gian</p>
           <p className="text-[#464C62] font-normal col-span-3">
-            {moment(temp?.createdTime).format("HH:mm, DD.MM.YYYY")}
+            {moment(temp?.createdTime).format("HH:mm, DD/MM/YYYY")}
           </p>
         </div>
       </Modal>

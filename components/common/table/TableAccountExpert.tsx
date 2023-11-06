@@ -83,9 +83,9 @@ export default function TableAccountExpert({
         >{`${expert?.lastName} ${expert.firstName}`}</Link>
       </td>
       <td>{expert.gmail}</td>
-      <td>{moment(expert.dateOfBirth).format("DD.MM.YYYY")}</td>
+      <td>{moment(expert.dateOfBirth).format("DD/MM/YYYY")}</td>
       <td>{expert.phone}</td>
-      <td>{moment(expert.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(expert.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
       <td className="capitalize">{expert.gender?.trim() === "male" ? "Nam" : "Nữ"}</td>
       <td className={expert.status ? "text-[#00B300]" : "text-[#B30000]"}>
         {expert.status ? "Hoạt động" : "Cấm"}

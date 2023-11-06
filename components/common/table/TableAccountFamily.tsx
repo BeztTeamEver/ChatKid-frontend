@@ -1,6 +1,7 @@
 import { DataTable } from "@/constants/dataTable";
 import { USER_TYPE } from "@/types/user.type";
 import { Pagination, Table } from "@mantine/core";
+import moment from "moment";
 import { useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -21,10 +22,10 @@ export default function TableAccountFamily({ listFamily }: { listFamily?: Array<
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>{family.role}</td>
-      <td>{family.position}</td>
-      <td>{`${family.lastName} ${family.firstName}`}</td>
+      <td>{family.familyRole}</td>
+      <td>{family.name}</td>
       <td>{family.gender === "male" ? "Nam" : "Nữ"}</td>
-      <td>{family.age}</td>
+      <td>{moment(family.dateOfBirth).format("DD/MM/YYYY")}</td>
     </tr>
   ));
 
@@ -49,7 +50,7 @@ export default function TableAccountFamily({ listFamily }: { listFamily?: Array<
             ))}
           </tr>
         </thead>
-        <tbody>{listFamily ? rows : <SkeletonFunction row={10} col={6} />}</tbody>
+        <tbody>{listFamily ? rows : <SkeletonFunction row={6} col={5} />}</tbody>
       </Table>
       <Pagination
         value={activePage}

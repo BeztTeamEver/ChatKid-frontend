@@ -66,7 +66,7 @@ export default function DetailExpertCard({
             <p>Số điện thoại</p>
             <p>{infoExpert.phone}</p>
             <p>Ngày tạo</p>
-            <p>{moment(infoExpert.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoExpert.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Giới tính</p>
             <p>{infoExpert.gender === "male" ? "Nam" : "Nữ"}</p>
             <p>Trạng thái</p>

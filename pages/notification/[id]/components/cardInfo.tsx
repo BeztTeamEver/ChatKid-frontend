@@ -36,7 +36,7 @@ export default function DetailNotificationCard({
                 .replace(DataReceiver[2].value, DataReceiver[2].label)}
             </p>
             <p>Ngày đăng</p>
-            <p>{moment(infoNotification.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoNotification.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
           </div>
         </div>
       ) : (

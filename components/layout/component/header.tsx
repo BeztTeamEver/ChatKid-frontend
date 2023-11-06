@@ -28,7 +28,16 @@ export default function HeaderLayout({
   useEffect(() => {
     AuthApi.getInfoUser()
       .then((res) => {
-        dispatch(login(res.data));
+        if (
+          res.data.role === "ADMIN" ||
+          res.data.role === "EXPERT" ||
+          res.data.role === "SUPER_ADMIN"
+        ) {
+          dispatch(login(res.data));
+        } else {
+          dispatch(logout());
+          router.push("/login");
+        }
       })
       .catch((err) => {
         dispatch(logout());

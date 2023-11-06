@@ -21,7 +21,7 @@ export default function UserDropdown({ user }: { user: USER_TYPE }) {
           <div className="">
             <p className="text-sm font-medium">{`${user?.lastName} ${user.firstName}`}</p>
             <p className="text-[#7E84A0] text-xs capitalize">
-              {user.role.split("_").join(" ").toLowerCase()}
+              {user.role?.split("_").join(" ").toLowerCase()}
             </p>
           </div>
           <Avatar src={user.avatarUrl} className="rounded-full" alt="avatar" />

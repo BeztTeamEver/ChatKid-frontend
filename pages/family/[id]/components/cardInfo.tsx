@@ -65,7 +65,7 @@ export default function DetailFamilyCard({
             <p>Số lượng TK</p>
             <p>{infoFamily.users.length}</p>
             <p>Ngày tạo</p>
-            <p>{moment(infoFamily.createdAt).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoFamily.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Trạng thái</p>
             <p className={infoFamily.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
               {infoFamily.status ? "Hiện" : "Ẩn"}

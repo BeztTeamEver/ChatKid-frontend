@@ -71,9 +71,9 @@ export default function DetailAdsCard({
             <p>Email</p>
             <p>{infoAds.companyEmail}</p>
             <p>Ngày đăng</p>
-            <p>{moment(infoAds.startDate).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoAds.startDate).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Ngày kết thúc</p>
-            <p>{moment(infoAds.endDate).format("HH:mm, DD.MM.YYYY")}</p>
+            <p>{moment(infoAds.endDate).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Lượt bấm</p>
             <p>{infoAds.clicks}</p>
             <p>Giá trị</p>

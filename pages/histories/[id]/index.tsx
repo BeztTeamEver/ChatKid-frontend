@@ -14,19 +14,15 @@ export default function DetailHistory() {
   const router = useRouter();
   const { id } = router.query;
   const [infoHistory, setInfoHistory] = useState<HISTORY_TYPE>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
-      setIsLoading(true);
       HistoryApi.getHistoryById(id as string)
         .then((res) => {
           setInfoHistory(res.data);
-          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setIsLoading(false);
         });
     }
   }, [id]);
@@ -79,7 +75,7 @@ export default function DetailHistory() {
               </div>
               <div>
                 <p>Thời gian</p>
-                <p>{moment(infoHistory.createdTime).format("HH:mm, DD.MM.YYYY")}</p>
+                <p>{moment(infoHistory.createdTime).format("HH:mm, DD/MM/YYYY")}</p>
               </div>
               <div>
                 <p>Câu hỏi</p>
@@ -92,7 +88,7 @@ export default function DetailHistory() {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="w-[1000px]">
             <Skeleton height={120} radius="md" mb="xl" mx="auto" />
             <Skeleton height={10} radius="xl" />
             <Skeleton height={10} mt={12} radius="xl" />

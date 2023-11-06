@@ -78,7 +78,7 @@ export default function TableFamily() {
       <td>{family.ownerMail}</td>
       <td>{family.users.length} tài khoản</td>
       <td>dasdasdasdasd</td>
-      <td>{moment(family.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(family.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
       <td className={family.status ? "text-[#00B300]" : "text-[#B30000]"}>
         {family.status ? "Hoạt động" : "Cấm"}
       </td>

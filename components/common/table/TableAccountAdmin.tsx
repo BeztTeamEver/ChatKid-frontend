@@ -84,7 +84,7 @@ export default function TableAccountAdmin({
       </td>
       <td>{admin.gmail}</td>
       <td>{admin.phone}</td>
-      <td>{moment(admin.createdAt).format("HH:mm, DD.MM.YYYY")}</td>
+      <td>{moment(admin.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
       <td className="capitalize">{admin.gender?.trim() === "male" ? "Nam" : "Nữ"}</td>
       <td className={admin.status ? "text-[#00B300]" : "text-[#B30000]"}>
         {admin.status ? "Hoạt động" : "Cấm"}
