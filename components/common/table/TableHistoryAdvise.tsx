@@ -29,7 +29,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
       <td>{advise.id}</td>
       <td>
         <button
-          className="text-[#FF9B06] hover:underline transition-all cursor-pointer w-fit"
+          className="text-primary-default hover:underline transition-all cursor-pointer w-fit"
           onClick={() => {
             setTemp(advise);
             open();
@@ -50,7 +50,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
       }}
     >
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.HistoryAdvise.map((item, index) => (
               <th
@@ -72,7 +72,7 @@ export default function TableHistoryAdvise({ listAdvise }: { listAdvise?: Array<
         className="mt-2 justify-center"
       />
       <Modal opened={opened} onClose={close} withCloseButton={false} centered className="p-6">
-        <div className="w-full h-0 border-[1px] border-[#E9EAF2] relative my-2">
+        <div className="w-full h-0 border-[1px] border-neutral-100 relative my-2">
           <p className="absolute uppercase bg-white top-0 -translate-y-1/2 p-2 text-[#5B607C]">
             Nội dung nhật ký
           </p>

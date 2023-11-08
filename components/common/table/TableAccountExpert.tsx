@@ -93,7 +93,7 @@ export default function TableAccountExpert({
       <td className="flex gap-3 relative">
         {expert.status ? (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
             onClick={() => {
               setTempId(expert.id);
               open();
@@ -103,7 +103,7 @@ export default function TableAccountExpert({
           </button>
         ) : (
           <button
-            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
             onClick={() => handleUnBanExpert(expert.id)}
           >
             Bỏ cấm
@@ -136,7 +136,7 @@ export default function TableAccountExpert({
           />
         </form>
         <button
-          className="flex gap-3 items-center bg-[#FF9B06] rounded-full px-6 py-2 text-white"
+          className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
           onClick={() => openFunc()}
         >
           <IconPlus />
@@ -144,7 +144,7 @@ export default function TableAccountExpert({
         </button>
       </div>
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.AccountExpert.map((item, index) => (
               <th

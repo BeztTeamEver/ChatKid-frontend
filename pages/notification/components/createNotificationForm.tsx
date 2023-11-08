@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/useToast/toast";
 import { BODY_CREATE_NOTIFICATION, DataReceiver } from "@/types/notification.type";
 import { NotificationApi } from "@/utils/notificationApi ";
 import { Button, MultiSelect, TextInput } from "@mantine/core";
+import { DateTimePicker } from "@mantine/dates";
 import { IconX } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -22,6 +23,7 @@ export default function CreateNotificationForm({
     title: "",
     content: "",
     receiver: "",
+    scheduleTime: new Date(),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,15 +47,6 @@ export default function CreateNotificationForm({
         onClick={() => close()}
       />
       <h2 className="text-center font-bold mb-[2px] text-xl col-span-2">Tạo bài viết mới</h2>
-      <TextInput
-        type="text"
-        label="Tựa đề"
-        placeholder="Tiêu đề thông báo"
-        value={state.title}
-        onChange={(e) => setState({ ...state, title: e.target.value })}
-        withAsterisk
-        required
-      />
       <MultiSelect
         label="Phân loại"
         placeholder="Admin, Chuyên gia, Phụ huynh"
@@ -61,6 +54,27 @@ export default function CreateNotificationForm({
         onChange={(e) => setState({ ...state, receiver: e.join(",") })}
         withAsterisk
         data={DataReceiver}
+      />
+      <DateTimePicker
+        valueFormat="HH:mm, DD/MM/YYYY"
+        defaultValue={state.scheduleTime}
+        onChange={(e) => setState({ ...state, scheduleTime: e ?? new Date() })}
+        minDate={new Date()}
+        label="Ngày nhận"
+        placeholder="Date input"
+        className="col-span-1"
+        required
+        withAsterisk
+      />
+      <TextInput
+        type="text"
+        label="Tựa đề"
+        className="col-span-2"
+        placeholder="Tiêu đề thông báo"
+        value={state.title}
+        onChange={(e) => setState({ ...state, title: e.target.value })}
+        withAsterisk
+        required
       />
       <p className="text-sm font-semibold -mb-[6px]">
         Nội dung <span className="text-red-400">*</span>
@@ -76,7 +90,7 @@ export default function CreateNotificationForm({
         type="submit"
         color="orange"
         radius="md"
-        className="w-fit px-5 col-span-2 mx-auto bg-[#FF9B06] text-base"
+        className="w-fit px-5 col-span-2 mx-auto bg-primary-default text-base"
       >
         Tạo
       </Button>

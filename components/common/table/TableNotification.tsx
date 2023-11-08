@@ -89,7 +89,7 @@ export default function TableNotification({
           />
         </form>
         <button
-          className="flex gap-3 items-center bg-[#FF9B06] rounded-full px-6 py-2 text-white"
+          className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
           onClick={openFunc}
         >
           <IconPlus />
@@ -97,7 +97,7 @@ export default function TableNotification({
         </button>
       </div>
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.Notification.map((item, index) => (
               <th key={index} className="!text-white !font-bold !text-base leading-[21.7px]">

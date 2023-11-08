@@ -78,7 +78,7 @@ export default function TableTransaction() {
         />
       </form>
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.Transaction.map((item, index) => (
               <th

@@ -33,7 +33,7 @@ export const DataTable = {
     "Trạng thái",
     "Tác vụ",
   ],
-  Notification: ["STT", "Nội dung", "Người đăng", "Đối tượng nhận", "Ngày đăng"],
+  Notification: ["STT", "Nội dung", "Người đăng", "Đối tượng nhận", "Ngày nhận"],
   History: ["STT", "Mã tài khoản", "Hình thức", "Thời gian", "Log nội dung"],
   Family: [
     "STT",
@@ -46,5 +46,5 @@ export const DataTable = {
     "Tác vụ",
   ],
   AccountFamily: ["STT", "Vai trò", "Chức vụ", "Tên", "Giới tính", "Năm sinh"],
-  Transaction: ["STT", "Loại giao dịch", "Thời gian", "Mã tài khoản", "Khuyến mãi", "Mệnh giá"],
+  Transaction: ["STT", "Loại giao dịch", "Thời gian", "Mã tài khoản", "Giảm giá", "Mệnh giá"],
 };

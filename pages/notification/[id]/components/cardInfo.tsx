@@ -17,7 +17,7 @@ export default function DetailNotificationCard({
     >
       {infoNotification ? (
         <div>
-          <div className="w-full h-0 border-[1px] border-[#E9EAF2] relative my-2">
+          <div className="w-full h-0 border-[1px] border-neutral-100 relative my-2">
             <p className="absolute uppercase bg-white top-0 -translate-y-1/2 p-2 text-[#5B607C]">
               Thông tin chung
             </p>

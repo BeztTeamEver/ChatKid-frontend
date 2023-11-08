@@ -217,7 +217,7 @@ export default function CreateAdsForm({
         type="submit"
         color="orange"
         radius="md"
-        className="w-fit px-5 col-span-2 mx-auto bg-[#FF9B06] text-base"
+        className="w-fit px-5 col-span-2 mx-auto bg-primary-default text-base"
       >
         {method === "CREATE" ? "Tạo" : "Cập nhật"}
       </Button>

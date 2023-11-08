@@ -55,7 +55,7 @@ export default function DetailHistory() {
       >
         {infoHistory ? (
           <div className="w-fit">
-            <div className="h-0 border-[1px] border-[#E9EAF2] relative my-4 mb-8">
+            <div className="h-0 border-[1px] border-neutral-100 relative my-4 mb-8">
               <p className="absolute uppercase bg-white top-0 -translate-y-1/2 p-2 text-[#5B607C]">
                 Thông tin chung
               </p>

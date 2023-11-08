@@ -45,7 +45,7 @@ export default function TableHistory() {
       <td>{history.userId}</td>
       <td>{history.serviceName}</td>
       <td>{moment(history.createdTime).format("HH:mm, DD/MM/YYYY")}</td>
-      <td className="text-[#FF9B06]">
+      <td className="text-primary-default">
         <Link href={`/histories/${history.id}`}>Xem</Link>
       </td>
     </tr>
@@ -80,7 +80,7 @@ export default function TableHistory() {
         />
       </form>
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.History.map((item, index) => (
               <th

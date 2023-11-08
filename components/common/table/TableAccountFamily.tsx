@@ -38,7 +38,7 @@ export default function TableAccountFamily({ listFamily }: { listFamily?: Array<
       }}
     >
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.AccountFamily.map((item, index) => (
               <th

@@ -45,7 +45,7 @@ export default function DetailExpertCard({
     >
       {infoExpert ? (
         <div>
-          <div className="w-full h-0 border-[1px] border-[#E9EAF2] relative my-2">
+          <div className="w-full h-0 border-[1px] border-neutral-100 relative my-2">
             <p className="absolute uppercase bg-white top-0 -translate-y-1/2 p-2 text-[#5B607C]">
               Thông tin cá nhân
             </p>
@@ -77,14 +77,14 @@ export default function DetailExpertCard({
           <div className="w-full mt-6">
             {infoExpert.status ? (
               <button
-                className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+                className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
                 onClick={() => handleRemoveExpert(infoExpert.id)}
               >
                 Cấm
               </button>
             ) : (
               <button
-                className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+                className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
                 onClick={() => handleUnBanExpert(infoExpert.id)}
               >
                 Bỏ cấm

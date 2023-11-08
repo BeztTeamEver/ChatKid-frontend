@@ -85,14 +85,14 @@ export default function TableFamily() {
       <td className="flex gap-3 relative">
         {family.status ? (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
             onClick={() => handleBanFamily(family.id)}
           >
             Cấm
           </button>
         ) : (
           <button
-            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#FF9B06] text-[#FF9B06] rounded-full hover:bg-[#FF9B06] hover:text-white transition-all"
+            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
             onClick={() => handleUnBanFamily(family.id)}
           >
             Bỏ cấm
@@ -130,7 +130,7 @@ export default function TableFamily() {
         />
       </form>
       <Table className="rounded-md overflow-hidden">
-        <thead className="bg-[#FF9B06] p-[10px]">
+        <thead className="bg-primary-default p-[10px]">
           <tr>
             {DataTable.Family.map((item, index) => (
               <th
