@@ -18,7 +18,7 @@ export default function GoogleButton({ content }: { content: string }) {
           localStore.set("refreshToken", res.data.refreshToken);
           router.push("/");
         })
-        .catch((err) => useToast.error(err.response.data));
+        .catch((err) => useToast.error(err?.response?.data ?? "Đã xảy ra sự cố!!!"));
     },
     onError: (error) => {
       console.log(error);
