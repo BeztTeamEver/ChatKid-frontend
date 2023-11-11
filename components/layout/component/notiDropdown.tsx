@@ -9,11 +9,11 @@ export default function NotiDropdown() {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item icon={<IconUser size={14} />}>Something</Menu.Item>
-        <Menu.Item icon={<IconUser size={14} />}>Something</Menu.Item>
-        <Menu.Item icon={<IconUser size={14} />}>Something</Menu.Item>
-        <Menu.Item icon={<IconUser size={14} />}>Something</Menu.Item>
-        <Menu.Item icon={<IconUser size={14} />}>Something</Menu.Item>
+        <Menu.Item icon={<IconUser size={14} />}>Coming soon</Menu.Item>
+        <Menu.Item icon={<IconUser size={14} />}>Coming soon</Menu.Item>
+        <Menu.Item icon={<IconUser size={14} />}>Coming soon</Menu.Item>
+        <Menu.Item icon={<IconUser size={14} />}>Coming soon</Menu.Item>
+        <Menu.Item icon={<IconUser size={14} />}>Coming soon</Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );

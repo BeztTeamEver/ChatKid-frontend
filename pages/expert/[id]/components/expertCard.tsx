@@ -68,7 +68,7 @@ export default function DetailExpertCard({
             <p>Ngày tạo</p>
             <p>{moment(infoExpert.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Giới tính</p>
-            <p>{infoExpert.gender === "male" ? "Nam" : "Nữ"}</p>
+            <p>{infoExpert.gender?.toLowerCase() === "male" ? "Nam" : "Nữ"}</p>
             <p>Trạng thái</p>
             <p className={infoExpert.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
               {infoExpert.status ? "Hoạt động" : "Cấm"}

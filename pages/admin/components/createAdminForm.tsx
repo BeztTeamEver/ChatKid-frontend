@@ -95,7 +95,7 @@ export default function CreateAdminForm({
       <Select
         label="Gender"
         placeholder="Male/Female"
-        value={state.gender}
+        value={state.gender?.toLowerCase()}
         onChange={(e) => setState({ ...state, gender: e as "male" | "female" })}
         data={[
           { value: "male", label: "Male" },

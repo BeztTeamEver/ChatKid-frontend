@@ -99,7 +99,7 @@ export default function CreateExpertForm({
       <Select
         label="Gender"
         placeholder="Male/Female"
-        value={state.gender}
+        value={state.gender?.toLowerCase()}
         onChange={(e) => setState({ ...state, gender: e as "male" | "female" })}
         withAsterisk
         data={[
