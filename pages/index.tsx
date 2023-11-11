@@ -116,7 +116,7 @@ export default function HomePage() {
       </div>
       <div className="col-span-1 bg-white rounded-[10px] p-8 border-[1px] border-neutral-100 flex flex-col justify-between">
         <p className="font-semibold text-lg text-neutral-900">Thống kê lưu lượng tháng {month}</p>
-        <div className="text-sm flex justify-between p-3 rounded-[10px] border-neutral-100 border-[1px]">
+        <div className="text-sm flex justify-between p-3 py-5 rounded-[10px] border-neutral-100 border-[1px]">
           <p className="text-neutral-600 uppercase font-medium">Số gói đã bán</p>
           <p className="flex gap-1 items-center">
             {data?.numberSubcriptions?.toString()}
@@ -133,7 +133,7 @@ export default function HomePage() {
             </span>
           </p>
         </div>
-        <div className="text-sm flex justify-between p-3 rounded-[10px] border-neutral-100 border-[1px]">
+        <div className="text-sm flex justify-between p-3 py-5 rounded-[10px] border-neutral-100 border-[1px]">
           <p className="text-neutral-600 uppercase font-medium">Lượng quảng cáo</p>
           <p className="flex gap-1 items-center">
             {data?.numberAdvertisings?.toString()}
@@ -150,7 +150,7 @@ export default function HomePage() {
             </span>
           </p>
         </div>
-        <div className="text-sm flex justify-between p-3 rounded-[10px] border-neutral-100 border-[1px]">
+        <div className="text-sm flex justify-between p-3 py-5 rounded-[10px] border-neutral-100 border-[1px]">
           <p className="text-neutral-600 uppercase font-medium">Tài khoản mới</p>
           <p className="flex gap-1 items-center">
             {data?.totalUser?.toString()}
@@ -167,7 +167,7 @@ export default function HomePage() {
             </span>
           </p>
         </div>
-        <div className="text-sm flex justify-between p-3 rounded-[10px] border-neutral-100 border-[1px]">
+        <div className="text-sm flex justify-between p-3 py-5 rounded-[10px] border-neutral-100 border-[1px]">
           <p className="text-neutral-600 uppercase font-medium">Chuyên gia tư vấn</p>
           <p className="flex gap-1 items-center">
             {data?.totalExpert?.toString()}

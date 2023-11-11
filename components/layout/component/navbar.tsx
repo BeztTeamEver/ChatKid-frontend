@@ -1,7 +1,7 @@
 "use client";
 
 import { DataNavbar } from "@/constants/layout.constants";
-import { Navbar, ScrollArea } from "@mantine/core";
+import { Divider, Navbar, ScrollArea } from "@mantine/core";
 
 import { LinksGroup } from "./link-group";
 import { useNavbarStyles } from "./styles";
@@ -18,8 +18,11 @@ export function NavbarNested({
     <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
   ));
 
-  const navManageKidTalkie = DataNavbar.manageKidTalkie.map((item) => (
-    <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
+  const navManageKidTalkie = DataNavbar.manageKidTalkie.map((item, index) => (
+    <>
+      <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
+      {index === 0 || index === 4 || index === 7 ? <Divider color="#E9EAF2" /> : <></>}
+    </>
   ));
 
   return (
