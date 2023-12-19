@@ -1,4 +1,4 @@
-# Chatkid - Ask me your curious things
+# Chatkid - Ask me your curious things 
 
 An application aim for children from 3 year old can ask the curious questions.
 

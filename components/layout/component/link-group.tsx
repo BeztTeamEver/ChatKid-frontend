@@ -1,49 +1,11 @@
-import { Group, Box, Collapse, UnstyledButton, createStyles, rem } from "@mantine/core";
-import { IconChevronLeft, IconChevronRight, IconPointFilled } from "@tabler/icons-react";
-import Link from "next/link";
+"use client";
+
+import { Group, Box, UnstyledButton, rem } from "@mantine/core";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const useStyles = createStyles((theme) => ({
-  control: {
-    fontWeight: 500,
-    display: "block",
-    width: "100%",
-    padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-    fontSize: theme.fontSizes.sm,
-    transition: "all 0.2s",
-
-    "&:hover": {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
-  },
-
-  link: {
-    fontWeight: 500,
-    display: "flex",
-    gap: rem(10),
-    alignItems: "center",
-    textDecoration: "none",
-    padding: rem(8),
-    paddingLeft: rem(20),
-    margin: rem(10),
-    marginLeft: rem(20),
-    borderRadius: rem(8),
-    fontSize: theme.fontSizes.sm,
-    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.colors.gray[7],
-
-    "&:hover": {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    },
-  },
-
-  chevron: {
-    transition: "transform 200ms ease",
-  },
-}));
+import { useLinkGroupStyles } from "./styles";
 
 interface LinksGroupProps {
   icon: React.FC<any>;
@@ -64,25 +26,11 @@ export function LinksGroup({
   isExpanded,
   expandMenu,
 }: LinksGroupProps) {
-  const { classes, theme } = useStyles();
+  const { classes, theme } = useLinkGroupStyles();
   const router = useRouter();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
-  const items = (hasLinks ? links : []).map((item) => (
-    <Link
-      className={classes.link}
-      href={item.link}
-      key={item.label}
-      style={router.pathname === item.link ? { background: "#FFEDD1", color: "#752B01" } : {}}
-    >
-      <IconPointFilled
-        style={router.pathname === item.link ? { color: "#752B01" } : { color: "#E9EAF2" }}
-        size="1.2rem"
-      />
-      {item.label}
-    </Link>
-  ));
 
   useEffect(() => {
     !isExpanded && setOpened(isExpanded);
@@ -97,17 +45,17 @@ export function LinksGroup({
         }}
         className={classes.control}
         sx={
-          router.pathname === link
+          router.pathname.includes(link && link !== "/" ? link : "#")
             ? {
                 borderRadius: rem(8),
                 color: "#752B01",
-                background: "#FFEDD1",
+                background: "#FFEDD1 !important",
                 pointerEvents: "none",
               }
             : {}
         }
       >
-        <Group position="apart" spacing={0}>
+        <Group position="apart" spacing={0} onClick={() => router.push(link ?? "")}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Icon size="1.1rem" />
             {isExpanded ? <Box ml="md">{label}</Box> : ""}
@@ -125,7 +73,6 @@ export function LinksGroup({
           )}
         </Group>
       </UnstyledButton>
-      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
   );
 }

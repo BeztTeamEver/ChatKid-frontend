@@ -1,13 +1,18 @@
-import { createStyles, Header, Group, Button, Image } from "@mantine/core";
-import MenuIcon from "icons/MenuIcon";
+"use client";
 
-const useStyles = createStyles((theme) => ({
-  hiddenMobile: {
-    [theme.fn.smallerThan("sm")]: {
-      display: "none",
-    },
-  },
-}));
+import Logo from "@/icons/Logo";
+import { login, logout } from "@/redux/features/userSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { AuthApi } from "@/utils/authApi";
+import { Header, Group, Button, Text } from "@mantine/core";
+import MenuIcon from "icons/MenuIcon";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+import NotiDropdown from "./notiDropdown";
+import UserDropdown from "./userDropdown";
 
 export default function HeaderLayout({
   isExpanded,
@@ -16,10 +21,33 @@ export default function HeaderLayout({
   isExpanded: boolean;
   toggleMenu: () => void;
 }) {
-  const { classes, theme } = useStyles();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.UserReducer.user);
+
+  useEffect(() => {
+    AuthApi.getInfoUser()
+      .then((res) => {
+        if (
+          res.data.role === "ADMIN" ||
+          res.data.role === "EXPERT" ||
+          res.data.role === "SUPER_ADMIN"
+        ) {
+          dispatch(login(res.data));
+        } else {
+          dispatch(logout());
+          router.push("/login");
+        }
+      })
+      .catch((err) => {
+        dispatch(logout());
+        router.push("/login");
+        console.log(err);
+      });
+  }, []);
 
   return (
-    <Header height={60} px="md" sx={{ position: "relative", border: "none" }}>
+    <Header height={60} px="md" sx={{ position: "relative", border: "none", zIndex: 2 }}>
       <Group position="apart" sx={{ height: "100%" }}>
         <Group>
           <Button
@@ -34,19 +62,20 @@ export default function HeaderLayout({
           >
             <MenuIcon color={isExpanded ? "#752B01" : "#252937"} />
           </Button>
-          <a href="/">
-            <Image src="/images/logo.png" alt="Logo" />
-          </a>
+          <Link href="/">
+            <Group className="text-primary-500 w-fit" spacing="xs" position="center">
+              <Logo width={30} height={30} />
+              <Text className="font-bold text-xl">KidTalkie</Text>
+            </Group>
+          </Link>
         </Group>
 
-        <Group className={classes.hiddenMobile}>
-          <Button variant="outline" color="yellow">
-            Log in
-          </Button>
-          <Button variant="filled" color="yellow">
-            Sign up
-          </Button>
-        </Group>
+        {user && (
+          <Group className="">
+            <NotiDropdown />
+            <UserDropdown user={user} />
+          </Group>
+        )}
       </Group>
       <div
         style={{

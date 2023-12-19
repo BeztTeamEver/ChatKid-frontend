@@ -1,26 +1,10 @@
-import { Navbar, ScrollArea, createStyles } from "@mantine/core";
+"use client";
 
-import { DataNavbar } from "../data/data";
+import { DataNavbar } from "@/constants/layout.constants";
+import { Divider, Navbar, ScrollArea } from "@mantine/core";
+
 import { LinksGroup } from "./link-group";
-
-const useStyles = createStyles((theme) => ({
-  navbar: {
-    backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-    paddingBottom: 0,
-    zIndex: 1,
-    border: "none",
-    width: "100%",
-    padding: "0 10px",
-    height: "fit-content",
-    minHeight: "calc(100vh - 60px)",
-  },
-
-  links: {
-    marginLeft: `calc(${theme.spacing.md} * -1)`,
-    marginRight: `calc(${theme.spacing.md} * -1)`,
-    height: "fit-content",
-  },
-}));
+import { useNavbarStyles } from "./styles";
 
 export function NavbarNested({
   isExpanded,
@@ -29,32 +13,35 @@ export function NavbarNested({
   isExpanded: boolean;
   expandMenu: () => void;
 }) {
-  const { classes } = useStyles();
+  const { classes } = useNavbarStyles();
   const navManageAccount = DataNavbar.manageAccount.map((item) => (
     <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
   ));
 
-  const navManageKidTalkie = DataNavbar.manageKidTalkie.map((item) => (
-    <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
+  const navManageKidTalkie = DataNavbar.manageKidTalkie.map((item, index) => (
+    <>
+      <LinksGroup isExpanded={isExpanded} expandMenu={expandMenu} {...item} key={item.label} />
+      {index === 0 || index === 4 || index === 7 ? <Divider color="#E9EAF2" /> : <></>}
+    </>
   ));
 
   return (
     <Navbar className={classes.navbar}>
-      <Navbar.Section grow className={classes.links} p={10} component={ScrollArea}>
-        <p style={{ color: "#A5A8BB", margin: "5px 10px", fontSize: "13px", fontWeight: "600" }}>
+      <Navbar.Section grow className={classes.links} p={15} component={ScrollArea}>
+        {/* <p style={{ color: "#A5A8BB", margin: "5px 10px", fontSize: "13px", fontWeight: "600" }}>
           {isExpanded ? (
             "QUẢN LÝ TÀI KHOẢN"
           ) : (
             <div style={{ width: "100%", background: "#BFC1CF", height: "2px" }}></div>
           )}
-        </p>
+        </p> */}
         <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-          {navManageAccount}
+          {navManageKidTalkie}
         </div>
 
-        <br />
+        {/* <br />
 
-        <p
+        <div
           style={{ color: "#A5A8BB", margin: "0px 10px 5px", fontSize: "13px", fontWeight: "600" }}
         >
           {isExpanded ? (
@@ -62,8 +49,10 @@ export function NavbarNested({
           ) : (
             <div style={{ width: "100%", background: "#BFC1CF", height: "2px" }}></div>
           )}
-        </p>
-        <div>{navManageKidTalkie}</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          {navManageAccount}
+        </div> */}
       </Navbar.Section>
     </Navbar>
   );

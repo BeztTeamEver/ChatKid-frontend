@@ -1,12 +1,15 @@
-import { MantineProvider, ColorScheme, ColorSchemeProvider } from "@mantine/core";
+import "@/styles/global.css";
+import { ColorScheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { getCookie, setCookie } from "cookies-next";
 import NextApp, { AppProps, AppContext } from "next/app";
+import { Nunito } from "next/font/google";
 import Head from "next/head";
 import { useState } from "react";
 
 import Layout from "../components/layout/layout";
-import "./global.css";
+
+const nunito = Nunito({ subsets: ["latin"] });
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -22,17 +25,15 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   return (
     <Layout>
       <Head>
-        <title>Mantine next example</title>
+        <title>Kid Talkie</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
 
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <Component {...pageProps} />
-          <Notifications />
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <main className={nunito.className}>
+        <Component {...pageProps} />
+      </main>
+      <Notifications />
     </Layout>
   );
 }
