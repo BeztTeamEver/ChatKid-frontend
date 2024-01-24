@@ -11,10 +11,9 @@ export default function GoogleButton({ content }: { content: string }) {
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
-      console.log(response);
       AuthApi.login(response.access_token)
         .then((res) => {
-          localStore.set("token", res.data.token);
+          localStore.set("token", res.data.accessToken);
           localStore.set("refreshToken", res.data.refreshToken);
           router.push("/");
         })

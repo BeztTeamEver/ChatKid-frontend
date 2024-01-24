@@ -49,7 +49,7 @@ export default function DetailFamily() {
       </Breadcrumbs>
       <div className="flex gap-5 h-fit p-8 rounded-lg mx-auto mt-10 w-full">
         <DetailFamilyCard infoFamily={infoFamily} setInfoFamily={setInfoFamily} />
-        <TableAccountFamily listFamily={infoFamily?.users} />
+        <TableAccountFamily listFamily={infoFamily?.members} />
       </div>
     </div>
   );

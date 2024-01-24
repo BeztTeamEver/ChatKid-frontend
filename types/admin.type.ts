@@ -2,7 +2,7 @@ export type ADMIN_TYPE = {
   id: string;
   firstName: string;
   lastName: string;
-  gmail: string;
+  email: string;
   phone: string;
   age: number;
   gender: string;
@@ -15,7 +15,7 @@ export type ADMIN_TYPE = {
 export type BODY_CREATE_ADMIN = {
   firstName: string;
   lastName: string;
-  gmail: string;
+  email: string;
   phone: string;
   age: number;
   gender: "male" | "female";

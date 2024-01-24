@@ -122,7 +122,7 @@ export default function HomePage() {
             {data?.numberSubcriptions?.toString()}
             <span
               className={`${
-                data?.percentSubcription.includes("-") ? "text-[#C20024]" : "text-[#00B300]"
+                data?.percentSubcription?.includes("-") ? "text-[#C20024]" : "text-[#00B300]"
               } flex items-center text-[10px]`}
             >
               (

@@ -62,7 +62,7 @@ export default function DetailBlogCard({
           </div>
           <BackgroundImage
             src={infoBlog.imageUrl}
-            className="w-[120px] h-[120px] mx-auto my-6"
+            className="w-full h-[100px] mx-auto my-6"
             radius="md"
           />
           <div
@@ -70,9 +70,11 @@ export default function DetailBlogCard({
             [&>*:nth-child(even)]:col-span-3 [&>*:nth-child(even)]:font-normal [&>*:nth-child(even)]:text-[#464C62]"
           >
             <p>Phân loại</p>
-            <p>{infoBlog.typeBlog.name}</p>
+            <p>{infoBlog.blogType.name}</p>
             <p>Người đăng</p>
-            <p>{`${infoBlog.createAdmin.lastName} ${infoBlog.createAdmin.firstName}`}</p>
+            <p>{`${infoBlog.createAdmin?.lastName ?? ""} ${
+              infoBlog.createAdmin?.firstName ?? ""
+            }`}</p>
             <p>Ngày đăng</p>
             <p>{moment(infoBlog.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Trạng thái</p>

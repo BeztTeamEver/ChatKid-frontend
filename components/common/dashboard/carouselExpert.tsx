@@ -2,6 +2,7 @@
 
 import { BLOG_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
+import Image from "next/image";
 import Link from "next/link";
 // import { Carousel } from "@mantine/carousel";
 import { useEffect, useState } from "react";
@@ -29,10 +30,12 @@ export default function CarouselExpert({ month, year }: { month: number; year: n
           <div
             className="w-full h-20 bg-cover bg-center rounded-lg"
             style={{
-              backgroundImage: `url(${item.imageUrl}), url(https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg)`,
+              backgroundImage: `url(https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg)`,
             }}
-          ></div>
-          <p className="line-clamp-2 text-center p-1 text-sm">{item.title}</p>
+          >
+            <img src={item.imageUrl} alt="banner" className="w-full h-auto pt-1" />
+          </div>
+          <p className="line-clamp-2 text-center m-2 text-sm">{item.title}</p>
         </Link>
       ))}
     </div>

@@ -63,7 +63,7 @@ export default function DetailFamilyCard({
             <p>Số điện thoại</p>
             <p>{infoFamily.phone}</p>
             <p>Số lượng TK</p>
-            <p>{infoFamily.users.length}</p>
+            <p>{infoFamily.members.length}</p>
             <p>Ngày tạo</p>
             <p>{moment(infoFamily.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
             <p>Trạng thái</p>

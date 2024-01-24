@@ -9,7 +9,7 @@ export type BLOG_TYPE = {
   createdAt: string;
   updatedAt: string;
   status: number;
-  typeBlog: {
+  blogType: {
     id: string;
     name: string;
   };

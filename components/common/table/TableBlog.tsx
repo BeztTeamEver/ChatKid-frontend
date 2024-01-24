@@ -100,7 +100,7 @@ export default function TableBlog({
           {blog.title}
         </Link>
       </td>
-      <td>{blog.typeBlog.name}</td>
+      <td>{blog.blogType.name}</td>
       <td>{moment(blog.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
       <td>{`${blog.createAdmin?.lastName ?? ""} ${blog.createAdmin?.firstName ?? ""}`}</td>
       <td className={blog.status ? "text-[#00B300]" : "text-[#B30000]"}>

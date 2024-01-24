@@ -1,6 +1,6 @@
 import { BODY_CREATE_ADS } from "@/types/ads.type";
 
-import { get, post, put, remove } from "./config/ApiCaller";
+import { get, patch, post, put, remove } from "./config/ApiCaller";
 
 export const AdsApi = {
   getListAds: async (pageNumber: number, pageSize: number, search: String = "") => {
@@ -36,6 +36,6 @@ export const AdsApi = {
   },
 
   showAds: async (id: string) => {
-    return await put({ endpoint: `/advertisings/${id}`, body: { status: 1 } });
+    return await patch({ endpoint: `/advertisings/${id}`, body: { status: 1 } });
   },
 };

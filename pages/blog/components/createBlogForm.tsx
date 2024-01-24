@@ -27,7 +27,7 @@ export default function CreateBlogForm({
     content: data ? data.content : "",
     imageUrl: data ? data.imageUrl : "",
     voiceUrl: data ? data.voiceUrl : "",
-    typeBlogId: data ? data.typeBlog.id : "",
+    typeBlogId: data ? data.blogType.id : "",
   });
   const [image, setImage] = useState<string | ArrayBuffer | null>();
   const [audio, setAudio] = useState<string | ArrayBuffer | null>();
@@ -35,7 +35,7 @@ export default function CreateBlogForm({
 
   useEffect(() => {
     const fetch = async () => {
-      await BlogApi.getListTypeBlog()
+      await BlogApi.getListblogType()
         .then((res) => {
           setListType(res.data);
         })

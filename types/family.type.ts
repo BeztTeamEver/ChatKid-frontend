@@ -9,5 +9,5 @@ export type FAMILY_TYPE = {
   status: Number;
   createdAt: Date;
   updatedAt: Date;
-  users: USER_TYPE[];
+  members: USER_TYPE[];
 };

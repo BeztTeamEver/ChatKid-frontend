@@ -45,7 +45,7 @@ export function LinksGroup({
         }}
         className={classes.control}
         sx={
-          router.pathname.includes(link && link !== "/" ? link : "#")
+          router.pathname.includes(link && link !== "/" ? link : "#") || router.pathname === link
             ? {
                 borderRadius: rem(8),
                 color: "#752B01",
