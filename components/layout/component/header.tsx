@@ -40,9 +40,9 @@ export default function HeaderLayout({
         }
       })
       .catch((err) => {
-        dispatch(logout());
-        router.push("/login");
-        console.log(err);
+        // dispatch(logout());
+        // router.push("/login");
+        console.log(err.message);
       });
   }, []);
 
