@@ -82,7 +82,7 @@ export default function TableAccountAdmin({
           className="hover:text-blue-400 hover:underline transition-all"
         >{`${admin?.lastName} ${admin.firstName}`}</Link>
       </td>
-      <td>{admin.gmail}</td>
+      <td>{admin.email}</td>
       <td>{admin.phone}</td>
       <td>{moment(admin.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
       <td className="capitalize">
