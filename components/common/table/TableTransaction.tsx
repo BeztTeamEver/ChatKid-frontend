@@ -1,12 +1,21 @@
 import { DataTable } from "@/constants/dataTable";
+import { useToast } from "@/hooks/useToast/toast";
 import { TRANSACTION_TYPE } from "@/types/transaction.type";
 import { TransactionApi } from "@/utils/transactionApi";
-import { Pagination, Table } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { Menu, Pagination, Table } from "@mantine/core";
+import {
+  IconSearch,
+  IconDotsVertical,
+  IconArrowBackUp,
+  IconX,
+  IconCheck,
+} from "@tabler/icons-react";
 import moment from "moment";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
+import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableTransaction() {
@@ -15,6 +24,21 @@ export default function TableTransaction() {
   const [totalTransaction, setTotalTransaction] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const [modalProps, setModalProps] = useState<{
+    opened: boolean;
+    title: string;
+    buttonContent: string;
+    onCancel: Function;
+    onOk: Function;
+  }>({
+    opened: false,
+    title: "",
+    buttonContent: "",
+    onCancel: () => {},
+    onOk: () => {},
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -25,6 +49,30 @@ export default function TableTransaction() {
       })
       .catch((err) => console.log(err));
     setTimeout(() => setIsLoading(false), 200);
+  };
+
+  const handleApprove = async (id: string) => {
+    await TransactionApi.approveTransaction(id)
+      .then((res) => {
+        useToast.success("Xác nhận thành công 🎉");
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+        useToast.error("Đã có lỗi xảy ra!!!!");
+      });
+  };
+
+  const handleDisapprove = async (id: string) => {
+    await TransactionApi.disapproveTransaction(id)
+      .then((res) => {
+        useToast.success("Hủy thành công🎉");
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+        useToast.error("Đã có lỗi xảy ra!!!!");
+      });
   };
 
   useEffect(() => {
@@ -41,11 +89,70 @@ export default function TableTransaction() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{transaction.type}</td>
+      <td>{transaction.member.name}</td>
+      <td>{transaction.paymentMethod.name}</td>
+      <td>{transaction.subcription.actualPrice}</td>
+      <td>{transaction.subcription.energy}</td>
       <td>{moment(transaction.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
-      <td>{transaction.id}</td>
-      <td>{transaction.discountDescription}</td>
-      <td>{transaction.price}</td>
+      <td>
+        {transaction.status === "PROCESSING"
+          ? "Chờ xác nhận"
+          : transaction.status === "APPROVED"
+          ? "Đã xác nhận"
+          : "Đã huỷ"}
+      </td>
+      <td>
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <IconDotsVertical className="cursor-pointer mx-auto" />
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            {transaction.status === "PROCESSING" ? (
+              <>
+                <Menu.Item
+                  icon={<IconCheck size={18} />}
+                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                  onClick={() =>
+                    setModalProps({
+                      opened: true,
+                      title: "Xác nhận khách hàng đã chuyển khoản",
+                      buttonContent: "Xác nhận",
+                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
+                      onOk: () => handleApprove(transaction.id),
+                    })
+                  }
+                >
+                  Xác nhận
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconX size={18} />}
+                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                  onClick={() =>
+                    setModalProps({
+                      opened: true,
+                      title: "Xác nhận hủy do khách hàng không chuyển khoản",
+                      buttonContent: "Hủy",
+                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
+                      onOk: () => handleDisapprove(transaction.id),
+                    })
+                  }
+                >
+                  Hủy
+                </Menu.Item>
+              </>
+            ) : (
+              <Menu.Item
+                icon={<IconArrowBackUp size={18} />}
+                className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                onClick={() => {}}
+              >
+                Hoàn tác
+              </Menu.Item>
+            )}
+          </Menu.Dropdown>
+        </Menu>
+      </td>
     </tr>
   ));
 
@@ -57,7 +164,6 @@ export default function TableTransaction() {
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
       }}
     >
-      {" "}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -83,14 +189,14 @@ export default function TableTransaction() {
             {DataTable.Transaction.map((item, index) => (
               <th
                 key={index}
-                className="!text-white !font-bold !text-base leading-[21.7px] last:w-32"
+                className="!text-white !font-bold !text-base leading-[21.7px] last:w-20"
               >
                 {item}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={6} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
@@ -99,6 +205,7 @@ export default function TableTransaction() {
         color="orange"
         className="mt-2 justify-center"
       />
+      <ModalConfirm {...modalProps} />
     </div>
   );
 }

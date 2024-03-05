@@ -46,5 +46,14 @@ export const DataTable = {
     "Tác vụ",
   ],
   AccountFamily: ["STT", "Vai trò", "Chức vụ", "Tên", "Giới tính", "Năm sinh"],
-  Transaction: ["STT", "Loại giao dịch", "Thời gian", "Mã tài khoản", "Giảm giá", "Mệnh giá"],
+  Transaction: [
+    "STT",
+    "Khách hàng",
+    "Phương thức thanh toán",
+    "Giá",
+    "Năng lượng",
+    "Thời gian",
+    "Trạng thái",
+    "Tác vụ",
+  ],
 };

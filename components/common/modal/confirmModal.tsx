@@ -38,8 +38,8 @@ export default function ModalConfirm({
         </Button>
         <Button
           variant="outline"
-          className="px-5 h-8 hover:!bg-[#ff4c4c20] transition-all"
-          color="red"
+          className="px-5 h-8 hover:!bg-[#fac88f2d] transition-all"
+          color="orange"
           onClick={() => {
             onOk();
             onCancel();

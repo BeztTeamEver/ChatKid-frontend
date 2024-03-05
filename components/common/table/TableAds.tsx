@@ -61,24 +61,24 @@ export default function TableAds({
   const handleHideAds = async (id: string) => {
     await AdsApi.hideAds(id)
       .then((res) => {
-        useToast.success("Ẩn bài viết successfully 🎉");
+        useToast.success("Ẩn bài viết thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã có lỗi xảy ra!!!!");
       });
   };
 
   const handleShowAds = async (id: string) => {
     await AdsApi.showAds(id)
       .then((res) => {
-        useToast.success("Un-ban bài viết successfully 🎉");
+        useToast.success("Un-ban bài viết thành công 🎉");
         fetchData();
       })
       .catch((err) => {
         console.log(err);
-        useToast.error("Something went wrong!!!");
+        useToast.error("Đã có lỗi xảy ra!!!!");
       });
   };
 
