@@ -62,7 +62,7 @@ export default function DetailBlogCard({
           </div>
           <BackgroundImage
             src={infoBlog.imageUrl}
-            className="w-full h-[100px] mx-auto my-6"
+            className="w-full h-[120px] mx-auto my-6 bg-cover bg-center"
             radius="md"
           />
           <div
