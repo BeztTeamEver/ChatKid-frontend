@@ -94,6 +94,7 @@ export default function TableTransaction() {
       <td>{transaction.subcription.actualPrice}</td>
       <td>{transaction.subcription.energy}</td>
       <td>{moment(transaction.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
+      <td>{transaction.identifier}</td>
       <td>
         {transaction.status === "PROCESSING"
           ? "Chờ xác nhận"
@@ -196,7 +197,7 @@ export default function TableTransaction() {
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}

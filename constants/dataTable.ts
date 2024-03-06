@@ -53,6 +53,7 @@ export const DataTable = {
     "Giá",
     "Năng lượng",
     "Thời gian",
+    "Mã",
     "Trạng thái",
     "Tác vụ",
   ],
