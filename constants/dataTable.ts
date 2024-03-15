@@ -38,7 +38,7 @@ export const DataTable = {
   Family: [
     "STT",
     "Mã",
-    "Email",
+    "Tên gia đình",
     "Tài khoản actived",
     "Số điện thoại",
     "Thời gian tạo",

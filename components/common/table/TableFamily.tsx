@@ -75,7 +75,7 @@ export default function TableFamily() {
           {family.id}
         </Link>
       </td>
-      <td>{family.ownerMail}</td>
+      <td>{family.name}</td>
       <td>{family.members.length} tài khoản</td>
       <td>dasdasdasdasd</td>
       <td>{moment(family.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
