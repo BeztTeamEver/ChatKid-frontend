@@ -51,6 +51,16 @@ export default function TableTransaction() {
     setTimeout(() => setIsLoading(false), 200);
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    })
+      .format(value)
+      .replaceAll("₫", "vnđ")
+      .replaceAll(".", " ");
+  };
+
   const handleApprove = async (id: string) => {
     await TransactionApi.approveTransaction(id)
       .then((res) => {
@@ -89,18 +99,26 @@ export default function TableTransaction() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{transaction.member.name}</td>
-      <td>{transaction.paymentMethod.name}</td>
-      <td>{transaction.subcription.actualPrice}</td>
-      <td>{transaction.subcription.energy}</td>
       <td>{moment(transaction.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
+      <td>{transaction.subcription.name}</td>
+      <td>{transaction.paymentMethod.name}</td>
+      <td>Không có</td>
+      <td>{formatCurrency(transaction.subcription.actualPrice)}</td>
       <td>{transaction.identifier}</td>
       <td>
-        {transaction.status === "PROCESSING"
-          ? "Chờ xác nhận"
-          : transaction.status === "APPROVED"
-          ? "Đã xác nhận"
-          : "Đã huỷ"}
+        <p
+          className={`rounded-xl p-[2px] text-center ${
+            transaction.status === "PROCESSING"
+              ? "bg-[#FFEDD1] text-[#752B01]"
+              : "bg-[#DFF0D8] text-[#3C763D]"
+          }`}
+        >
+          {transaction.status === "PROCESSING"
+            ? "Chờ thanh toán"
+            : transaction.status === "APPROVED"
+            ? "Thành công"
+            : "Thất bại"}
+        </p>
       </td>
       <td>
         <Menu shadow="md" width={200}>
