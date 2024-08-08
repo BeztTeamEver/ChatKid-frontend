@@ -1,4 +1,4 @@
-import { get, put, remove } from "./config/ApiCaller";
+import { get, patch } from "./config/ApiCaller";
 
 export const FamilyApi = {
   getListFamily: async (pageNumber: number, pageSize: number, search: String = "") => {
@@ -14,11 +14,9 @@ export const FamilyApi = {
     });
   },
   banFamily: async (id: string) => {
-    return await remove({
-      endpoint: `/families/${id}`,
-    });
+    return await patch({ endpoint: `/families/${id}`, body: { status: 0 } });
   },
   unBanFamily: async (id: string) => {
-    return await put({ endpoint: `/families/${id}`, body: { status: 1 } });
+    return await patch({ endpoint: `/families/${id}`, body: { status: 1 } });
   },
 };

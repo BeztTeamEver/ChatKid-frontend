@@ -4,7 +4,7 @@ export type FAMILY_TYPE = {
   id: string;
   name: string;
   phone: string;
-  ownerMail: string;
+  email: string;
   avatarUrl: string;
   status: Number;
   createdAt: Date;

@@ -1,4 +1,7 @@
-import { Button, Modal } from "@mantine/core";
+import botchatImage2 from "@/public/images/botchat_modal_bin.png";
+import botchatImage1 from "@/public/images/botchat_modal_happy.png";
+import botchatImage0 from "@/public/images/botchat_modal_sad.png";
+import { Button, Image, Modal } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 
 export default function ModalConfirm({
@@ -7,12 +10,16 @@ export default function ModalConfirm({
   buttonContent,
   onCancel,
   onOk,
+  content,
+  image,
 }: {
   opened: boolean;
   title: string;
   buttonContent: string;
   onCancel: Function;
   onOk: Function;
+  content: string;
+  image: number;
 }) {
   return (
     <Modal
@@ -20,33 +27,50 @@ export default function ModalConfirm({
       onClose={() => onCancel()}
       withCloseButton={false}
       centered
-      className="p-1"
+      radius={24}
+      size={640}
+      padding={24}
+      className="[&_.mantine-jfhix9]:bg-transparent [&_.mantine-jfhix9]:shadow-none"
     >
-      <IconX
-        className="absolute top-2 right-2 w-5 h-5 p-[1px] rounded-full hover:bg-[#ff4c4c20] hover:text-red-500 transition-all cursor-pointer"
-        onClick={() => onCancel()}
-      />
-      <p className="text-lg font-semibold mb-5">{title}</p>
-      <div className="flex justify-end gap-3">
-        <Button
-          variant="outline"
-          className="px-5 h-8 hover:!bg-[#66666620] transition-all"
-          color="gray"
+      <div className="m-0.5 p-6 bg-white rounded-2xl">
+        <IconX
+          className="absolute top-2 right-2 w-10 h-10 p-[7px] rounded-full hover:bg-primary-50 hover:text-primary-500 transition-all cursor-pointer bg-white"
           onClick={() => onCancel()}
-        >
-          Hủy
-        </Button>
-        <Button
-          variant="outline"
-          className="px-5 h-8 hover:!bg-[#fac88f2d] transition-all"
-          color="orange"
-          onClick={() => {
-            onOk();
-            onCancel();
-          }}
-        >
-          {buttonContent}
-        </Button>
+        />
+        <div className="w-fill flex justify-center items-center text-center mb-4">
+          {image === 0 ? (
+            <Image src={botchatImage0.src} width="100px" />
+          ) : image === 1 ? (
+            <Image src={botchatImage1.src} width="100px" />
+          ) : (
+            <Image src={botchatImage2.src} width="100px" />
+          )}
+        </div>
+        <p className="text-lg font-bold mb-1 items-center text-center w-full text-primary-900">
+          {title}
+        </p>
+        <p className="text-base font-normal mb-5 items-center text-center w-full text-neutral-600">
+          {content}
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="outline"
+            className="px-5 h-10 hover:!bg-[#66666620] transition-all rounded-full w-full border-primary-500 text-primary-500"
+            onClick={() => onCancel()}
+          >
+            Quay lại
+          </Button>
+          <Button
+            variant="fulled"
+            className="px-5 h-10 hover:!bg-primary-700 transition-all bg-primary-500 text-white rounded-full w-full"
+            onClick={() => {
+              onOk();
+              onCancel();
+            }}
+          >
+            {buttonContent}
+          </Button>
+        </div>
       </div>
     </Modal>
   );

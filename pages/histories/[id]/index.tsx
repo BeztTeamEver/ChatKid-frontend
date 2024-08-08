@@ -67,15 +67,15 @@ export default function DetailHistory() {
             >
               <div>
                 <p>Mã tài khoản</p>
-                <p>{infoHistory.userId}</p>
+                <p>{infoHistory.id}</p>
               </div>
               <div>
                 <p>Hình thức</p>
-                <p>{infoHistory.serviceName}</p>
+                <p>{infoHistory.content}</p>
               </div>
               <div>
                 <p>Thời gian</p>
-                <p>{moment(infoHistory.createdTime).format("HH:mm, DD/MM/YYYY")}</p>
+                <p>{moment(infoHistory.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
               </div>
               <div>
                 <p>Câu hỏi</p>

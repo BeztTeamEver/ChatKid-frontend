@@ -1,21 +1,12 @@
 import { DataTable } from "@/constants/dataTable";
-import { useToast } from "@/hooks/useToast/toast";
 import { TRANSACTION_TYPE } from "@/types/transaction.type";
 import { TransactionApi } from "@/utils/transactionApi";
-import { Menu, Pagination, Table } from "@mantine/core";
-import {
-  IconSearch,
-  IconDotsVertical,
-  IconArrowBackUp,
-  IconX,
-  IconCheck,
-} from "@tabler/icons-react";
+import { Pagination, Table } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import moment from "moment";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
-import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableTransaction() {
@@ -24,21 +15,6 @@ export default function TableTransaction() {
   const [totalTransaction, setTotalTransaction] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
-
-  const [modalProps, setModalProps] = useState<{
-    opened: boolean;
-    title: string;
-    buttonContent: string;
-    onCancel: Function;
-    onOk: Function;
-  }>({
-    opened: false,
-    title: "",
-    buttonContent: "",
-    onCancel: () => {},
-    onOk: () => {},
-  });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -61,30 +37,6 @@ export default function TableTransaction() {
       .replaceAll(".", " ");
   };
 
-  const handleApprove = async (id: string) => {
-    await TransactionApi.approveTransaction(id)
-      .then((res) => {
-        useToast.success("Xác nhận thành công 🎉");
-        fetchData();
-      })
-      .catch((err) => {
-        console.log(err);
-        useToast.error("Đã có lỗi xảy ra!!!!");
-      });
-  };
-
-  const handleDisapprove = async (id: string) => {
-    await TransactionApi.disapproveTransaction(id)
-      .then((res) => {
-        useToast.success("Hủy thành công🎉");
-        fetchData();
-      })
-      .catch((err) => {
-        console.log(err);
-        useToast.error("Đã có lỗi xảy ra!!!!");
-      });
-  };
-
   useEffect(() => {
     fetchData();
   }, [activePage]);
@@ -99,79 +51,11 @@ export default function TableTransaction() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{moment(transaction.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
-      <td>{transaction.subcription.name}</td>
-      <td>{transaction.paymentMethod.name}</td>
-      <td>Không có</td>
-      <td>{formatCurrency(transaction.subcription.actualPrice)}</td>
+      <td>{moment(transaction.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</td>
       <td>{transaction.identifier}</td>
-      <td>
-        <p
-          className={`rounded-xl p-[2px] text-center ${
-            transaction.status === "PROCESSING"
-              ? "bg-[#FFEDD1] text-[#752B01]"
-              : "bg-[#DFF0D8] text-[#3C763D]"
-          }`}
-        >
-          {transaction.status === "PROCESSING"
-            ? "Chờ thanh toán"
-            : transaction.status === "APPROVED"
-            ? "Thành công"
-            : "Thất bại"}
-        </p>
-      </td>
-      <td>
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <IconDotsVertical className="cursor-pointer mx-auto" />
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            {transaction.status === "PROCESSING" ? (
-              <>
-                <Menu.Item
-                  icon={<IconCheck size={18} />}
-                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-                  onClick={() =>
-                    setModalProps({
-                      opened: true,
-                      title: "Xác nhận khách hàng đã chuyển khoản",
-                      buttonContent: "Xác nhận",
-                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
-                      onOk: () => handleApprove(transaction.id),
-                    })
-                  }
-                >
-                  Xác nhận
-                </Menu.Item>
-                <Menu.Item
-                  icon={<IconX size={18} />}
-                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-                  onClick={() =>
-                    setModalProps({
-                      opened: true,
-                      title: "Xác nhận hủy do khách hàng không chuyển khoản",
-                      buttonContent: "Hủy",
-                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
-                      onOk: () => handleDisapprove(transaction.id),
-                    })
-                  }
-                >
-                  Hủy
-                </Menu.Item>
-              </>
-            ) : (
-              <Menu.Item
-                icon={<IconArrowBackUp size={18} />}
-                className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-                onClick={() => {}}
-              >
-                Hoàn tác
-              </Menu.Item>
-            )}
-          </Menu.Dropdown>
-        </Menu>
-      </td>
+      <td>{transaction.package.name}</td>
+      <td>{(transaction.package.price / transaction.package.actualPrice) * 100 - 100}%</td>
+      <td>{formatCurrency(transaction.package.price)}</td>
     </tr>
   ));
 
@@ -215,7 +99,7 @@ export default function TableTransaction() {
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={6} row={9} /> : rows}</tbody>
       </Table>
       <Pagination
         value={activePage}
@@ -224,7 +108,6 @@ export default function TableTransaction() {
         color="orange"
         className="mt-2 justify-center"
       />
-      <ModalConfirm {...modalProps} />
     </div>
   );
 }

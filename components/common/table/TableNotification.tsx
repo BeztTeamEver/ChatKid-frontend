@@ -5,23 +5,18 @@ import { Pagination, Table } from "@mantine/core";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import SkeletonFunction from "../skeleton/skeletonTable";
 
-export default function TableNotification({
-  status,
-  openFunc,
-}: {
-  status: boolean;
-  openFunc: () => void;
-}) {
+export default function TableNotification() {
   const [activePage, setActivePage] = useState<number>(1);
   const [listNotification, setListNotification] = useState<Array<NOTIFICATION_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
   const [totalNotification, setTotalNotification] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const router = useRouter();
   const fetchData = async () => {
     setIsLoading(true);
     await NotificationApi.getListNotification(activePage - 1, 10, search)
@@ -35,7 +30,7 @@ export default function TableNotification({
 
   useEffect(() => {
     fetchData();
-  }, [activePage, status]);
+  }, [activePage]);
 
   const rows = listNotification.map((noti, index) => (
     <tr
@@ -47,6 +42,8 @@ export default function TableNotification({
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
+      <td>{moment(noti.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</td>
+      <td>{moment(noti.scheduleTime).format("HH:mm:ss, DD/MM/YYYY")}</td>
       <td>
         <Link
           href={`/notification/${noti.id}`}
@@ -55,14 +52,63 @@ export default function TableNotification({
           {noti.title}
         </Link>
       </td>
-      <td>{noti.creatorEmail}</td>
       <td>
         {noti.receiver
           .replace(DataReceiver[0].value, DataReceiver[0].label)
-          .replace(DataReceiver[1].value, DataReceiver[1].label)
-          .replace(DataReceiver[2].value, DataReceiver[2].label)}
+          .replace(DataReceiver[1].value, DataReceiver[1].label)}
       </td>
-      <td>{moment(noti.scheduleTime).format("HH:mm, DD/MM/YYYY")}</td>
+      <td>
+        {/* <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <IconDotsVertical className="cursor-pointer mx-auto" />
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            {noti.scheduleTime <  ? (
+              <>
+                <Menu.Item
+                  icon={<IconCheck size={18} />}
+                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                  onClick={() =>
+                    setModalProps({
+                      opened: true,
+                      title: "Xác nhận khách hàng đã chuyển khoản",
+                      buttonContent: "Xác nhận",
+                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
+                      onOk: () => handleApprove(transaction.id),
+                    })
+                  }
+                >
+                  Xác nhận
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconX size={18} />}
+                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                  onClick={() =>
+                    setModalProps({
+                      opened: true,
+                      title: "Xác nhận hủy do khách hàng không chuyển khoản",
+                      buttonContent: "Hủy",
+                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
+                      onOk: () => handleDisapprove(transaction.id),
+                    })
+                  }
+                >
+                  Hủy
+                </Menu.Item>
+              </>
+            ) : (
+              <Menu.Item
+                icon={<IconArrowBackUp size={18} />}
+                className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                onClick={() => {}}
+              >
+                Hoàn tác
+              </Menu.Item>
+            )}
+          </Menu.Dropdown>
+        </Menu> */}
+      </td>
     </tr>
   ));
 
@@ -90,7 +136,7 @@ export default function TableNotification({
         </form>
         <button
           className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
-          onClick={openFunc}
+          onClick={() => router.push(`/notification/create-new-notification`)}
         >
           <IconPlus />
           Tạo thông báo mới

@@ -1,10 +1,12 @@
 import { DataTable } from "@/constants/dataTable";
+import ChecklogModal from "@/pages/histories/components/checklogModal";
+import empty from "@/public/images/empty.png";
 import { HISTORY_TYPE } from "@/types/history.type";
 import { HistoryApi } from "@/utils/historyApi";
-import { Pagination, Table } from "@mantine/core";
+import { Image, Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import moment from "moment";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -16,6 +18,11 @@ export default function TableHistory() {
   const [totalHistory, setTotalHistory] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const [checklogOpened, { open, close }] = useDisclosure(false);
+  const [createdTime, setCreatedTime] = useState("");
+  const [mail, setMail] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [voice, setVoice] = useState("");
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -32,6 +39,10 @@ export default function TableHistory() {
     fetchData();
   }, [activePage]);
 
+  useEffect(() => {
+    createdTime && mail && open();
+  }, [createdTime]);
+
   const rows = listHistory?.map((history, index) => (
     <tr
       key={index}
@@ -42,11 +53,19 @@ export default function TableHistory() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{history.userId}</td>
-      <td>{history.serviceName}</td>
-      <td>{moment(history.createdTime).format("HH:mm, DD/MM/YYYY")}</td>
-      <td className="text-primary-default">
-        <Link href={`/histories/${history.id}`}>Xem</Link>
+      <td>{moment(history.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</td>
+      <td>{history.familyEmail}</td>
+      <td>{history.memberName}</td>
+      <td
+        className="text-primary-default underline hover:text-primary-800"
+        onClick={() => {
+          setCreatedTime(history.createdAt);
+          setMail(history.familyEmail);
+          setAnswer(history.answer);
+          setVoice(history.voiceUrl);
+        }}
+      >
+        <a>Xem chi tiết</a>
       </td>
     </tr>
   ));
@@ -94,6 +113,12 @@ export default function TableHistory() {
         </thead>
         <tbody>{isLoading ? <SkeletonFunction col={10} row={5} /> : rows}</tbody>
       </Table>
+      {listHistory.length === 0 ? (
+        <div className="w-full items-center text-center">
+          <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+          <p>Danh sách hiện không có lịch sử hỏi botchat nào để hiển thị </p>
+        </div>
+      ) : null}
       <Pagination
         value={activePage}
         onChange={(e) => setActivePage(e)}
@@ -101,6 +126,15 @@ export default function TableHistory() {
         color="orange"
         className="mt-2 justify-center"
       />
+      <ChecklogModal
+        title="Checklog"
+        opened={checklogOpened}
+        onCancel={close}
+        createdAt={createdTime}
+        mail={mail}
+        answer={answer}
+        voice={voice}
+      ></ChecklogModal>
     </div>
   );
 }

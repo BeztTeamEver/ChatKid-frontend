@@ -34,7 +34,7 @@ export default function DetailNotification() {
   return (
     <div>
       <Breadcrumbs
-        className="bg-white p-8 rounded-lg w-fit"
+        className="bg-white p-6 rounded-2xl w-full"
         sx={{
           boxShadow:
             "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -53,7 +53,7 @@ export default function DetailNotification() {
       <div className="flex mt-5 gap-5">
         <DetailNotificationCard infoNotification={infoNotification} />
         <div
-          className="w-full h-fit bg-white p-8 rounded-lg"
+          className="w-full h-fit bg-white px-12 py-8 rounded-2xl"
           style={{
             boxShadow:
               "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",

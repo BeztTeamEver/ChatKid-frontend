@@ -9,7 +9,7 @@ export default function DetailNotificationCard({
 }) {
   return (
     <div
-      className="h-fit p-8 rounded-lg bg-white w-[500px]"
+      className="h-fit p-8 rounded-2xl bg-white w-[640px]"
       style={{
         boxShadow:
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -32,11 +32,12 @@ export default function DetailNotificationCard({
             <p>
               {infoNotification.receiver
                 .replace(DataReceiver[0].value, DataReceiver[0].label)
-                .replace(DataReceiver[1].value, DataReceiver[1].label)
-                .replace(DataReceiver[2].value, DataReceiver[2].label)}
+                .replace(DataReceiver[1].value, DataReceiver[1].label)}
             </p>
-            <p>Ngày đăng</p>
+            <p>Thời gian tạo</p>
             <p>{moment(infoNotification.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
+            <p>Thời gian đăng</p>
+            <p>{moment(infoNotification.scheduleTime).format("HH:mm, DD/MM/YYYY")}</p>
           </div>
         </div>
       ) : (

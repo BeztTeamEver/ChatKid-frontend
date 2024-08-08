@@ -9,6 +9,6 @@ export type USER_TYPE = {
   dateOfBirth: Date;
   gender: string;
   avatarUrl: string;
-  role: "ADMIN" | "SUPER_ADMIN" | "EXPERT";
+  role: "ADMIN" | "PARENT" | "CHILD";
   familyRole: string;
 };
