@@ -1,14 +1,17 @@
 import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
+import empty from "@/public/images/empty.png";
 import { FAMILY_TYPE } from "@/types/family.type";
 import { FamilyApi } from "@/utils/familyApi";
-import { Pagination, Table } from "@mantine/core";
+import { Image, Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
+import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableFamily() {
@@ -17,6 +20,13 @@ export default function TableFamily() {
   const [totalFamily, setTotalFamily] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const [tempUnBan, setTempUnBan] = useState<string>("");
+  const [tempBan, setTempBan] = useState<string>("");
+  const [banOpened, { open, close }] = useDisclosure(false);
+  const [unBanOpened, handlers] = useDisclosure(false, {
+    onOpen: () => console.log("Opened"),
+    onClose: () => console.log("Closed"),
+  });
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -32,6 +42,14 @@ export default function TableFamily() {
   useEffect(() => {
     fetchData();
   }, [activePage]);
+
+  useEffect(() => {
+    tempBan && open();
+  }, [tempBan]);
+
+  useEffect(() => {
+    tempUnBan && handlers.open();
+  }, [tempUnBan]);
 
   const handleBanFamily = async (id: string) => {
     await FamilyApi.banFamily(id)
@@ -72,28 +90,27 @@ export default function TableFamily() {
           href={`/family/${family.id}`}
           className="hover:text-blue-400 hover:underline transition-all"
         >
-          {family.id}
+          {moment(family.createdAt).format("HH:mm:ss, DD/MM/YYYY")}
         </Link>
       </td>
+      <td>{family.email}</td>
       <td>{family.name}</td>
       <td>{family.members.length} tài khoản</td>
-      <td>dasdasdasdasd</td>
-      <td>{moment(family.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
       <td className={family.status ? "text-[#00B300]" : "text-[#B30000]"}>
         {family.status ? "Hoạt động" : "Cấm"}
       </td>
       <td className="flex gap-3 relative">
         {family.status ? (
           <button
-            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
-            onClick={() => handleBanFamily(family.id)}
+            className="px-5 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-[#B30000] text-[#B30000] rounded-full hover:bg-red-200 hover:text-red-900 transition-all"
+            onClick={() => setTempBan(family.id)}
           >
             Cấm
           </button>
         ) : (
           <button
-            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
-            onClick={() => handleUnBanFamily(family.id)}
+            className="px-3 pt-[6px] pb-1 text-xs font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-200 hover:text-primary-700 transition-all"
+            onClick={() => setTempUnBan(family.id)}
           >
             Bỏ cấm
           </button>
@@ -142,14 +159,38 @@ export default function TableFamily() {
             ))}
           </tr>
         </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
+        <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
       </Table>
+      {listFamily.length === 0 ? (
+        <div className="w-full items-center text-center">
+          <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+          <p>Danh sách hiện không có tài khoản gia đình nào để hiển thị </p>
+        </div>
+      ) : null}
       <Pagination
         value={activePage}
         onChange={(e) => setActivePage(e)}
         total={Math.ceil(totalFamily / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+      <ModalConfirm
+        title="Bạn có muốn cấm hoạt động tài khoản gia đình này?"
+        buttonContent="Cấm hoạt động"
+        opened={banOpened}
+        onOk={() => handleBanFamily(tempBan)}
+        onCancel={close}
+        content="Tài khoản gia đình sau khi bị cấm sẽ không thể hoạt động trên ứng dụng KidTalkie được nữa"
+        image={0}
+      />
+      <ModalConfirm
+        title="Bạn có muốn bỏ cấm tài khoản gia đình này?"
+        buttonContent="Bỏ cấm hoạt động"
+        content="Tài khoản gia đình sau khi bỏ cấm sẽ có thể hoạt động trên ứng dụng KidTalkie"
+        opened={unBanOpened}
+        onOk={() => handleUnBanFamily(tempUnBan)}
+        onCancel={handlers.close}
+        image={1}
       />
     </div>
   );

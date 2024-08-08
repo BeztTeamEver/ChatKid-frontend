@@ -1,30 +1,27 @@
 import {
   IconUsers,
-  IconDeviceDesktopAnalytics,
   IconChartPie,
   IconCoins,
-  IconAdCircle,
   IconBell,
-  IconZoomQuestion,
+  IconMessages,
+  IconHanger,
+  IconListDetails,
+  IconMessageCircleQuestion,
 } from "@tabler/icons-react";
 
 export const DataNavbar = {
-  manageKidTalkie: [
-    { label: "Dashboard", link: "/", icon: IconChartPie },
-    { label: "Quảng cáo", link: "/advertising", icon: IconAdCircle },
-    { label: "Giao dịch", link: "/transaction", icon: IconCoins },
-    { label: "Blog", link: "/blog", icon: IconZoomQuestion },
+  manageCustomer: [
+    { label: "Thống kê", link: "/", icon: IconChartPie },
+    { label: "Giao dịch", link: "/transactions", icon: IconCoins },
+    { label: "Tài khoản gia đình", link: "/family", icon: IconUsers },
+    { label: "Lịch sử hỏi botchat", link: "/histories", icon: IconMessages },
+    // { label: "Báo cáo", link: "/reports", icon: IconFlag },
     { label: "Thông báo", link: "/notification", icon: IconBell },
-    { label: "Gia đình", link: "/family", icon: IconUsers },
-    // { label: "Chuyên gia tư vấn", link: "/expert", icon: IconHeadset },
-    { label: "Admin", link: "/admin", icon: IconDeviceDesktopAnalytics },
-    // { label: "Lịch sử hoạt động", link: "/histories", icon: IconMessages },
   ],
-  manageAccount: [
-    {
-      label: "Tài khoản Kidtalkie",
-      icon: IconUsers,
-      link: "/accounts-kidtalkie",
-    },
+  manageKidTalkie: [
+    // { label: "Gói kim cương", link: "/packages", icon: IconDiamond },
+    { label: "Trang bị botchat", link: "/assets", icon: IconHanger },
+    { label: "Loại công việc", link: "/task-types", icon: IconListDetails },
+    { label: "Quiz", link: "/quizzes", icon: IconMessageCircleQuestion },
   ],
 };

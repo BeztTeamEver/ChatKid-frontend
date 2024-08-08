@@ -58,7 +58,13 @@ export function LinksGroup({
         <Group position="apart" spacing={0} onClick={() => router.push(link ?? "")}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Icon size="1.1rem" />
-            {isExpanded ? <Box ml="md">{label}</Box> : ""}
+            {isExpanded ? (
+              <Box ml="md" className="font-medium">
+                {label}
+              </Box>
+            ) : (
+              ""
+            )}
           </Box>
           {hasLinks && isExpanded && (
             <ChevronIcon

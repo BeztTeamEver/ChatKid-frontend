@@ -73,7 +73,7 @@ export default function TableBlog({
   const handleShowBlog = async (id: string) => {
     await BlogApi.showBlog(id)
       .then((res) => {
-        useToast.success("Un-ban bài viết thành công 🎉");
+        useToast.success("Bỏ ẩn bài viết thành công 🎉");
         fetchData();
       })
       .catch((err) => {
@@ -210,9 +210,11 @@ export default function TableBlog({
       <ModalConfirm
         title="Bạn có chắc muốn ẩn bài viết này?"
         buttonContent="Ẩn"
+        content="Tài khoản gia đình sau khi bỏ cấm sẽ có thể hoạt động trên ứng dụng KidTalkie"
         opened={opened}
         onOk={() => handleHideBlog(tempId)}
         onCancel={close}
+        image={1}
       />
     </div>
   );

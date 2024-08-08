@@ -37,7 +37,7 @@ export default function DetailFamilyCard({
 
   return (
     <div
-      className="h-fit p-8 rounded-lg bg-white w-[500px]"
+      className="h-fit p-8 rounded-lg bg-white w-[640px]"
       style={{
         boxShadow:
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -54,37 +54,33 @@ export default function DetailFamilyCard({
             className="grid grid-cols-2 gap-2 break-words [&>*:nth-child(odd)]:col-span-1 [&>*:nth-child(odd)]:font-semibold [&>*:nth-child(odd)]:text-[#252937]
             [&>*:nth-child(even)]:col-span-1 [&>*:nth-child(even)]:font-normal [&>*:nth-child(even)]:text-[#464C62]"
           >
-            <p>Mã</p>
-            <p>{infoFamily.id}</p>
             <p>Tên gia đình</p>
             <p>{infoFamily.name}</p>
             <p>Email</p>
-            <p>{infoFamily.ownerMail}</p>
-            <p>Số điện thoại</p>
-            <p>{infoFamily.phone}</p>
-            <p>Số lượng TK</p>
-            <p>{infoFamily.members.length}</p>
+            <p>{infoFamily.email}</p>
+            <p>Số thành viên</p>
+            <p>{infoFamily.members.length} tài khoản</p>
             <p>Ngày tạo</p>
-            <p>{moment(infoFamily.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
+            <p>{moment(infoFamily.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</p>
             <p>Trạng thái</p>
             <p className={infoFamily.status ? "!text-[#00B300]" : "!text-[#B30000]"}>
-              {infoFamily.status ? "Hiện" : "Ẩn"}
+              {infoFamily.status ? "Đang hoạt động" : "Cấm"}
             </p>
           </div>
           <div className="w-full mt-6 flex gap-3">
             {infoFamily.status ? (
               <button
-                className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
+                className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-[#B30000] text-[#B30000] rounded-full hover:bg-red-200 hover:text-red-900 transition-all"
                 onClick={() => handleBanFamily(infoFamily.id)}
               >
-                Ẩn
+                Cấm hoạt động
               </button>
             ) : (
               <button
                 className="w-full py-[10px] font-bold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
                 onClick={() => handleUnBanFamily(infoFamily.id)}
               >
-                Hiện
+                Bỏ cấm hoạt động
               </button>
             )}
           </div>
