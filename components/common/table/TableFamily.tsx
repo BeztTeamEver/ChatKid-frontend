@@ -3,34 +3,38 @@ import { useToast } from "@/hooks/useToast/toast";
 import empty from "@/public/images/empty.png";
 import { FAMILY_TYPE } from "@/types/family.type";
 import { FamilyApi } from "@/utils/familyApi";
-import { Image, Pagination, Table } from "@mantine/core";
+import { Image, Input, Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconSearch } from "@tabler/icons-react";
+import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
 import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableFamily() {
+  const router = useRouter();
   const [activePage, setActivePage] = useState<number>(1);
   const [listFamily, setListFamily] = useState<FAMILY_TYPE[]>([]);
   const [totalFamily, setTotalFamily] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const searchRef = useRef<HTMLInputElement>(null);
   const [tempUnBan, setTempUnBan] = useState<string>("");
   const [tempBan, setTempBan] = useState<string>("");
   const [banOpened, { open, close }] = useDisclosure(false);
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(search, 100);
   const [unBanOpened, handlers] = useDisclosure(false, {
     onOpen: () => console.log("Opened"),
     onClose: () => console.log("Closed"),
   });
 
-  const fetchData = async () => {
+  const fetchData = async (page: number) => {
+    setActivePage(page);
     setIsLoading(true);
-    await FamilyApi.getListFamily(activePage - 1, 10, searchRef.current?.value ?? "")
+    await FamilyApi.getListFamily(page - 1, 10, debouncedSearchTerm ?? "")
       .then((res) => {
         setListFamily(res.data.items);
         setTotalFamily(res.data.totalItem);
@@ -40,8 +44,8 @@ export default function TableFamily() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [activePage]);
+    fetchData(1);
+  }, [activePage, debouncedSearchTerm]);
 
   useEffect(() => {
     tempBan && open();
@@ -55,7 +59,7 @@ export default function TableFamily() {
     await FamilyApi.banFamily(id)
       .then((res) => {
         useToast.success("Cấm gia đình thành công 🎉");
-        fetchData();
+        fetchData(activePage);
       })
       .catch((err) => {
         console.log(err);
@@ -67,7 +71,7 @@ export default function TableFamily() {
     await FamilyApi.unBanFamily(id)
       .then((res) => {
         useToast.success("Bỏ cấm gia đình thành công 🎉");
-        fetchData();
+        fetchData(activePage);
       })
       .catch((err) => {
         console.log(err);
@@ -85,15 +89,15 @@ export default function TableFamily() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
+      <td>{moment(family.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</td>
       <td>
         <Link
           href={`/family/${family.id}`}
           className="hover:text-blue-400 hover:underline transition-all"
         >
-          {moment(family.createdAt).format("HH:mm:ss, DD/MM/YYYY")}
+          {family.email}
         </Link>
       </td>
-      <td>{family.email}</td>
       <td>{family.name}</td>
       <td>{family.members.length} tài khoản</td>
       <td className={family.status ? "text-[#00B300]" : "text-[#B30000]"}>
@@ -130,20 +134,15 @@ export default function TableFamily() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          fetchData();
         }}
-        className="w-1/3 flex bg-[#F1F5FE] rounded-full overflow-hidden items-center mb-5"
+        className="w-1/3 flex  rounded-full overflow-hidden items-center mb-3"
       >
-        <input
-          ref={searchRef}
+        <Input
           type="text"
-          placeholder="Tìm kiếm gia đình bằng email"
-          className="w-full bg-transparent focus:outline-none py-3 px-5"
-        />
-        <IconSearch
-          type="submit"
-          className="w-16 h-10 text-[#8D92AA] px-5 hover:bg-[#00000010] transition-all cursor-pointer"
-          onClick={fetchData}
+          placeholder="Tìm kiếm tài khoản gia đình"
+          className="w-full mr-4 p-2"
+          radius={100}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </form>
       <Table className="rounded-md overflow-hidden">

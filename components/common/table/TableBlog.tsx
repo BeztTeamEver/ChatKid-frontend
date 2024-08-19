@@ -2,18 +2,17 @@ import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
 import { BLOG_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
-import { Menu, Pagination, Table } from "@mantine/core";
+import { Input, Menu, Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconEdit,
   IconEyeOff,
   IconDotsVertical,
   IconPlus,
-  IconSearch,
   IconEye,
   IconInfoCircle,
 } from "@tabler/icons-react";
-import moment from "moment";
+import { useDebounce } from "@uidotdev/usehooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -21,15 +20,7 @@ import { useEffect, useState } from "react";
 import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
-export default function TableBlog({
-  openFunc,
-  status,
-  setTypeModal,
-}: {
-  openFunc: Function;
-  status: boolean;
-  setTypeModal: Function;
-}) {
+export default function TableBlog() {
   const [activePage, setActivePage] = useState<number>(1);
   const [listBlog, setListBlog] = useState<Array<BLOG_TYPE>>([]);
   const [search, setSearch] = useState<String>("");
@@ -37,11 +28,12 @@ export default function TableBlog({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [opened, { open, close }] = useDisclosure(false);
+  const debouncedSearchTerm = useDebounce(search, 100);
   const [tempId, setTempId] = useState<string>("");
 
   const fetchData = async () => {
     setIsLoading(true);
-    await BlogApi.getListBlog(activePage - 1, 10, search)
+    await BlogApi.getListBlog(activePage - 1, 10, debouncedSearchTerm)
       .then((res) => {
         setListBlog(res.data.items);
         setTotalBlog(res.data.totalItem);
@@ -52,7 +44,7 @@ export default function TableBlog({
 
   useEffect(() => {
     fetchData();
-  }, [activePage, status]);
+  }, [activePage]);
 
   useEffect(() => {
     tempId && open();
@@ -94,15 +86,12 @@ export default function TableBlog({
       <td>{index + 1 + 10 * (activePage - 1)}</td>
       <td>
         <Link
-          href={`/blog/${blog.id}`}
+          href={`/blogs/${blog.id}`}
           className="hover:text-blue-400 hover:underline transition-all"
         >
           {blog.title}
         </Link>
       </td>
-      <td>{blog.blogType.name}</td>
-      <td>{moment(blog.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
-      <td>{`${blog.createAdmin?.lastName ?? ""} ${blog.createAdmin?.firstName ?? ""}`}</td>
       <td className={blog.status ? "text-[#00B300]" : "text-[#B30000]"}>
         {blog.status ? "Hiện" : "Ẩn"}
       </td>
@@ -123,10 +112,10 @@ export default function TableBlog({
             <Menu.Item
               icon={<IconEdit size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => {
-                setTypeModal({ method: "UPDATE", data: blog });
-                openFunc();
-              }}
+              // onClick={() => {
+              //   setTypeModal({ method: "UPDATE", data: blog });
+              //   openFunc();
+              // }}
             >
               Chỉnh sửa
             </Menu.Item>
@@ -158,26 +147,22 @@ export default function TableBlog({
             e.preventDefault();
             fetchData();
           }}
-          className="w-1/3 flex bg-[#F1F5FE] rounded-full overflow-hidden items-center"
+          className="w-1/3 flex rounded-full overflow-hidden items-center"
         >
-          <input
+          <Input
             type="text"
-            placeholder="Tìm kiếm tài khoản"
-            className="w-full bg-transparent focus:outline-none py-3 px-5"
+            placeholder="Tìm kiếm trang bị"
+            className="w-full mr-4"
+            radius={100}
             onChange={(e) => setSearch(e.target.value)}
-          />
-          <IconSearch
-            type="submit"
-            className="w-16 h-10 text-[#8D92AA] px-5 hover:bg-[#00000010] transition-all cursor-pointer"
-            onClick={fetchData}
           />
         </form>
         <button
           className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
-          onClick={() => {
-            setTypeModal({ method: "CREATE", data: null });
-            openFunc();
-          }}
+          // onClick={() => {
+          //   setTypeModal({ method: "CREATE", data: null });
+          //   openFunc();
+          // }}
         >
           <IconPlus />
           Tạo bài viết mới

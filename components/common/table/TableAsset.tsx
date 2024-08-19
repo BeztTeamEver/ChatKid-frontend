@@ -33,7 +33,7 @@ export default function TableAsset() {
   const [tempActive, setTempActive] = useState<string>("");
   const [tempInactive, setTempInactive] = useState<string>("");
   const [activeOpened, { open, close }] = useDisclosure(false);
-  const debouncedSearchTerm = useDebounce(search, 500);
+  const debouncedSearchTerm = useDebounce(search, 100);
   const [inactiveOpened, handlers] = useDisclosure(false, {
     onOpen: () => console.log("Opened"),
     onClose: () => console.log("Closed"),

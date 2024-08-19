@@ -23,6 +23,7 @@ export default function CreateNewAsset() {
     type: "",
   });
   const handleUpload = async (base64): Promise<string> => {
+    if (base64.startsWith("http")) return base64;
     if (!base64) return "";
     const blob = await fetch(base64).then((res) => res.blob());
     const formData = new FormData();

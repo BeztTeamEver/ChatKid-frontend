@@ -35,7 +35,7 @@ export type BODY_UPDATE_ASSET = {
 export const AssetTypeData = [
   {
     value: "",
-    label: "Tất cả",
+    label: "Tất cả loại trang bị",
   },
   {
     value: "hat",
@@ -70,7 +70,7 @@ export const AssetTypeData = [
 export const AssetStatusData = [
   {
     value: "",
-    label: "Tất cả",
+    label: "Tất cả trạng thái",
   },
   {
     value: "Active",

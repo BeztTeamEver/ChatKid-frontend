@@ -61,6 +61,7 @@ export default function CreateNewNotification() {
         >
           <h2 className="text-center font-bold mb-[2px] text-xl col-span-2">Tạo bài viết mới</h2>
           <MultiSelect
+            radius={100}
             label="Phân loại"
             placeholder="Phụ huynh, Trẻ"
             defaultValue={state.receiver.split(",")}
@@ -69,6 +70,7 @@ export default function CreateNewNotification() {
             data={DataReceiver}
           />
           <DateTimePicker
+            radius={100}
             valueFormat="HH:mm, DD/MM/YYYY"
             defaultValue={state.scheduleTime}
             onChange={(e) => setState({ ...state, scheduleTime: e ?? new Date() })}
@@ -80,6 +82,7 @@ export default function CreateNewNotification() {
             withAsterisk
           />
           <TextInput
+            radius={100}
             type="text"
             label="Tựa đề"
             className="col-span-2"

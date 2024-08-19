@@ -11,7 +11,7 @@ export const BlogApi = {
     });
   },
 
-  getListblogType: async () => {
+  getListBlogType: async () => {
     return await get({
       endpoint: `/blog-types`,
     });

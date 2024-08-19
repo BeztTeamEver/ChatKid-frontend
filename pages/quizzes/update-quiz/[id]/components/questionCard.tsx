@@ -1,4 +1,4 @@
-import { QUESTION_TYPE } from "@/types/question.type";
+import { BODY_UPDATE_QUESTION } from "@/types/question.type";
 import { Image, Menu, Radio } from "@mantine/core";
 import { IconDotsVertical, IconEdit, IconTrash } from "@tabler/icons-react";
 
@@ -10,7 +10,7 @@ export default function QuestionCard({
   opened,
   setQuestion,
 }: {
-  question: QUESTION_TYPE;
+  question: BODY_UPDATE_QUESTION;
   index: number;
   handleDeleteQuestion: Function;
   setTempIndexU: Function;
@@ -42,7 +42,7 @@ export default function QuestionCard({
             <Menu.Item
               icon={<IconTrash size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => handleDeleteQuestion(question.text)}
+              onClick={() => handleDeleteQuestion(question.text, question.id)}
             >
               Xóa
             </Menu.Item>

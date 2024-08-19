@@ -20,7 +20,17 @@ export const DataTable = {
   Report: ["STT", "Thời gian tạo", "Mail", "Lý do báo cáo", "Trạng thái", "Check log", "Tác vụ"],
   Notification: ["STT", "Thời gian tạo", "Thời gian đăng", "Tựa đề", "Đối tượng nhận", "Tác vụ"],
 
-  Package: ["STT", "Thời gian bắt đầu", "Thời gian kết thúc", "Gói", "Giảm giá", "Giá", "Tác vụ"],
+  Discount: [
+    "STT",
+    "Thời gian bắt đầu",
+    "Thời gian kết thúc",
+    "Gói",
+    "Giảm giá",
+    "Giá bán",
+    "Giá gốc",
+    "Trạng thái",
+    "Tác vụ",
+  ],
   Asset: [
     "STT",
     "Thời gian tạo",
@@ -40,17 +50,9 @@ export const DataTable = {
     "Phân loại",
     "Nhóm độ tuổi",
     "Số câu hỏi",
+    "Blog",
     "Trạng thái",
     "Tác vụ",
   ],
-  Blog: [
-    "STT",
-    "Thời gian đăng",
-    "Tựa đề",
-    "Phân loại",
-    "Nhóm độ tuổi",
-    "Số câu hỏi",
-    "Trạng thái",
-    "Tác vụ",
-  ],
+  Blog: ["STT", "Thời gian tạo", "Tựa đề", "Thuộc bộ câu hỏi", "Tác vụ"],
 };

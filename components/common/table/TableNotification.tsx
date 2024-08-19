@@ -1,8 +1,8 @@
 import { DataTable } from "@/constants/dataTable";
 import { DataReceiver, NOTIFICATION_TYPE } from "@/types/notification.type";
 import { NotificationApi } from "@/utils/notificationApi ";
-import { Pagination, Table } from "@mantine/core";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { Input, Pagination, Table } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -120,18 +120,14 @@ export default function TableNotification() {
             e.preventDefault();
             fetchData();
           }}
-          className="w-1/3 flex bg-[#F1F5FE] rounded-full overflow-hidden items-center"
+          className="w-1/3 flex rounded-full overflow-hidden items-center"
         >
-          <input
+          <Input
             type="text"
-            placeholder="Tìm kiếm thông báo"
-            className="w-full bg-transparent focus:outline-none py-3 px-5"
+            placeholder="Tìm kiếm trang bị"
+            className="w-full mr-4"
+            radius={100}
             onChange={(e) => setSearch(e.target.value)}
-          />
-          <IconSearch
-            type="submit"
-            className="w-16 h-10 text-[#8D92AA] px-5 hover:bg-[#00000010] transition-all cursor-pointer"
-            onClick={fetchData}
           />
         </form>
         <button

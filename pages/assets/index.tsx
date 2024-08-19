@@ -17,9 +17,6 @@ export default function Asset() {
       }}
     >
       <TableAsset />
-      {/* <Modal opened={opened} onClose={close} withCloseButton={false} size="xl" radius="md" centered>
-        <FormCreateBlog close={close} toggleStatus={toggleStatus} typeModal={typeModal} />
-      </Modal> */}
     </div>
   ) : (
     <></>

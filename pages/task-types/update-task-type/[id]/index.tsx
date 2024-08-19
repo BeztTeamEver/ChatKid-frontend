@@ -48,6 +48,7 @@ export default function UpdateNewTasktype() {
   }, [id]);
 
   const handleUpload = async (base64): Promise<string> => {
+    if (base64.startsWith("http")) return base64;
     if (!base64) return "";
     const blob = await fetch(base64).then((res) => res.blob());
     const formData = new FormData();
@@ -168,7 +169,9 @@ export default function UpdateNewTasktype() {
           />
           {tempImageUrl ? (
             <Col className="m-0 p-0">
-              <p className="font-bold text-sm -mb-2 items-start">Hình ảnh minh họa</p>
+              <p className="text-sm font-bold -mb-[6px]">
+                Hình ảnh minh họa <span className="text-red-400">*</span>
+              </p>
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageUrl}
@@ -203,7 +206,9 @@ export default function UpdateNewTasktype() {
 
           {tempImageHomeUrl ? (
             <Col p={0}>
-              <p className="font-bold text-sm -mb-2 items-start">Hình ảnh thực tế</p>
+              <p className="text-sm font-bold -mb-[6px]">
+                Hình ảnh thực tế <span className="text-red-400">*</span>
+              </p>
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageHomeUrl}

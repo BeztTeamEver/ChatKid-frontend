@@ -3,30 +3,32 @@ import ChecklogModal from "@/pages/histories/components/checklogModal";
 import empty from "@/public/images/empty.png";
 import { HISTORY_TYPE } from "@/types/history.type";
 import { HistoryApi } from "@/utils/historyApi";
-import { Image, Pagination, Table } from "@mantine/core";
+import { Image, Input, Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconSearch } from "@tabler/icons-react";
+import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableHistory() {
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(search, 100);
   const [activePage, setActivePage] = useState<number>(1);
   const [listHistory, setListHistory] = useState<HISTORY_TYPE[]>([]);
   const [totalHistory, setTotalHistory] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const searchRef = useRef<HTMLInputElement>(null);
   const [checklogOpened, { open, close }] = useDisclosure(false);
   const [createdTime, setCreatedTime] = useState("");
   const [mail, setMail] = useState("");
   const [answer, setAnswer] = useState("");
   const [voice, setVoice] = useState("");
 
-  const fetchData = async () => {
+  const fetchData = async (page: number) => {
+    setActivePage(page);
     setIsLoading(true);
-    await HistoryApi.getListHistory(activePage - 1, 10, searchRef.current?.value ?? "")
+    await HistoryApi.getListHistory(page - 1, 10, debouncedSearchTerm ?? "")
       .then((res) => {
         setListHistory(res.data.items);
         setTotalHistory(res.data.totalItem);
@@ -36,8 +38,8 @@ export default function TableHistory() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [activePage]);
+    fetchData(1);
+  }, [activePage, debouncedSearchTerm]);
 
   useEffect(() => {
     createdTime && mail && open();
@@ -78,24 +80,18 @@ export default function TableHistory() {
           "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
       }}
     >
-      {" "}
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          fetchData();
         }}
-        className="w-1/3 flex bg-[#F1F5FE] rounded-full overflow-hidden items-center mb-5"
+        className="w-1/3 flex rounded-full overflow-hidden items-center mb-5"
       >
-        <input
-          ref={searchRef}
+        <Input
           type="text"
-          placeholder="Tìm kiếm tài khoản"
-          className="w-full bg-transparent focus:outline-none py-3 px-5"
-        />
-        <IconSearch
-          type="submit"
-          className="w-16 h-10 text-[#8D92AA] px-5 hover:bg-[#00000010] transition-all cursor-pointer"
-          onClick={fetchData}
+          placeholder="Tìm kiếm email"
+          className="w-full mr-4"
+          radius={100}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </form>
       <Table className="rounded-md overflow-hidden">
