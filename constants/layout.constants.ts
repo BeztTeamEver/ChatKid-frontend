@@ -7,6 +7,8 @@ import {
   IconHanger,
   IconListDetails,
   IconMessageCircleQuestion,
+  IconFlag,
+  IconDiamond,
 } from "@tabler/icons-react";
 
 export const DataNavbar = {
@@ -15,13 +17,14 @@ export const DataNavbar = {
     { label: "Giao dịch", link: "/transactions", icon: IconCoins },
     { label: "Tài khoản gia đình", link: "/family", icon: IconUsers },
     { label: "Lịch sử hỏi botchat", link: "/histories", icon: IconMessages },
-    // { label: "Báo cáo", link: "/reports", icon: IconFlag },
+    { label: "Báo cáo", link: "/reports", icon: IconFlag },
     { label: "Thông báo", link: "/notification", icon: IconBell },
   ],
   manageKidTalkie: [
-    // { label: "Gói kim cương", link: "/packages", icon: IconDiamond },
+    { label: "Gói khuyến mãi", link: "/discounts", icon: IconDiamond },
     { label: "Trang bị botchat", link: "/assets", icon: IconHanger },
     { label: "Loại công việc", link: "/task-types", icon: IconListDetails },
-    { label: "Quiz", link: "/quizzes", icon: IconMessageCircleQuestion },
+    { label: "Bộ câu hỏi", link: "/quizzes", icon: IconMessageCircleQuestion },
+    // { label: "Blog", link: "/blogs", icon: IconArticle },
   ],
 };

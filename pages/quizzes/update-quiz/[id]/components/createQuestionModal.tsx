@@ -1,6 +1,5 @@
 import { useToast } from "@/hooks/useToast/toast";
 import { BODY_CREATE_QUESTION } from "@/types/question.type";
-import { uploadApi } from "@/utils/commonApi";
 import {
   Button,
   Col,
@@ -28,7 +27,6 @@ export default function CreateQuestionModal({
   question: BODY_CREATE_QUESTION;
   setQuestion: Function;
 }) {
-  const [tempQuestionImageUrl, setTempQuestionImageUrl] = useState<string | null | undefined>();
   const [tempCorrectAnswer, setTempCorrectAnswer] = useState<string | null | undefined>();
   const [answerA, setAnswerA] = useState<string>("");
   const [answerB, setAnswerB] = useState<string>("");
@@ -51,34 +49,12 @@ export default function CreateQuestionModal({
     else setQuestion({ ...question, illustratedImageUrl: null });
   };
 
-  const handleUpload = async (base64): Promise<string> => {
-    if (base64.startsWith("http")) return base64;
-    if (!base64) return "";
-    const blob = await fetch(base64).then((res) => res.blob());
-    const formData = new FormData();
-    formData.append("file", blob);
-
-    let result = "";
-    await uploadApi(formData)
-      .then((res) => {
-        result = res.data.url;
-      })
-      .catch((err) => console.log(err));
-    return result;
-  };
-
   const handleCreateQuestion = async (e: React.FormEvent) => {
     e.preventDefault();
     if (question.illustratedImageUrl === "") {
       useToast.error("Vui lòng thêm hình ảnh minh họa cho bộ câu hỏi!");
       return;
     }
-    const illustratedImageUrl = await handleUpload(question.illustratedImageUrl);
-    if (!illustratedImageUrl) {
-      useToast.error("Vui lòng thêm hình ảnh minh họa cho câu hỏi!");
-      return;
-    }
-    setQuestion({ ...question, illustratedImageUrl });
     console.log("question.illustratedImageUrl=", question.illustratedImageUrl);
     const tempQuestion = question.answerOptions;
     tempQuestion[0] = answerA;

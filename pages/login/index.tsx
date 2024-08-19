@@ -36,7 +36,7 @@ export default function Login() {
           >
             Đăng nhập
           </p>
-          <Image src={BotImage.src} px="20%" width="100%" />
+          <Image src={BotImage.src} px="20%" width="120%" />
           <GoogleButton content="Đăng nhập KidTalkie với Google" />
         </div>
       </div>

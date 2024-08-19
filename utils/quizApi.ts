@@ -1,6 +1,6 @@
 import { BODY_CREATE_QUIZ } from "@/types/quiz.type";
 
-import { get, patch, post } from "./config/ApiCaller";
+import { get, patch, post, remove } from "./config/ApiCaller";
 
 export const QuizApi = {
   getListQuiz: async (
@@ -26,7 +26,11 @@ export const QuizApi = {
     return await post({ endpoint: "/quizzes", body });
   },
 
-  updateQuiz: async (id: string, body: BODY_CREATE_QUIZ) => {
+  uploadImage: async (body: FormData) => {
+    return await post({ endpoint: "/file-upload/upload", body });
+  },
+
+  updateQuiz: async (body: BODY_CREATE_QUIZ, id: string) => {
     return await patch({ endpoint: `/quizzes/${id}`, body });
   },
 
@@ -36,5 +40,9 @@ export const QuizApi = {
 
   showQuiz: async (id: string) => {
     return await patch({ endpoint: `/quizzes/${id}`, body: { status: "AVAILABLE" } });
+  },
+
+  deleteQuiz: async (id: string) => {
+    return await remove({ endpoint: `/quizzes/${id}`, body: { status: "AVAILABLE" } });
   },
 };

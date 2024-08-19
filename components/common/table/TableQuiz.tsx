@@ -2,16 +2,18 @@ import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
 import { QUIZ_TYPE } from "@/types/quiz.type";
 import { QuizApi } from "@/utils/quizApi";
-import { Menu, Pagination, Table } from "@mantine/core";
+import { Input, Menu, Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
+  IconCheck,
   IconDotsVertical,
+  IconEdit,
   IconEye,
   IconEyeOff,
-  IconInfoCircle,
   IconPlus,
-  IconSearch,
+  IconTrash,
 } from "@tabler/icons-react";
+import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,10 +28,17 @@ export default function TableQuiz() {
   const [totalQuiz, setTotalQuiz] = useState<number>(0);
   const [activePage, setActivePage] = useState<number>(1);
   const [search, setSearch] = useState<String>("");
-  const [tempShow, setTempShow] = useState<string>("");
-  const [tempHide, setTempHide] = useState<string>("");
-  const [hideOpened, { open, close }] = useDisclosure(false);
-  const [showOpened, handlers] = useDisclosure(false, {
+  const [tempId, setTempId] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(search, 500);
+  const [hideOpened, handlersH] = useDisclosure(false, {
+    onOpen: () => console.log("Opened"),
+    onClose: () => console.log("Closed"),
+  });
+  const [showOpened, handlersS] = useDisclosure(false, {
+    onOpen: () => console.log("Opened"),
+    onClose: () => console.log("Closed"),
+  });
+  const [deleteOpened, handlersD] = useDisclosure(false, {
     onOpen: () => console.log("Opened"),
     onClose: () => console.log("Closed"),
   });
@@ -37,7 +46,7 @@ export default function TableQuiz() {
 
   const fetchData = async () => {
     setIsLoading(true);
-    await QuizApi.getListQuiz(activePage - 1, 10, search)
+    await QuizApi.getListQuiz(activePage - 1, 10, debouncedSearchTerm)
       .then((res) => {
         setListQuiz(res.data.items);
         setTotalQuiz(res.data.totalItem);
@@ -50,19 +59,11 @@ export default function TableQuiz() {
     fetchData();
   }, [activePage]);
 
-  useEffect(() => {
-    tempHide && open();
-  }, [tempHide]);
-
-  useEffect(() => {
-    tempShow && handlers.open();
-  }, [tempShow]);
-
   const handleHideQuiz = async (id: string) => {
     await QuizApi.hideQuiz(id)
       .then((res) => {
         useToast.success("Ẩn bộ câu hỏi thành công 🎉");
-        setTempHide(id);
+        setTempId(id);
         fetchData();
       })
       .catch((err) => {
@@ -75,7 +76,20 @@ export default function TableQuiz() {
     await QuizApi.showQuiz(id)
       .then((res) => {
         useToast.success("Bỏ ẩn bộ câu hỏi thành công 🎉");
-        setTempShow(id);
+        setTempId(id);
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+        useToast.error("Đã có lỗi xảy ra!!!!");
+      });
+  };
+
+  const handleDeleteQuiz = async (id: string) => {
+    await QuizApi.deleteQuiz(id)
+      .then((res) => {
+        useToast.success("Xóa bộ câu hỏi thành công 🎉");
+        setTempId(id);
         fetchData();
       })
       .catch((err) => {
@@ -104,52 +118,62 @@ export default function TableQuiz() {
         </Link>
       </td>
       <td>{quiz.topic}</td>
-      <td>{quiz.ageGroup}</td>
-      <td>{quiz.questions.length}</td>
-      {/* <td>{`${quiz.createAdmin?.lastName ?? ""} ${quiz.createAdmin?.firstName ?? ""}`}</td> */}
-      <td className={quiz.status === "AVAILABLE" ? "text-[#00B300]" : "text-[#B30000]"}>
+      <td className="text-center">{quiz.ageGroup}</td>
+      <td className="text-center">{quiz.questions.length}</td>
+      <td>{quiz.blog != null && <IconCheck className="text-neutral-500" />}</td>
+      <td
+        className={
+          quiz.status === "AVAILABLE" ? "text-[#00B300] text-center" : "text-[#B30000] text-center"
+        }
+      >
         {quiz.status === "AVAILABLE" ? "Hiện" : "Ẩn"}
       </td>
-      <td className="">
+
+      <td>
         <Menu shadow="md" width={200}>
           <Menu.Target>
             <IconDotsVertical className="cursor-pointer mx-auto" />
           </Menu.Target>
 
           <Menu.Dropdown>
+            {quiz.blog ? (
+              ""
+            ) : (
+              <Menu.Item
+                icon={<IconPlus size={18} />}
+                className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+                onClick={() => router.push(`/quizzes/${quiz.id}/create-new-blog`)}
+              >
+                Thêm bài viết
+              </Menu.Item>
+            )}
             <Menu.Item
-              icon={<IconInfoCircle size={18} />}
-              className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => router.push(`/quizzes/${quiz.id}`)}
-            >
-              Chi tiết
-            </Menu.Item>
-            {/* <Menu.Item
               icon={<IconEdit size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => {
-                setTypeModal({ method: "UPDATE", data: quiz });
-                openFunc();
-              }}
+              onClick={() => router.push(`/quizzes/update-quiz/${quiz.id}`)}
             >
               Chỉnh sửa
-            </Menu.Item> */}
+            </Menu.Item>
+
             <Menu.Item
               icon={quiz.status === "AVAILABLE" ? <IconEyeOff size={18} /> : <IconEye size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() =>
-                quiz.status === "AVAILABLE" ? setTempHide(quiz.id) : setTempShow(quiz.id)
-              }
+              onClick={() => {
+                setTempId(quiz.id);
+                quiz.status === "AVAILABLE" ? handlersH.open() : handlersS.open();
+              }}
             >
               {quiz.status === "AVAILABLE" ? "Ẩn" : "Bỏ Ẩn"}
             </Menu.Item>
-            {/* TODO: fix this feature
             <Menu.Item
               icon={<IconTrash size={18} />}
-              className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
+              onClick={() => {
+                setTempId(quiz.id);
+                handlersD.open();
+              }}
             >
               Xóa
-            </Menu.Item> */}
+            </Menu.Item>
           </Menu.Dropdown>
         </Menu>
       </td>
@@ -164,18 +188,13 @@ export default function TableQuiz() {
             e.preventDefault();
             fetchData();
           }}
-          className="w-1/3 flex bg-[#F1F5FE] rounded-full overflow-hidden items-center"
         >
-          <input
+          <Input
             type="text"
             placeholder="Tìm kiếm bộ câu hỏi"
-            className="w-full bg-transparent focus:outline-none py-3 px-5"
+            className="w-full mr-4"
+            radius={100}
             onChange={(e) => setSearch(e.target.value)}
-          />
-          <IconSearch
-            type="submit"
-            className="w-16 h-10 text-[#8D92AA] px-5 hover:bg-[#00000010] transition-all cursor-pointer"
-            onClick={fetchData}
           />
         </form>
         <button
@@ -211,22 +230,31 @@ export default function TableQuiz() {
         className="mt-2 justify-center"
       />
       <ModalConfirm
-        title="Bạn có muốn ẩn bài viết này?"
+        title="Bạn có muốn ẩn bộ câu hỏi này?"
         buttonContent="Ẩn"
         opened={hideOpened}
-        onOk={() => handleHideQuiz(tempHide)}
-        onCancel={close}
-        content="Bộ câu hỏi sẽ không thể hiển thị trên ứng dụng KidTalkie sau khi ẩn"
+        onOk={() => handleHideQuiz(tempId)}
+        onCancel={handlersH.close}
+        content="Sau khi ẩn, bộ câu hỏi sẽ không hiển thị trên ứng dụng KidTalkie"
         image={0}
       />
       <ModalConfirm
-        title="Bạn có muốn bỏ ẩn bài viết này?"
+        title="Bạn có muốn bỏ ẩn bộ câu hỏi này?"
         buttonContent="Bỏ ẩn"
-        content="Bộ câu hỏi sẽ được hiển thị trên ứng dụng KidTalkie sau khi bỏ ẩn"
+        content="Sau khi bỏ ẩn, bộ câu hỏi sẽ được hiển thị trên ứng dụng KidTalkie"
         opened={showOpened}
-        onOk={() => handleShowQuiz(tempShow)}
-        onCancel={handlers.close}
+        onOk={() => handleShowQuiz(tempId)}
+        onCancel={handlersS.close}
         image={1}
+      />
+      <ModalConfirm
+        title="Bạn có muốn xóa bộ câu hỏi này?"
+        buttonContent="Xóa"
+        opened={deleteOpened}
+        onOk={() => handleDeleteQuiz(tempId)}
+        onCancel={handlersD.close}
+        content="Sau khi xóa, bộ câu hỏi sẽ không thể hiển thị trên ứng dụng KidTalkie"
+        image={0}
       />
     </div>
   );
