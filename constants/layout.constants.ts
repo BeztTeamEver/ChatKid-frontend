@@ -9,6 +9,7 @@ import {
   IconMessageCircleQuestion,
   IconFlag,
   IconDiamond,
+  IconBrandOpenai,
 } from "@tabler/icons-react";
 
 export const DataNavbar = {
@@ -25,6 +26,7 @@ export const DataNavbar = {
     { label: "Trang bị botchat", link: "/assets", icon: IconHanger },
     { label: "Loại công việc", link: "/task-types", icon: IconListDetails },
     { label: "Bộ câu hỏi", link: "/quizzes", icon: IconMessageCircleQuestion },
+    { label: "Prompt", link: "/prompt", icon: IconBrandOpenai },
     // { label: "Blog", link: "/blogs", icon: IconArticle },
   ],
 };

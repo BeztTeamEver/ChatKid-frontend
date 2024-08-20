@@ -55,4 +55,13 @@ export const DataTable = {
     "Tác vụ",
   ],
   Blog: ["STT", "Thời gian tạo", "Tựa đề", "Thuộc bộ câu hỏi", "Tác vụ"],
+  Prompt: [
+    "STT",
+    "Thời gian tạo",
+    "Nội dung",
+    "Từ khoá",
+    "Số ký tự",
+    "Trạng thái",
+    "Tác vụ",
+  ],
 };
