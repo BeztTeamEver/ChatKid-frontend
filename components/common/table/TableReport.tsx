@@ -1,4 +1,5 @@
 import { DataTable } from "@/constants/dataTable";
+import { useToast } from "@/hooks/useToast/toast";
 import ChecklogModal from "@/pages/reports/components/checklogModal";
 import empty from "@/public/images/empty.png";
 import { REPORT_TYPE, reportData } from "@/types/report.type";
@@ -8,16 +9,15 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import SkeletonFunction from "../skeleton/skeletonTable";
 import ModalConfirm from "../modal/confirmModal";
+import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableReport() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isConfirmAccept, setIsConfirmAccept] = useState<string>('');
-  const [isConfirmDisagree, setIsConfirmDisagree] = useState<string>('');
+  const [isConfirmAccept, setIsConfirmAccept] = useState<REPORT_TYPE | null>(null);
+  const [isConfirmDisagree, setIsConfirmDisagree] = useState<REPORT_TYPE | null>(null);
   const [listReport, setListReport] = useState<Array<REPORT_TYPE>>([]);
   const [totalReport, setTotalReport] = useState<number>(0);
   const [activePage, setActivePage] = useState<number>(1);
@@ -31,7 +31,6 @@ export default function TableReport() {
   const [reasons, setReasons] = useState<Array<string>>([]);
   const [checklogOpened, { open, close }] = useDisclosure(false);
   const debouncedSearchTerm = useDebounce(search, 500);
-  const router = useRouter();
 
   const fetchData = async (page: number) => {
     setActivePage(page);
@@ -43,6 +42,15 @@ export default function TableReport() {
       })
       .catch((err) => console.log(err));
     setIsLoading(false);
+  };
+
+  const handleReplyReport = async (id: string, newStatus: "PENDING" | "ACCEPTED" | "REJECTED") => {
+    await ReportApi.updateStatusReport(id, newStatus)
+      .then((res) => {
+        fetchData(activePage);
+        useToast.success("Phản hồi báo cáo thành công 🎉");
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -96,10 +104,21 @@ export default function TableReport() {
       </td>
       {report.status === "PENDING" ? (
         <td className="w-[100px] flex">
-          <ActionIcon color="green" variant="outline" radius="md" className="mr-2" onClick={() => setIsConfirmAccept(report.id)}>
+          <ActionIcon
+            color="green"
+            variant="outline"
+            radius="md"
+            className="mr-2"
+            onClick={() => setIsConfirmAccept(report)}
+          >
             <IconCheck size="1.125rem" />
           </ActionIcon>
-          <ActionIcon color="red" variant="outline" radius="md" onClick={() => setIsConfirmDisagree(report.id)}>
+          <ActionIcon
+            color="red"
+            variant="outline"
+            radius="md"
+            onClick={() => setIsConfirmDisagree(report)}
+          >
             <IconX size="1.125rem" />
           </ActionIcon>
         </td>
@@ -188,18 +207,18 @@ export default function TableReport() {
         title="Bạn có muốn xác nhận báo cáo này?"
         buttonContent="Xác nhận"
         opened={!!isConfirmAccept}
-        onOk={() => 0}
-        onCancel={() => setIsConfirmAccept('')}
+        onOk={() => handleReplyReport(isConfirmAccept!.id, "ACCEPTED")}
+        onCancel={() => setIsConfirmAccept(null)}
         content="Sau khi xác nhận vấn đề thì hệ thống sẽ hoàn trả kim cương cho khách hàng và không thể hoàn tác!"
         image={1}
       />
       <ModalConfirm
         title="Bạn có muốn từ chối báo cáo này?"
         buttonContent="Từ chối"
-        content="Bạn hãy để lại lời nhắn để khách hàng có thể hiểu được vấn đề nhé!"
+        content={`Bạn hãy để lại lời nhắn về mail ${isConfirmDisagree?.familyEmail} để khách hàng có thể hiểu được vấn đề nhé!`}
         opened={!!isConfirmDisagree}
-        onOk={() => 1}
-        onCancel={() => setIsConfirmDisagree('')}
+        onOk={() => handleReplyReport(isConfirmAccept!.id, "REJECTED")}
+        onCancel={() => setIsConfirmDisagree(null)}
         image={1}
       />
     </div>

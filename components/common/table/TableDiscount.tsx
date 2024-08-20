@@ -109,7 +109,7 @@ export default function TableDiscount() {
       ) : moment(discount.endTime) < moment(timeNow) ? (
         <td className="font-medium text-neutral-500">Đã hoàn thành</td>
       ) : moment(discount.startTime) > moment(timeNow) ? (
-        <td className="font-medium text-neutral-700">Sắp diễn ra</td>
+        <td className="font-medium text-[#67B8FF]">Sắp diễn ra</td>
       ) : (
         <td className="font-medium text-green-600">Đang diễn ra</td>
       )}
