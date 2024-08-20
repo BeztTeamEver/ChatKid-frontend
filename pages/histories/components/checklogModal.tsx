@@ -29,7 +29,7 @@ export default function ChecklogModal({
         withCloseButton={false}
         centered
         radius={24}
-        size={640}
+        size={960}
         padding={24}
         className="[&_.mantine-jfhix9]:bg-transparent [&_.mantine-jfhix9]:shadow-none"
       >

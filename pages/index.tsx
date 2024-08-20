@@ -134,7 +134,7 @@ export default function HomePage() {
 
       <div className="col-span-2 bg-white rounded-[10px] pl-5 border-[1px] border-neutral-100">
         <p className="font-semibold text-lg text-neutral-900 mt-5 -mb-3 text-center">
-          Thống kê giao dịch năm {year}
+          Thống kê giao dịch tháng 7 năm {year}
         </p>
         <Chart className="w-full" data={data?.subcriptionViewModels} />
       </div>

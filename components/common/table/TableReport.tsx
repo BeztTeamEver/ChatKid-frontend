@@ -12,9 +12,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import SkeletonFunction from "../skeleton/skeletonTable";
+import ModalConfirm from "../modal/confirmModal";
 
 export default function TableReport() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isConfirmAccept, setIsConfirmAccept] = useState<string>('');
+  const [isConfirmDisagree, setIsConfirmDisagree] = useState<string>('');
   const [listReport, setListReport] = useState<Array<REPORT_TYPE>>([]);
   const [totalReport, setTotalReport] = useState<number>(0);
   const [activePage, setActivePage] = useState<number>(1);
@@ -93,10 +96,10 @@ export default function TableReport() {
       </td>
       {report.status === "PENDING" ? (
         <td className="w-[100px] flex">
-          <ActionIcon color="green" variant="outline" radius="md" className="mr-2">
+          <ActionIcon color="green" variant="outline" radius="md" className="mr-2" onClick={() => setIsConfirmAccept(report.id)}>
             <IconCheck size="1.125rem" />
           </ActionIcon>
-          <ActionIcon color="red" variant="outline" radius="md">
+          <ActionIcon color="red" variant="outline" radius="md" onClick={() => setIsConfirmDisagree(report.id)}>
             <IconX size="1.125rem" />
           </ActionIcon>
         </td>
@@ -180,6 +183,25 @@ export default function TableReport() {
         voice={voice}
         reasons={reasons}
       ></ChecklogModal>
+
+      <ModalConfirm
+        title="Bạn có muốn xác nhận báo cáo này?"
+        buttonContent="Xác nhận"
+        opened={!!isConfirmAccept}
+        onOk={() => 0}
+        onCancel={() => setIsConfirmAccept('')}
+        content="Sau khi xác nhận vấn đề thì hệ thống sẽ hoàn trả kim cương cho khách hàng và không thể hoàn tác!"
+        image={1}
+      />
+      <ModalConfirm
+        title="Bạn có muốn từ chối báo cáo này?"
+        buttonContent="Từ chối"
+        content="Bạn hãy để lại lời nhắn để khách hàng có thể hiểu được vấn đề nhé!"
+        opened={!!isConfirmDisagree}
+        onOk={() => 1}
+        onCancel={() => setIsConfirmDisagree('')}
+        image={1}
+      />
     </div>
   );
 }
