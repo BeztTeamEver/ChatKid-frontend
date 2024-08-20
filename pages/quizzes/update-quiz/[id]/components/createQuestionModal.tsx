@@ -82,7 +82,7 @@ export default function CreateQuestionModal({
       padding={0}
       className="[&_.mantine-jfhix9]:bg-transparent [&_.mantine-jfhix9]:shadow-none"
     >
-      <div className="m-0.5 p-6 bg-white rounded-2xl w-full">
+      <div className="p-6 bg-white rounded-2xl w-full overflow-hidden">
         <IconX
           className="absolute top-2 right-2 w-10 h-10 p-[7px] rounded-full hover:bg-primary-50 hover:text-primary-500 transition-all cursor-pointer bg-white"
           onClick={() => onCancel()}

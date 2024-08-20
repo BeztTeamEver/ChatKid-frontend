@@ -18,10 +18,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import ModalConfirm from "../modal/confirmModal";
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableTaskType() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isConfirmDelete, setIsConfirmDelete] = useState<string>("");
   const [listTaskType, setListTaskType] = useState<Array<TASK_TYPE_TYPE>>([]);
   const [totalTaskType, setTotalTaskType] = useState<number>(0);
   const [activePage, setActivePage] = useState<number>(1);
@@ -106,7 +108,7 @@ export default function TableTaskType() {
             <Menu.Item
               icon={<IconTrash size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              onClick={() => handleDeleteTaskType(taskType.id)}
+              onClick={() => setIsConfirmDelete(taskType.id)}
             >
               Xóa
             </Menu.Item>
@@ -178,6 +180,16 @@ export default function TableTaskType() {
         total={Math.ceil(totalTaskType / 10)}
         color="orange"
         className="mt-2 justify-center"
+      />
+
+      <ModalConfirm
+        title="Bạn có chắc muốn xóa loại công việc này?"
+        buttonContent="Xác nhận"
+        content="Loại công việc này sau khi xóa không thể hoàn tác được."
+        opened={!!isConfirmDelete}
+        onOk={() => handleDeleteTaskType(isConfirmDelete)}
+        onCancel={close}
+        image={0}
       />
     </div>
   );

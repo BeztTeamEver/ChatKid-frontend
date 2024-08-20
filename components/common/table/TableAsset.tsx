@@ -230,13 +230,13 @@ export default function TableAsset() {
         opened={inactiveOpened}
         onOk={() => handleInactiveAsset(tempInactive)}
         onCancel={handlers.close}
-        content="Tài khoản gia đình sau khi bị cấm sẽ không thể hoạt động trên ứng dụng KidTalkie được nữa"
+        content="Trang phục sau khi bị ẩn sẽ không thể tìm thấy trên ứng dụng KidTalkie được nữa"
         image={0}
       />
       <ModalConfirm
         title="Bạn có muốn bỏ ẩn trang bị này?"
         buttonContent="Bỏ ẩn trang bị"
-        content="Tài khoản gia đình sau khi bỏ cấm sẽ có thể hoạt động trên ứng dụng KidTalkie"
+        content="Trang phục sau khi bỏ ẩn sẽ có thể tìm thấy trên ứng dụng KidTalkie"
         opened={activeOpened}
         onOk={() => handleActiveAsset(tempActive)}
         onCancel={close}
