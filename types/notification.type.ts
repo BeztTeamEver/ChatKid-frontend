@@ -19,15 +19,11 @@ export type BODY_CREATE_NOTIFICATION = {
 
 export const DataReceiver = [
   {
-    value: "ADMIN",
-    label: "Admin",
-  },
-  {
-    value: "EXPERT",
-    label: "Chuyên gia tư vấn",
-  },
-  {
     value: "PARENTS",
     label: "Phụ huynh",
+  },
+  {
+    value: "CHILDRENT",
+    label: "Trẻ",
   },
 ];

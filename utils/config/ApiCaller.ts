@@ -1,7 +1,7 @@
 import axios, { AxiosHeaders } from "axios";
 import LocalStorage from "utils/localStore";
 
-type METHOD_TYPE = "GET" | "POST" | "PUT" | "DELETE";
+type METHOD_TYPE = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 const defaultURL = process.env.API_URL;
 
@@ -47,6 +47,10 @@ export const post = ({ endpoint, body, params, headers }: Omit<ApiCallerType, "m
 
 export const put = ({ endpoint, body, params, headers }: Omit<ApiCallerType, "method">) => {
   return ApiCaller({ method: "PUT", endpoint, headers, params, body });
+};
+
+export const patch = ({ endpoint, body, params, headers }: Omit<ApiCallerType, "method">) => {
+  return ApiCaller({ method: "PATCH", endpoint, headers, params, body });
 };
 
 export const remove = ({ endpoint, body, params, headers }: Omit<ApiCallerType, "method">) => {

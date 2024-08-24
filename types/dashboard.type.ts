@@ -29,7 +29,7 @@ export type DASHBOARD_TYPE = {
       createdAt: Date;
       updatedAt: Date;
       status: 0;
-      typeBlog: {
+      blogType: {
         id: string;
         name: string;
         imageUrl: string;

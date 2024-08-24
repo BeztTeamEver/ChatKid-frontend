@@ -19,7 +19,9 @@ export default function UserDropdown({ user }: { user: USER_TYPE }) {
       <Menu.Target>
         <div className="flex items-center gap-2 cursor-pointer">
           <div className="">
-            <p className="text-sm font-medium">{`${user?.lastName} ${user.firstName}`}</p>
+            <p className="text-sm font-medium">{`${user.lastName ?? ""} ${
+              user.firstName ?? ""
+            }`}</p>
             <p className="text-[#7E84A0] text-xs capitalize">
               {user.role?.split("_").join(" ").toLowerCase()}
             </p>

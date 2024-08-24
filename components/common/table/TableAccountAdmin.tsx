@@ -1,4 +1,3 @@
-import { DataTable } from "@/constants/dataTable";
 import { useToast } from "@/hooks/useToast/toast";
 import { ADMIN_TYPE } from "@/types/admin.type";
 import { AdminApi } from "@/utils/adminApi";
@@ -82,9 +81,9 @@ export default function TableAccountAdmin({
           className="hover:text-blue-400 hover:underline transition-all"
         >{`${admin?.lastName} ${admin.firstName}`}</Link>
       </td>
-      <td>{admin.gmail}</td>
+      <td>{admin.email}</td>
       <td>{admin.phone}</td>
-      <td>{moment(admin.createdAt).format("HH:mm, DD/MM/YYYY")}</td>
+      <td>{moment(admin.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</td>
       <td className="capitalize">
         {admin.gender?.toLowerCase()?.trim() === "male" ? "Nam" : "Nữ"}
       </td>
@@ -147,7 +146,7 @@ export default function TableAccountAdmin({
       <Table className="rounded-md overflow-hidden">
         <thead className="bg-primary-default p-[10px]">
           <tr>
-            {DataTable.AccountAdmin.map((item, index) => (
+            {/* {DataTable.AccountAdmin.map((item, index) => (
               <th
                 key={index}
                 className={`!text-white !font-bold !text-base leading-[21.7px] ${
@@ -156,7 +155,7 @@ export default function TableAccountAdmin({
               >
                 {item}
               </th>
-            ))}
+            ))} */}
           </tr>
         </thead>
         <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
@@ -171,9 +170,11 @@ export default function TableAccountAdmin({
       <ModalConfirm
         title="Bạn có chắc muốn cấm admin này?"
         buttonContent="Cấm"
+        content="Tài khoản gia đình sau khi bỏ cấm sẽ có thể hoạt động trên ứng dụng KidTalkie"
         opened={opened}
         onOk={() => handleRemoveAdmin(tempId)}
         onCancel={close}
+        image={1}
       />
     </div>
   );

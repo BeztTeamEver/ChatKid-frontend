@@ -49,7 +49,7 @@ export default function CreateNotificationForm({
       <h2 className="text-center font-bold mb-[2px] text-xl col-span-2">Tạo bài viết mới</h2>
       <MultiSelect
         label="Phân loại"
-        placeholder="Admin, Chuyên gia, Phụ huynh"
+        placeholder="Phụ huynh, Trẻ"
         defaultValue={state.receiver.split(",")}
         onChange={(e) => setState({ ...state, receiver: e.join(",") })}
         withAsterisk

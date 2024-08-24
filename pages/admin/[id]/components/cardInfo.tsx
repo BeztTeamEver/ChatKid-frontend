@@ -66,7 +66,7 @@ export default function DetailAdminCard({
             </div>
             <div className="w-fit flex gap-3 flex-col [&>p]:text-[#464C62] [&>p]:font-normal">
               <p>{`${infoAdmin.lastName} ${infoAdmin.firstName}`}</p>
-              <p>{infoAdmin.gmail}</p>
+              <p>{infoAdmin.email}</p>
               <p>{infoAdmin.phone}</p>
               <p>{moment(infoAdmin.createdAt).format("HH:mm, DD/MM/YYYY")}</p>
               <p>{infoAdmin.gender?.toLowerCase() === "male" ? "Nam" : "Nữ"}</p>

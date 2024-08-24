@@ -31,7 +31,7 @@ export default function DetailFamily() {
   return (
     <div>
       <Breadcrumbs
-        className="bg-white p-8 rounded-lg w-fit"
+        className="bg-white p-6 rounded-2xl w-fill"
         sx={{
           boxShadow:
             "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -47,9 +47,9 @@ export default function DetailFamily() {
           Chi tiết tài khoản gia đình
         </Link>
       </Breadcrumbs>
-      <div className="flex gap-5 h-fit p-8 rounded-lg mx-auto mt-10 w-full">
+      <div className="flex gap-5 h-fit rounded-2xl mx-auto mt-4 w-full">
         <DetailFamilyCard infoFamily={infoFamily} setInfoFamily={setInfoFamily} />
-        <TableAccountFamily listFamily={infoFamily?.users} />
+        <TableAccountFamily listFamily={infoFamily?.members} />
       </div>
     </div>
   );

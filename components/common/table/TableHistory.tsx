@@ -1,25 +1,35 @@
 import { DataTable } from "@/constants/dataTable";
+import ChecklogModal from "@/pages/histories/components/checklogModal";
+import empty from "@/public/images/empty.png";
 import { HISTORY_TYPE } from "@/types/history.type";
 import { HistoryApi } from "@/utils/historyApi";
-import { Pagination, Table } from "@mantine/core";
+import { Image, Input, Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
+import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 
 import SkeletonFunction from "../skeleton/skeletonTable";
 
 export default function TableHistory() {
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(search, 100);
   const [activePage, setActivePage] = useState<number>(1);
   const [listHistory, setListHistory] = useState<HISTORY_TYPE[]>([]);
   const [totalHistory, setTotalHistory] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const searchRef = useRef<HTMLInputElement>(null);
+  const [checklogOpened, { open, close }] = useDisclosure(false);
+  const [createdTime, setCreatedTime] = useState("");
+  const [mail, setMail] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [voice, setVoice] = useState("");
 
-  const fetchData = async () => {
+  const fetchData = async (page: number) => {
+    setActivePage(page);
     setIsLoading(true);
-    await HistoryApi.getListHistory(activePage - 1, 10, searchRef.current?.value ?? "")
+    await HistoryApi.getListHistory(page - 1, 10, debouncedSearchTerm ?? "")
       .then((res) => {
         setListHistory(res.data.items);
         setTotalHistory(res.data.totalItem);
@@ -29,8 +39,12 @@ export default function TableHistory() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [activePage]);
+    fetchData(1);
+  }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    createdTime && mail && open();
+  }, [createdTime]);
 
   const rows = listHistory?.map((history, index) => (
     <tr
@@ -42,65 +56,108 @@ export default function TableHistory() {
       }
     >
       <td>{index + 1 + 10 * (activePage - 1)}</td>
-      <td>{history.userId}</td>
-      <td>{history.serviceName}</td>
-      <td>{moment(history.createdTime).format("HH:mm, DD/MM/YYYY")}</td>
-      <td className="text-primary-default">
-        <Link href={`/histories/${history.id}`}>Xem</Link>
+      <td>{moment(history.createdAt).format("HH:mm:ss, DD/MM/YYYY")}</td>
+      <td>{history.familyEmail}</td>
+      <td>{history.memberName}</td>
+      <td
+        className="text-primary-default underline hover:text-primary-800"
+        onClick={() => {
+          setCreatedTime(history.createdAt);
+          setMail(history.familyEmail);
+          setAnswer(history.answer);
+          setVoice(history.voiceUrl);
+        }}
+      >
+        <a>Xem chi tiết</a>
       </td>
     </tr>
   ));
 
   return (
-    <div
-      className="bg-white p-6 rounded-lg col-span-3 h-fit w-full"
-      style={{
-        boxShadow:
-          "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
-      }}
-    >
-      {" "}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          fetchData();
+    <div>
+      <div
+        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-items-center items-center"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
         }}
-        className="w-1/3 flex bg-[#F1F5FE] rounded-full overflow-hidden items-center mb-5"
       >
-        <input
-          ref={searchRef}
-          type="text"
-          placeholder="Tìm kiếm tài khoản"
-          className="w-full bg-transparent focus:outline-none py-3 px-5"
+        <p className="text-base font-semibold text-primary-900 mr-6">
+          Danh sách lịch sử hỏi botchat
+        </p>
+        <div className="bg-primary-100 p-1 px-4 rounded-2xl flex text-sm">
+          <p>Tổng số:</p>
+          <p className="mx-2">{totalHistory}</p>
+        </div>
+      </div>
+      <div
+        className="bg-white p-5 rounded-2xl col-span-3 h-fit w-full"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <div className="flex items-center mb-4">
+          <Input
+            icon={<IconSearch size={14} />}
+            type="text"
+            value={search}
+            placeholder="Tìm kiếm tài khoản gia đình"
+            className="w-[0px] mr-2"
+            radius="xl"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search ? (
+            <button
+              className="w-fit px-2 text-sm font-semibold hover:text-primary-900 text-primary-700 bg-none cursor-pointer"
+              onClick={() => setSearch("")}
+            >
+              Trở về mặc định
+            </button>
+          ) : (
+            <button disabled className="w-fit px-2 text-sm font-semibold bg-none text-neutral-300">
+              Mặc định
+            </button>
+          )}
+        </div>
+        <Table className="rounded-md overflow-hidden">
+          <thead className="bg-primary-default p-[10px]">
+            <tr>
+              {DataTable.History.map((item, index) => (
+                <th
+                  key={index}
+                  className="!text-white !font-bold !text-base leading-[21.7px] last:w-32"
+                >
+                  {item}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={5} /> : rows}</tbody>
+        </Table>
+        {listHistory.length === 0 && !isLoading ? (
+          <div className="w-full items-center text-center">
+            <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+            <p>Danh sách hiện không có lịch sử hỏi botchat nào để hiển thị </p>
+          </div>
+        ) : null}
+        <Pagination
+          value={activePage}
+          onChange={(e) => fetchData(e)}
+          total={Math.ceil(totalHistory / 10)}
+          color="orange"
+          className="mt-2 justify-center"
         />
-        <IconSearch
-          type="submit"
-          className="w-16 h-10 text-[#8D92AA] px-5 hover:bg-[#00000010] transition-all cursor-pointer"
-          onClick={fetchData}
+        <ChecklogModal
+          title="Checklog"
+          opened={checklogOpened}
+          onCancel={close}
+          createdAt={createdTime}
+          mail={mail}
+          answer={answer}
+          voice={voice}
         />
-      </form>
-      <Table className="rounded-md overflow-hidden">
-        <thead className="bg-primary-default p-[10px]">
-          <tr>
-            {DataTable.History.map((item, index) => (
-              <th
-                key={index}
-                className="!text-white !font-bold !text-base leading-[21.7px] last:w-32"
-              >
-                {item}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={5} /> : rows}</tbody>
-      </Table>
-      <Pagination
-        value={activePage}
-        onChange={(e) => setActivePage(e)}
-        total={Math.ceil(totalHistory / 10)}
-        color="orange"
-        className="mt-2 justify-center"
-      />
+      </div>
     </div>
   );
 }

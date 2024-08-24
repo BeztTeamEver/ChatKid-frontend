@@ -2,7 +2,6 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { useEffect, useState } from "react";
 
 type DATA_CHART_BE = Array<{
-  advertising: Number;
   basicSubcription: Number;
   premiumSubcription: Number;
   premiumSuperSubcription: Number;
@@ -12,40 +11,38 @@ type DATA_CHART = {
   basicSubcription: Array<number>;
   premiumSubcription: Array<number>;
   premiumSuperSubcription: Array<number>;
-  advertising: Array<number>;
 };
 
 export default function Chart({ className, data }: { className: string; data?: DATA_CHART_BE }) {
   const [dataChart, setDataChart] = useState<DATA_CHART>({
-    basicSubcription: [],
-    premiumSubcription: [],
-    premiumSuperSubcription: [],
-    advertising: [],
+    basicSubcription: [1,7,8,4,13,15,8,25,14,43,32,23],
+    premiumSubcription: [0,1,4,6,2,2,4,6,2,2,4,5],
+    premiumSuperSubcription: [2,3,2,5,6,0,8,7,2,3,1,0],
   });
 
-  useEffect(() => {
-    console.log(data);
-    if (data?.length) {
-      const newData: DATA_CHART = {
-        basicSubcription: [],
-        premiumSubcription: [],
-        premiumSuperSubcription: [],
-        advertising: [],
-      };
-      for (let i = 0; i < 12; i += 1) {
-        newData.basicSubcription.push(data[i].basicSubcription as number);
-        newData.premiumSubcription.push(data[i].premiumSubcription as number);
-        newData.premiumSuperSubcription.push(data[i].premiumSuperSubcription as number);
-        newData.advertising.push(data[i].advertising as number);
-      }
-      console.log(newData);
-      setDataChart(newData);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data);
+  //   if (data?.length) {
+  //     const newData: DATA_CHART = {
+  //       basicSubcription: [],
+  //       premiumSubcription: [],
+  //       premiumSuperSubcription: [],
+  //       advertising: [],
+  //     };
+  //     for (let i = 0; i < 12; i += 1) {
+  //       newData.basicSubcription.push(data[i].basicSubcription as number);
+  //       newData.premiumSubcription.push(data[i].premiumSubcription as number);
+  //       newData.premiumSuperSubcription.push(data[i].premiumSuperSubcription as number);
+  //       newData.advertising.push(data[i].advertising as number);
+  //     }
+  //     console.log(newData);
+  //     setDataChart(newData);
+  //   }
+  // }, [data]);
 
   return (
     <div>
-      {data?.length && (
+      {(
         <BarChart
           sx={{ padding: "1.5rem" }}
           className={className}
@@ -78,17 +75,7 @@ export default function Chart({ className, data }: { className: string; data?: D
               color: "#84D9FD",
               label: "Gói siêu tiết kiệm",
               stack: "total",
-            },
-            {
-              id: "ads_rect",
-              data:
-                dataChart.advertising?.length === 12
-                  ? dataChart.advertising
-                  : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-              color: "#E9EAF2",
-              label: "Quảng cáo",
-              stack: "total",
-            },
+            }
           ]}
         />
       )}

@@ -45,7 +45,7 @@ export function LinksGroup({
         }}
         className={classes.control}
         sx={
-          router.pathname.includes(link && link !== "/" ? link : "#")
+          router.pathname.includes(link && link !== "/" ? link : "#") || router.pathname === link
             ? {
                 borderRadius: rem(8),
                 color: "#752B01",
@@ -58,7 +58,13 @@ export function LinksGroup({
         <Group position="apart" spacing={0} onClick={() => router.push(link ?? "")}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Icon size="1.1rem" />
-            {isExpanded ? <Box ml="md">{label}</Box> : ""}
+            {isExpanded ? (
+              <Box ml="md" className="font-medium">
+                {label}
+              </Box>
+            ) : (
+              ""
+            )}
           </Box>
           {hasLinks && isExpanded && (
             <ChevronIcon

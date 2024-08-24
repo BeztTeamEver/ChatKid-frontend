@@ -15,7 +15,7 @@ export default function CreateAdminForm({
   const [state, setState] = useState<BODY_CREATE_ADMIN>({
     firstName: "",
     lastName: "",
-    gmail: "",
+    email: "",
     phone: "",
     age: 0,
     gender: "male",
@@ -68,8 +68,8 @@ export default function CreateAdminForm({
         label="Email"
         placeholder="abc@example.com"
         className="col-span-2"
-        value={state.gmail}
-        onChange={(e) => setState({ ...state, gmail: e.target.value })}
+        value={state.email}
+        onChange={(e) => setState({ ...state, email: e.target.value })}
         withAsterisk
         required
       />

@@ -1,6 +1,6 @@
 import { BODY_CREATE_BLOG } from "@/types/blog.type";
 
-import { get, post, put, remove } from "./config/ApiCaller";
+import { get, patch, post, remove } from "./config/ApiCaller";
 
 export const BlogApi = {
   getListBlog: async (pageNumber: number, pageSize: number, search: String = "") => {
@@ -11,7 +11,7 @@ export const BlogApi = {
     });
   },
 
-  getListTypeBlog: async () => {
+  getListBlogType: async () => {
     return await get({
       endpoint: `/blog-types`,
     });
@@ -28,7 +28,7 @@ export const BlogApi = {
   },
 
   updateBlog: async (id: string, body: BODY_CREATE_BLOG) => {
-    return await put({ endpoint: `/blogs/${id}`, body });
+    return await patch({ endpoint: `/blogs/${id}`, body });
   },
 
   hideBlog: async (id: string) => {
@@ -36,6 +36,6 @@ export const BlogApi = {
   },
 
   showBlog: async (id: string) => {
-    return await put({ endpoint: `/blogs/${id}`, body: { status: 1 } });
+    return await patch({ endpoint: `/blogs/${id}`, body: { status: 1 } });
   },
 };
