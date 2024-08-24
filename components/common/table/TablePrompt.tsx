@@ -12,8 +12,8 @@ import {
   IconEdit,
   IconEye,
   IconEyeOff,
-  IconInfoCircle,
   IconPlus,
+  IconSearch,
 } from "@tabler/icons-react";
 import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
@@ -138,102 +138,139 @@ export default function TablePrompt() {
 
   return (
     <div>
-      <div className="w-full flex justify-between mb-4 items-center">
-        <form
-          onChange={(e) => {
-            e.preventDefault();
-          }}
-          className="flex justify-between items-center w-2/3"
-        >
-          <Input
-            type="text"
-            placeholder="Nhập từ khoá tìm kiếm"
-            className="w-full mr-4"
-            radius={100}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Select
-            className="mb-1 col-span-3 w-full mr-4"
-            value={status}
-            onChange={(e: string) => setStatus(e)}
-            withAsterisk
-            radius={100}
-            data={PromptStatusData}
-          />
-        </form>
-        <button
-          className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
-          onClick={() => setIsCreating(true)}
-        >
-          <IconPlus />
-          Tạo prompt mới
-        </button>
-      </div>
-      <Table className="rounded-md overflow-hidden">
-        <thead className="bg-primary-default p-[10px]">
-          <tr>
-            {DataTable.Prompt.map((item, index) => (
-              <th
-                key={index}
-                className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.Prompt.length - 1 ? "w-20" : ""
-                }`}
-              >
-                {item}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
-      </Table>
-      {listPrompt.length === 0 ? (
-        <div className="w-full items-center text-center">
-          <Image src={empty.src} fit="contain" height={200} className=" py-10" />
-          <p>Danh sách hiện không có prompt nào để hiển thị</p>
+      <div
+        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-items-center"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <p className="text-base font-semibold text-primary-900 mr-6">Danh sách prompt</p>
+        <div className="bg-primary-100 p-1 px-4 rounded-2xl flex text-sm">
+          <p>Tổng số:</p>
+          <p className="mx-2">{totalPrompt}</p>
         </div>
-      ) : null}
-      <Pagination
-        value={activePage}
-        onChange={(e) => fetchData(e)}
-        total={Math.ceil(totalPrompt / 10)}
-        color="orange"
-        className="mt-2 justify-center"
-      />
-      <ModalConfirm
-        title="Bạn có muốn ẩn prompt này?"
-        buttonContent="Ẩn prompt"
-        opened={inactiveOpened}
-        onOk={() => handleInactivePrompt(tempInactive)}
-        onCancel={handlers.close}
-        content="Sau khi ẩn prompt này các câu trả lời sẽ không bị giới hạn bởi nội dung của prompt này nữa!"
-        image={0}
-      />
-      <ModalConfirm
-        title="Bạn có muốn bỏ ẩn prompt này?"
-        buttonContent="Bỏ ẩn prompt"
-        content="Sau khi bỏ ẩn prompt này các câu trả lời sẽ bị giới hạn bởi nội dung của prompt này!"
-        opened={activeOpened}
-        onOk={() => handleActivePrompt(tempActive)}
-        onCancel={close}
-        image={1}
-      />
-      <CreatePromptModal
-        opened={isCreating}
-        onCancel={() => setIsCreating(false)}
-        onFinish={() => {
-          setIsCreating(false);
-          fetchData(activePage);
+      </div>
+      <div
+        className="bg-white p-5 rounded-lg"
+        style={{
+          boxShadow:
+            "0px 6px 12px 0px rgba(78, 41, 20, 0.04), 0px -1px 2px 0px rgba(78, 41, 20, 0.02), 0px 2px 4px 0px rgba(117, 43, 1, 0.04)",
         }}
-      />
-      <UpdatePromptModal
-        prompt={isUpdating!}
-        opened={!!isUpdating}
-        onCancel={() => setIsUpdating(null)}
-        onFinish={() => {
-          setIsUpdating(null);
-          fetchData(activePage);
-        }}
-      />
+      >
+        <div className="w-full flex justify-between mb-4 items-center ">
+          <div className="flex items-center ">
+            <Input
+              icon={<IconSearch size={14} />}
+              type="text"
+              value={search}
+              placeholder="Tìm kiếm prompt"
+              className="w-[280px] mr-2"
+              radius="xl"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Select
+              className="w-[140px]"
+              value={status}
+              onChange={(e: string) => setStatus(e)}
+              withAsterisk
+              radius={100}
+              data={PromptStatusData}
+            />
+            {search || status ? (
+              <button
+                className="w-fit px-2 text-sm font-semibold hover:text-primary-900 text-primary-700 bg-none cursor-pointer"
+                onClick={() => {
+                  setSearch("");
+                  setStatus("");
+                }}
+              >
+                Trở về mặc định
+              </button>
+            ) : (
+              <button
+                disabled
+                className="w-fit px-2 text-sm font-semibold bg-none text-neutral-300"
+              >
+                Mặc định
+              </button>
+            )}
+          </div>
+          <button
+            className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
+            onClick={() => setIsCreating(true)}
+          >
+            <IconPlus />
+            Tạo prompt mới
+          </button>
+        </div>
+
+        <Table className="rounded-md overflow-hidden">
+          <thead className="bg-primary-default p-[10px]">
+            <tr>
+              {DataTable.Prompt.map((item, index) => (
+                <th
+                  key={index}
+                  className={`!text-white !font-bold !text-base leading-[21.7px] ${
+                    index === DataTable.Prompt.length - 1 ? "w-20" : ""
+                  }`}
+                >
+                  {item}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
+        </Table>
+        {listPrompt.length === 0 ? (
+          <div className="w-full items-center text-center">
+            <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+            <p>Danh sách hiện không có prompt nào để hiển thị</p>
+          </div>
+        ) : null}
+        <Pagination
+          value={activePage}
+          onChange={(e) => fetchData(e)}
+          total={Math.ceil(totalPrompt / 10)}
+          color="orange"
+          className="mt-2 justify-center"
+        />
+        <ModalConfirm
+          title="Bạn có muốn ẩn prompt này?"
+          buttonContent="Ẩn prompt"
+          opened={inactiveOpened}
+          onOk={() => handleInactivePrompt(tempInactive)}
+          onCancel={handlers.close}
+          content="Sau khi ẩn prompt này các câu trả lời sẽ không bị giới hạn bởi nội dung của prompt này nữa!"
+          image={0}
+        />
+        <ModalConfirm
+          title="Bạn có muốn bỏ ẩn prompt này?"
+          buttonContent="Bỏ ẩn prompt"
+          content="Sau khi bỏ ẩn prompt này các câu trả lời sẽ bị giới hạn bởi nội dung của prompt này!"
+          opened={activeOpened}
+          onOk={() => handleActivePrompt(tempActive)}
+          onCancel={close}
+          image={1}
+        />
+        <CreatePromptModal
+          opened={isCreating}
+          onCancel={() => setIsCreating(false)}
+          onFinish={() => {
+            setIsCreating(false);
+            fetchData(activePage);
+          }}
+        />
+        <UpdatePromptModal
+          prompt={isUpdating!}
+          opened={!!isUpdating}
+          onCancel={() => setIsUpdating(null)}
+          onFinish={() => {
+            setIsUpdating(null);
+            fetchData(activePage);
+          }}
+        />
+      </div>
     </div>
   );
 }

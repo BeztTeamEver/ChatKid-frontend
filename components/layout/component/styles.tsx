@@ -58,6 +58,7 @@ export const useNavbarStyles = createStyles((theme) => ({
     padding: "0 10px",
     height: "fit-content",
     minHeight: "calc(100vh - 60px)",
+    position: "sticky",
   },
 
   links: {

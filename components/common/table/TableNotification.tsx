@@ -1,8 +1,10 @@
 import { DataTable } from "@/constants/dataTable";
+import empty from "@/public/images/empty.png";
 import { DataReceiver, NOTIFICATION_TYPE } from "@/types/notification.type";
 import { NotificationApi } from "@/utils/notificationApi ";
-import { Input, Pagination, Table } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { Image, Input, Pagination, Table } from "@mantine/core";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,13 +15,15 @@ import SkeletonFunction from "../skeleton/skeletonTable";
 export default function TableNotification() {
   const [activePage, setActivePage] = useState<number>(1);
   const [listNotification, setListNotification] = useState<Array<NOTIFICATION_TYPE>>([]);
-  const [search, setSearch] = useState<String>("");
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(search, 100);
   const [totalNotification, setTotalNotification] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
-  const fetchData = async () => {
+  const fetchData = async (page: number) => {
+    setActivePage(page);
     setIsLoading(true);
-    await NotificationApi.getListNotification(activePage - 1, 10, search)
+    await NotificationApi.getListNotification(activePage - 1, 10, debouncedSearchTerm)
       .then((res) => {
         setListNotification(res.data.items);
         setTotalNotification(res.data.totalItem);
@@ -29,8 +33,8 @@ export default function TableNotification() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [activePage]);
+    fetchData(1);
+  }, [debouncedSearchTerm]);
 
   const rows = listNotification.map((noti, index) => (
     <tr
@@ -57,106 +61,92 @@ export default function TableNotification() {
           .replace(DataReceiver[0].value, DataReceiver[0].label)
           .replace(DataReceiver[1].value, DataReceiver[1].label)}
       </td>
-      <td>
-        {/* <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <IconDotsVertical className="cursor-pointer mx-auto" />
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            {noti.scheduleTime <  ? (
-              <>
-                <Menu.Item
-                  icon={<IconCheck size={18} />}
-                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-                  onClick={() =>
-                    setModalProps({
-                      opened: true,
-                      title: "Xác nhận khách hàng đã chuyển khoản",
-                      buttonContent: "Xác nhận",
-                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
-                      onOk: () => handleApprove(transaction.id),
-                    })
-                  }
-                >
-                  Xác nhận
-                </Menu.Item>
-                <Menu.Item
-                  icon={<IconX size={18} />}
-                  className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-                  onClick={() =>
-                    setModalProps({
-                      opened: true,
-                      title: "Xác nhận hủy do khách hàng không chuyển khoản",
-                      buttonContent: "Hủy",
-                      onCancel: () => setModalProps({ ...modalProps, opened: false }),
-                      onOk: () => handleDisapprove(transaction.id),
-                    })
-                  }
-                >
-                  Hủy
-                </Menu.Item>
-              </>
-            ) : (
-              <Menu.Item
-                icon={<IconArrowBackUp size={18} />}
-                className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-                onClick={() => {}}
-              >
-                Hoàn tác
-              </Menu.Item>
-            )}
-          </Menu.Dropdown>
-        </Menu> */}
-      </td>
     </tr>
   ));
 
   return (
     <div>
-      <div className="w-full flex justify-between mb-4 items-center">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            fetchData();
-          }}
-          className="w-1/3 flex rounded-full overflow-hidden items-center"
-        >
-          <Input
-            type="text"
-            placeholder="Tìm kiếm trang bị"
-            className="w-full mr-4"
-            radius={100}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </form>
-        <button
-          className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
-          onClick={() => router.push(`/notification/create-new-notification`)}
-        >
-          <IconPlus />
-          Tạo thông báo mới
-        </button>
+      <div
+        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-items-center"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <p className="text-base font-semibold text-primary-900 mr-6">Danh sách thông báo</p>
+        <div className="bg-primary-100 p-1 px-4 rounded-2xl flex text-sm">
+          <p>Tổng số:</p>
+          <p className="mx-2">{totalNotification}</p>
+        </div>
       </div>
-      <Table className="rounded-md overflow-hidden">
-        <thead className="bg-primary-default p-[10px]">
-          <tr>
-            {DataTable.Notification.map((item, index) => (
-              <th key={index} className="!text-white !font-bold !text-base leading-[21.7px]">
-                {item}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={5} /> : rows}</tbody>
-      </Table>
-      <Pagination
-        value={activePage}
-        onChange={(e) => setActivePage(e)}
-        total={Math.ceil(totalNotification / 10)}
-        color="orange"
-        className="mt-2 justify-center"
-      />
+      <div
+        className="bg-white p-5 rounded-2xl col-span-3 h-fit w-full"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <div className="w-full flex justify-between mb-4 items-center ">
+          <div className="flex items-center ">
+            <Input
+              icon={<IconSearch size={14} />}
+              type="text"
+              value={search}
+              placeholder="Tìm kiếm thông báo"
+              className="w-[280px] mr-2"
+              radius="xl"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search ? (
+              <button
+                className="w-fit px-2 text-sm font-semibold hover:text-primary-900 text-primary-700 bg-none cursor-pointer"
+                onClick={() => setSearch("")}
+              >
+                Trở về mặc định
+              </button>
+            ) : (
+              <button
+                disabled
+                className="w-fit px-2 text-sm font-semibold bg-none text-neutral-300"
+              >
+                Mặc định
+              </button>
+            )}
+          </div>
+          <button
+            className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-1.5 text-white"
+            onClick={() => router.push(`/notification/create-new-notification`)}
+          >
+            <IconPlus size={18} />
+            Tạo thông báo mới
+          </button>
+        </div>
+        <Table className="rounded-md overflow-hidden">
+          <thead className="bg-primary-default p-[10px]">
+            <tr>
+              {DataTable.Notification.map((item, index) => (
+                <th key={index} className="!text-white !font-bold !text-base leading-[21.7px]">
+                  {item}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={5} /> : rows}</tbody>
+        </Table>
+        {listNotification.length === 0 && !isLoading ? (
+          <div className="w-full items-center text-center">
+            <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+            <p>Danh sách hiện không có thông báo nào để hiển thị </p>
+          </div>
+        ) : null}
+        <Pagination
+          value={activePage}
+          onChange={(e) => fetchData(e)}
+          total={Math.ceil(totalNotification / 10)}
+          color="orange"
+          className="mt-2 justify-center"
+        />
+      </div>
     </div>
   );
 }

@@ -95,12 +95,12 @@ export default function GeneralInformationForm({
       <Select
         className="mb-1 col-span-2"
         label="Nhóm độ tuổi"
-        placeholder="Phân loại công việc"
+        placeholder="Chọn nhóm độ tuổi"
         value={state.ageGroup}
         onChange={(e) => setState({ ...state, ageGroup: e ?? "" })}
         withAsterisk
         radius={100}
-        data={["5-7", "8-10", ">10"]}
+        data={["6-7", "8-9", ">9"]}
       />
       <TextInput
         className="mb-1 col-span-2"

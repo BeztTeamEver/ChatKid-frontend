@@ -67,10 +67,10 @@ export const DiscountStatusData = [
   },
   {
     value: "INACTIVE",
-    label: "Tạm dừng",
+    label: "Hủy",
   },
   {
     value: "ACTIVE",
-    label: "Đang diễn ra",
+    label: "Không hủy",
   },
 ];

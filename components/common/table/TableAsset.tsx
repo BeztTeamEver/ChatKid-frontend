@@ -12,6 +12,7 @@ import {
   IconEyeOff,
   IconInfoCircle,
   IconPlus,
+  IconSearch,
 } from "@tabler/icons-react";
 import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
@@ -155,93 +156,131 @@ export default function TableAsset() {
 
   return (
     <div>
-      <div className="w-full flex justify-between mb-4 items-center">
-        <form
-          onChange={(e) => {
-            e.preventDefault();
-          }}
-          className="flex justify-between items-center w-2/3"
-        >
-          <Input
-            type="text"
-            placeholder="Tìm kiếm trang bị"
-            className="w-full mr-4"
-            radius={100}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Select
-            className="mb-1 col-span-3 w-full mr-4"
-            value={status}
-            onChange={(e: string) => setStatus(e)}
-            withAsterisk
-            radius={100}
-            data={AssetStatusData}
-          />
-          <Select
-            className="mb-1 col-span-3 w-full"
-            value={type}
-            onChange={(e: string) => setType(e)}
-            withAsterisk
-            radius={100}
-            data={AssetTypeData}
-          />
-        </form>
-        <button
-          className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
-          onClick={() => router.push(`/assets/create-new-asset`)}
-        >
-          <IconPlus />
-          Tạo trang bị mới
-        </button>
-      </div>
-      <Table className="rounded-md overflow-hidden">
-        <thead className="bg-primary-default p-[10px]">
-          <tr>
-            {DataTable.Asset.map((item, index) => (
-              <th
-                key={index}
-                className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.Asset.length - 1 ? "w-20" : ""
-                }`}
-              >
-                {item}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
-      </Table>
-      {listAsset.length === 0 ? (
-        <div className="w-full items-center text-center">
-          <Image src={empty.src} fit="contain" height={200} className=" py-10" />
-          <p>Danh sách hiện không có trang bị nào để hiển thị </p>
+      <div
+        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-items-center"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <p className="text-base font-semibold text-primary-900 mr-6">Danh sách trang bị</p>
+        <div className="bg-primary-100 p-1 px-4 rounded-2xl flex text-sm">
+          <p>Tổng số:</p>
+          <p className="mx-2">{totalAsset}</p>
         </div>
-      ) : null}
-      <Pagination
-        value={activePage}
-        onChange={(e) => fetchData(e)}
-        total={Math.ceil(totalAsset / 10)}
-        color="orange"
-        className="mt-2 justify-center"
-      />
-      <ModalConfirm
-        title="Bạn có muốn ẩn trang bị này?"
-        buttonContent="Ẩn trang bị"
-        opened={inactiveOpened}
-        onOk={() => handleInactiveAsset(tempInactive)}
-        onCancel={handlers.close}
-        content="Trang phục sau khi bị ẩn sẽ không thể tìm thấy trên ứng dụng KidTalkie được nữa"
-        image={0}
-      />
-      <ModalConfirm
-        title="Bạn có muốn bỏ ẩn trang bị này?"
-        buttonContent="Bỏ ẩn trang bị"
-        content="Trang phục sau khi bỏ ẩn sẽ có thể tìm thấy trên ứng dụng KidTalkie"
-        opened={activeOpened}
-        onOk={() => handleActiveAsset(tempActive)}
-        onCancel={close}
-        image={1}
-      />
+      </div>
+      <div
+        className="bg-white p-5 rounded-2xl col-span-3 h-fit w-full"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <div className="w-full flex justify-between mb-4 items-center ">
+          <div className="flex items-center ">
+            <Input
+              icon={<IconSearch size={14} />}
+              type="text"
+              value={search}
+              placeholder="Tìm kiếm trang bị"
+              className="w-[200px] mr-2"
+              radius="xl"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Select
+              className="mb-1 w-[200px] mr-4"
+              value={status}
+              onChange={(e: string) => setStatus(e)}
+              withAsterisk
+              radius={100}
+              data={AssetStatusData}
+            />
+            <Select
+              className="mb-1 w-[200px]"
+              value={type}
+              onChange={(e: string) => setType(e)}
+              withAsterisk
+              radius={100}
+              data={AssetTypeData}
+            />
+            {search || status || type ? (
+              <button
+                className="w-fit px-2 text-sm font-semibold hover:text-primary-900 text-primary-700 bg-none cursor-pointer"
+                onClick={() => {
+                  setSearch("");
+                  setType("");
+                  setStatus("");
+                }}
+              >
+                Trở về mặc định
+              </button>
+            ) : (
+              <button
+                disabled
+                className="w-fit px-2 text-sm font-semibold bg-none text-neutral-300"
+              >
+                Mặc định
+              </button>
+            )}
+          </div>
+          <button
+            className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
+            onClick={() => router.push(`/assets/create-new-asset`)}
+          >
+            <IconPlus />
+            Tạo trang bị mới
+          </button>
+        </div>
+
+        <Table className="rounded-md overflow-hidden">
+          <thead className="bg-primary-default p-[10px]">
+            <tr>
+              {DataTable.Asset.map((item, index) => (
+                <th
+                  key={index}
+                  className={`!text-white !font-bold !text-base leading-[21.7px] ${
+                    index === DataTable.Asset.length - 1 ? "w-20" : ""
+                  }`}
+                >
+                  {item}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
+        </Table>
+        {listAsset.length === 0 && !isLoading ? (
+          <div className="w-full items-center text-center">
+            <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+            <p>Danh sách hiện không có trang bị nào để hiển thị </p>
+          </div>
+        ) : null}
+        <Pagination
+          value={activePage}
+          onChange={(e) => fetchData(e)}
+          total={Math.ceil(totalAsset / 10)}
+          color="orange"
+          className="mt-2 justify-center"
+        />
+        <ModalConfirm
+          title="Bạn có muốn ẩn trang bị này?"
+          buttonContent="Ẩn trang bị"
+          opened={inactiveOpened}
+          onOk={() => handleInactiveAsset(tempInactive)}
+          onCancel={handlers.close}
+          content="Trang phục sau khi bị ẩn sẽ không thể tìm thấy trên ứng dụng KidTalkie được nữa"
+          image={0}
+        />
+        <ModalConfirm
+          title="Bạn có muốn bỏ ẩn trang bị này?"
+          buttonContent="Bỏ ẩn trang bị"
+          content="Trang phục sau khi bỏ ẩn sẽ có thể tìm thấy trên ứng dụng KidTalkie"
+          opened={activeOpened}
+          onOk={() => handleActiveAsset(tempActive)}
+          onCancel={close}
+          image={1}
+        />
+      </div>
     </div>
   );
 }
