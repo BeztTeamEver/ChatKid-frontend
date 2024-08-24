@@ -1,6 +1,6 @@
 "use client";
 
-import CarouselExpert from "@/components/common/dashboard/carouselExpert";
+import TableTransaction from "@/components/common/table/TableTransaction";
 import CoverImage from "@/public/images/statistic_cover.png";
 import { DASHBOARD_TYPE } from "@/types/dashboard.type";
 import { DashboardApi } from "@/utils/dashboardApi";
@@ -210,13 +210,7 @@ export default function HomePage() {
           </p>
         </div>
       </div>
-
-      <div className="col-span-3 bg-white rounded-[10px] px-5 py-3 border-[1px] border-neutral-100 flex flex-col justify-between">
-        <p className="font-semibold text-lg text-neutral-900">
-          Bài viết nổi bật của tháng {month}:
-        </p>
-        <CarouselExpert month={month} year={year} />
-      </div>
+      <TableTransaction />
     </div>
   );
 }

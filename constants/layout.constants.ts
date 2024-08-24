@@ -1,7 +1,6 @@
 import {
   IconUsers,
   IconChartPie,
-  IconCoins,
   IconBell,
   IconMessages,
   IconHanger,
@@ -15,7 +14,6 @@ import {
 export const DataNavbar = {
   manageCustomer: [
     { label: "Thống kê", link: "/", icon: IconChartPie },
-    { label: "Giao dịch", link: "/transactions", icon: IconCoins },
     { label: "Tài khoản gia đình", link: "/family", icon: IconUsers },
     { label: "Lịch sử hỏi botchat", link: "/histories", icon: IconMessages },
     { label: "Báo cáo", link: "/reports", icon: IconFlag },
@@ -27,6 +25,5 @@ export const DataNavbar = {
     { label: "Loại công việc", link: "/task-types", icon: IconListDetails },
     { label: "Bộ câu hỏi", link: "/quizzes", icon: IconMessageCircleQuestion },
     { label: "Prompt", link: "/prompt", icon: IconBrandOpenai },
-    // { label: "Blog", link: "/blogs", icon: IconArticle },
   ],
 };

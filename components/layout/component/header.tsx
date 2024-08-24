@@ -49,7 +49,7 @@ export default function HeaderLayout({
   }, []);
 
   return (
-    <Header height={60} px="md" sx={{ position: "relative", border: "none", zIndex: 2 }}>
+    <Header height={60} px="md" sx={{ position: "sticky", border: "none", zIndex: 2 }}>
       <Group position="apart" sx={{ height: "100%" }}>
         <Group>
           <Button

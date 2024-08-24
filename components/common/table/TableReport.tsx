@@ -6,7 +6,7 @@ import { REPORT_TYPE, reportData } from "@/types/report.type";
 import { ReportApi } from "@/utils/reportApi";
 import { ActionIcon, Image, Input, Pagination, Select, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCheck, IconX } from "@tabler/icons-react";
+import { IconCheck, IconSearch, IconX } from "@tabler/icons-react";
 import { useDebounce } from "@uidotdev/usehooks";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -136,91 +136,122 @@ export default function TableReport() {
   ));
   return (
     <div>
-      <div className="w-full flex justify-between mb-4 items-center">
-        <form
-          onChange={(e) => {
-            e.preventDefault();
-          }}
-          className="flex justify-between items-center w-1/2"
-        >
+      <div
+        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-items-center items-center"
+        style={{
+          boxShadow:
+            "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
+        }}
+      >
+        <p className="text-base font-semibold text-primary-900 mr-6">Danh sách báo cáo botchat</p>
+        <div className="bg-primary-100 p-1 px-4 rounded-2xl flex text-sm">
+          <p>Tổng số báo cáo:</p>
+          <p className="mx-2">{totalReport}</p>
+        </div>
+      </div>
+      <div
+        className="bg-white p-5 rounded-lg"
+        style={{
+          boxShadow:
+            "0px 6px 12px 0px rgba(78, 41, 20, 0.04), 0px -1px 2px 0px rgba(78, 41, 20, 0.02), 0px 2px 4px 0px rgba(117, 43, 1, 0.04)",
+        }}
+      >
+        <div className="flex items-center mb-4">
           <Input
+            icon={<IconSearch size={14} />}
             type="text"
-            placeholder="Tìm kiếm tài khoản"
-            className="w-full mr-4"
-            radius={100}
+            value={search}
+            placeholder="Tìm kiếm tài khoản gia đình"
+            className="w-[280px] mr-2"
+            radius="xl"
             onChange={(e) => setSearch(e.target.value)}
           />
           <Select
-            className="mb-1 col-span-2 w-full"
+            className="mb-1 col-span-2 w-[180px]"
             value={status}
             onChange={(e: string) => setStatus(e)}
             withAsterisk
-            radius={100}
+            radius="xl"
             data={reportData}
           />
-        </form>
-      </div>
-      <div className="w-full h-fit bg-whiterounded-2xl"></div>
-      <Table className="rounded-md overflow-hidden items-center">
-        <thead className="bg-primary-default p-[10px]">
-          <tr>
-            {DataTable.Report.map((item, index) => (
-              <th
-                key={index}
-                className={`!text-white !font-bold !text-base leading-[21.7px] ${
-                  index === DataTable.Quiz.length - 1 ? "w-20" : ""
-                }`}
-              >
-                {item}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
-      </Table>
-      {listReport.length === 0 ? (
-        <div className="w-full items-center text-center">
-          <Image src={empty.src} fit="contain" height={200} className=" py-10" />
-          <p>Danh sách hiện không có loại công việc nào </p>
+          {search || status ? (
+            <button
+              className="w-fit px-2 text-sm font-semibold hover:text-primary-900 text-primary-700 bg-none cursor-pointer"
+              onClick={() => {
+                setSearch("");
+                setStatus("");
+              }}
+            >
+              Trở về mặc định
+            </button>
+          ) : (
+            <button disabled className="w-fit px-2 text-sm font-semibold bg-none text-neutral-300">
+              Mặc định
+            </button>
+          )}
         </div>
-      ) : null}
+        <div className="w-full h-fit bg-whiterounded-2xl"></div>
+        <Table className="rounded-md overflow-hidden items-center">
+          <thead className="bg-primary-default p-[10px]">
+            <tr>
+              {DataTable.Report.map((item, index) => (
+                <th
+                  key={index}
+                  className={`!text-white !font-bold !text-base leading-[21.7px] ${
+                    index === DataTable.Quiz.length - 1 ? "w-20" : ""
+                  }`}
+                >
+                  {item}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
+        </Table>
+        {listReport.length === 0 && !isLoading ? (
+          <div className="w-full items-center text-center">
+            <Image src={empty.src} fit="contain" height={200} className=" py-10" />
+            <p>Danh sách hiện không có loại công việc nào </p>
+          </div>
+        ) : null}
 
-      <Pagination
-        value={activePage}
-        onChange={(e) => fetchData(e)}
-        total={Math.ceil(totalReport / 10)}
-        color="orange"
-        className="mt-2 justify-center"
-      />
-      <ChecklogModal
-        title="Checklog"
-        opened={checklogOpened}
-        onCancel={close}
-        createdAt={createdTime}
-        mail={mail}
-        answer={answer}
-        voice={voice}
-        reasons={reasons}
-      ></ChecklogModal>
+        <Pagination
+          value={activePage}
+          onChange={(e) => fetchData(e)}
+          total={Math.ceil(totalReport / 10)}
+          color="orange"
+          className="mt-2 justify-center"
+        />
+        <ChecklogModal
+          title="Checklog"
+          opened={checklogOpened}
+          onCancel={close}
+          createdAt={createdTime}
+          mail={mail}
+          answer={answer}
+          voice={voice}
+          reasons={reasons}
+        ></ChecklogModal>
 
-      <ModalConfirm
-        title="Bạn có muốn xác nhận báo cáo này?"
-        buttonContent="Xác nhận"
-        opened={!!isConfirmAccept}
-        onOk={() => handleReplyReport(isConfirmAccept!.id, "ACCEPTED")}
-        onCancel={() => setIsConfirmAccept(null)}
-        content="Sau khi xác nhận vấn đề thì hệ thống sẽ hoàn trả kim cương cho khách hàng và không thể hoàn tác!"
-        image={1}
-      />
-      <ModalConfirm
-        title="Bạn có muốn từ chối báo cáo này?"
-        buttonContent="Từ chối"
-        content={`Bạn hãy để lại lời nhắn về mail ${isConfirmDisagree?.familyEmail} để khách hàng có thể hiểu được vấn đề nhé!`}
-        opened={!!isConfirmDisagree}
-        onOk={() => handleReplyReport(isConfirmAccept!.id, "REJECTED")}
-        onCancel={() => setIsConfirmDisagree(null)}
-        image={1}
-      />
+        <ModalConfirm
+          title="Bạn có muốn xác nhận báo cáo này?"
+          buttonContent="Xác nhận"
+          opened={!!isConfirmAccept}
+          onOk={() => handleReplyReport(isConfirmAccept!.id, "ACCEPTED")}
+          onCancel={() => setIsConfirmAccept(null)}
+          content="Sau khi xác nhận vấn đề thì hệ thống sẽ hoàn trả kim cương cho khách hàng và không thể hoàn tác!"
+          image={1}
+        />
+        <ModalConfirm
+          title="Bạn có muốn từ chối báo cáo này?"
+          buttonContent="Từ chối"
+          content={`Bạn hãy để lại lời nhắn về mail ${isConfirmDisagree?.familyEmail} để khách hàng có thể hiểu được vấn đề nhé!`}
+          opened={!!isConfirmDisagree}
+          onOk={() => handleReplyReport(isConfirmAccept!.id, "REJECTED")}
+          onCancel={() => setIsConfirmDisagree(null)}
+          image={1}
+        />
+      </div>
     </div>
   );
 }

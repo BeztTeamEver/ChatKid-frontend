@@ -18,7 +18,7 @@ export const DataTable = {
     "Log nội dung",
   ],
   Report: ["STT", "Thời gian tạo", "Mail", "Lý do báo cáo", "Trạng thái", "Check log", "Tác vụ"],
-  Notification: ["STT", "Thời gian tạo", "Thời gian đăng", "Tựa đề", "Đối tượng nhận", "Tác vụ"],
+  Notification: ["STT", "Thời gian tạo", "Thời gian đăng", "Tựa đề", "Đối tượng nhận"],
 
   Discount: [
     "STT",
@@ -55,13 +55,5 @@ export const DataTable = {
     "Tác vụ",
   ],
   Blog: ["STT", "Thời gian tạo", "Tựa đề", "Thuộc bộ câu hỏi", "Tác vụ"],
-  Prompt: [
-    "STT",
-    "Thời gian tạo",
-    "Nội dung",
-    "Từ khoá",
-    "Số ký tự",
-    "Trạng thái",
-    "Tác vụ",
-  ],
+  Prompt: ["STT", "Thời gian tạo", "Nội dung", "Từ khoá", "Số ký tự", "Trạng thái", "Tác vụ"],
 };

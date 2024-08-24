@@ -43,7 +43,7 @@ export default function CreateNewDiscount() {
           href="/discounts"
           className="text-[#0000008c] hover:text-black transition-all hover:no-underline"
         >
-          Gói khuyến mãi
+          Danh sách gói khuyến mãi
         </Link>
         <Link href="" className="text-black hover:no-underline">
           Tạo khuyến mãi
