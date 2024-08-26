@@ -47,7 +47,7 @@ export const DataTable = {
     "STT",
     "Thời gian tạo",
     "Tựa đề",
-    "Phân loại",
+    "Chủ đề",
     "Nhóm độ tuổi",
     "Số câu hỏi",
     "Blog",
@@ -56,4 +56,5 @@ export const DataTable = {
   ],
   Blog: ["STT", "Thời gian tạo", "Tựa đề", "Thuộc bộ câu hỏi", "Tác vụ"],
   Prompt: ["STT", "Thời gian tạo", "Nội dung", "Từ khoá", "Số ký tự", "Trạng thái", "Tác vụ"],
+  Topic: ["STT", "Tên chủ đề", "Hình ảnh", "Tác vụ"],
 };
