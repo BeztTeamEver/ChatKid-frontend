@@ -232,13 +232,22 @@ export default function TableQuiz() {
               </button>
             )}
           </div>
-          <button
-            className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
-            onClick={() => router.push(`/quizzes/create-new-quiz`)}
-          >
-            <IconPlus />
-            Tạo bộ câu hỏi mới
-          </button>
+          <div className="flex">
+            <button
+              className="flex gap-3 items-center border-2 border-primary-500 text-primary-500 rounded-full px-6 py-2 mr-2"
+              onClick={() => router.push(`/topics`)}
+            >
+              <IconPlus />
+              Quản lý chủ đề
+            </button>
+            <button
+              className="flex gap-3 items-center bg-primary-default rounded-full px-6 py-2 text-white"
+              onClick={() => router.push(`/quizzes/create-new-quiz`)}
+            >
+              <IconPlus />
+              Tạo bộ câu hỏi mới
+            </button>
+          </div>
         </div>
 
         <Table className="rounded-md overflow-hidden">

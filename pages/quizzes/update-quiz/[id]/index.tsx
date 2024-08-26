@@ -51,7 +51,7 @@ export default function UpdateQuiz() {
 
   useEffect(() => {
     if (id) {
-      TopicApi.getListTopic()
+      TopicApi.getListTopic(0, 1000)
         .then((res) => {
           res.data.items.map((topic, index) =>
             topicData.push({ value: topic.id, label: topic.name }),
@@ -223,6 +223,7 @@ export default function UpdateQuiz() {
               Câu hỏi
             </p>
           </div>
+          {rows}
           <Button
             variant="outline"
             color="orange"
@@ -242,7 +243,6 @@ export default function UpdateQuiz() {
           >
             Thêm câu hỏi
           </Button>
-          {rows}
         </div>
       </form>
       <CreateQuestionModal

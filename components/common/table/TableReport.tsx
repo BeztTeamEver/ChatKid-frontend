@@ -124,12 +124,7 @@ export default function TableReport() {
         </td>
       ) : (
         <td className="w-[100px] flex">
-          <ActionIcon color="green" variant="outline" radius="md" className="mr-2" disabled>
-            <IconCheck size="1.125rem" />
-          </ActionIcon>
-          <ActionIcon color="red" variant="outline" radius="md" disabled>
-            <IconX size="1.125rem" />
-          </ActionIcon>
+          <p className="text-neutral-400">Đã xử lý</p>
         </td>
       )}
     </tr>
@@ -222,6 +217,7 @@ export default function TableReport() {
           color="orange"
           className="mt-2 justify-center"
         />
+
         <ChecklogModal
           title="Checklog"
           opened={checklogOpened}
@@ -231,7 +227,7 @@ export default function TableReport() {
           answer={answer}
           content={content}
           reasons={reasons}
-        ></ChecklogModal>
+        />
 
         <ModalConfirm
           title="Bạn có muốn xác nhận báo cáo này?"
@@ -247,7 +243,7 @@ export default function TableReport() {
           buttonContent="Từ chối"
           content={`Bạn hãy để lại lời nhắn về mail ${isConfirmDisagree?.familyEmail} để khách hàng có thể hiểu được vấn đề nhé!`}
           opened={!!isConfirmDisagree}
-          onOk={() => handleReplyReport(isConfirmAccept!.id, "REJECTED")}
+          onOk={() => handleReplyReport(isConfirmDisagree!.id, "REJECTED")}
           onCancel={() => setIsConfirmDisagree(null)}
           image={1}
         />

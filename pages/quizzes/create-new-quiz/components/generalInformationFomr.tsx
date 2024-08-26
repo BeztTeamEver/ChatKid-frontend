@@ -84,8 +84,8 @@ export default function GeneralInformationForm({
       </Col>
       <Select
         className="mb-1 col-span-2"
-        label="Thể loại bộ câu hỏi"
-        placeholder="Phân loại công việc"
+        label="Chủ đề bộ câu hỏi"
+        placeholder="Chọn chủ đề cho bộ câu hỏi"
         value={state.topicId}
         onChange={(e) => setState({ ...state, topicId: e ?? "" })}
         withAsterisk
