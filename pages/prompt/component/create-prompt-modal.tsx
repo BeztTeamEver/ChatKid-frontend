@@ -57,7 +57,7 @@ export default function CreatePromptModal({
             label="Dạng prompt"
             placeholder="Dạng prompt"
             value={keyword}
-            onChange={(e) => setKeyword(e)}
+            onChange={(e) => setKeyword(e ?? "")}
             withAsterisk
             radius={100}
             required
