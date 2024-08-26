@@ -53,9 +53,7 @@ export default function UpdateQuiz() {
     if (id) {
       TopicApi.getListTopic()
         .then((res) => {
-          res.data.items.map((topic, index) =>
-            topicData.push({ value: topic.id, label: topic.name }),
-          );
+          res.data.map((topic, index) => topicData.push({ value: topic.id, label: topic.name }));
         })
         .catch((err) => console.log(err));
       QuizApi.getDetailQuiz(id as string)

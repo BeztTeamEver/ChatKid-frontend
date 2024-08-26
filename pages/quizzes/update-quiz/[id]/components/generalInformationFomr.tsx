@@ -121,7 +121,7 @@ export default function GeneralInformationForm({
         onChange={(e) => setState({ ...state, ageGroup: e ?? "" })}
         withAsterisk
         radius={100}
-        data={["6-7", "8-9", ">9"]}
+        data={["5-7", "8-10", ">10"]}
       />
       <TextInput
         className="mb-1 col-span-2"

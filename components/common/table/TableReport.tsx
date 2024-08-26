@@ -27,7 +27,7 @@ export default function TableReport() {
   const [createdTime, setCreatedTime] = useState("");
   const [mail, setMail] = useState("");
   const [answer, setAnswer] = useState("");
-  const [content, setContent] = useState("");
+  const [voice, setVoice] = useState("");
   const [reasons, setReasons] = useState<Array<string>>([]);
   const [checklogOpened, { open, close }] = useDisclosure(false);
   const debouncedSearchTerm = useDebounce(search, 500);
@@ -96,7 +96,7 @@ export default function TableReport() {
           setCreatedTime(report.createdAt);
           setMail(report.familyEmail);
           setAnswer(report.answer);
-          setContent(report.content);
+          setVoice(report.voiceUrl);
           setReasons(report.reasons);
         }}
       >
@@ -229,7 +229,7 @@ export default function TableReport() {
           createdAt={createdTime}
           mail={mail}
           answer={answer}
-          content={content}
+          voice={voice}
           reasons={reasons}
         ></ChecklogModal>
 

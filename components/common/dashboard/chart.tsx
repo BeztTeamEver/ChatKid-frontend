@@ -2,12 +2,9 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { useEffect, useState } from "react";
 
 type DATA_CHART_BE = Array<{
-  date: string;
-  packages: Array<{
-    id: string;
-    name: string;
-    amount: number;
-  }>;
+  basicSubcription: Number;
+  premiumSubcription: Number;
+  premiumSuperSubcription: Number;
 }>;
 
 type DATA_CHART = {
@@ -18,102 +15,69 @@ type DATA_CHART = {
 
 export default function Chart({ className, data }: { className: string; data?: DATA_CHART_BE }) {
   const [dataChart, setDataChart] = useState<DATA_CHART>({
-    basicSubcription: [],
-    premiumSubcription: [],
-    premiumSuperSubcription: [],
+    basicSubcription: [1,7,8,4,13,15,8,25,14,43,32,23],
+    premiumSubcription: [0,1,4,6,2,2,4,6,2,2,4,5],
+    premiumSuperSubcription: [2,3,2,5,6,0,8,7,2,3,1,0],
   });
-  const newData: DATA_CHART = {
-    basicSubcription: [],
-    premiumSubcription: [],
-    premiumSuperSubcription: [],
-  };
 
-  useEffect(() => {
-    console.log("DATA:", data);
-    if (data?.length) {
-      for (let i = 0; i < data.length; i += 1) {
-        newData.basicSubcription.push(data[i].packages[2].amount as number);
-        newData.premiumSubcription.push(data[i].packages[0].amount as number);
-        newData.premiumSuperSubcription.push(data[i].packages[1].amount as number);
-      }
-      console.log("NEW DATA", newData.basicSubcription.length);
-      setDataChart(newData);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data);
+  //   if (data?.length) {
+  //     const newData: DATA_CHART = {
+  //       basicSubcription: [],
+  //       premiumSubcription: [],
+  //       premiumSuperSubcription: [],
+  //       advertising: [],
+  //     };
+  //     for (let i = 0; i < 12; i += 1) {
+  //       newData.basicSubcription.push(data[i].basicSubcription as number);
+  //       newData.premiumSubcription.push(data[i].premiumSubcription as number);
+  //       newData.premiumSuperSubcription.push(data[i].premiumSuperSubcription as number);
+  //       newData.advertising.push(data[i].advertising as number);
+  //     }
+  //     console.log(newData);
+  //     setDataChart(newData);
+  //   }
+  // }, [data]);
 
   return (
     <div>
-      {dataChart.basicSubcription.length === 30 ? (
+      {(
         <BarChart
-          sx={{ padding: "10px" }}
-          height={300}
-          xAxis={[
-            {
-              data: [
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                24, 25, 26, 27, 28, 29, 30,
-              ],
-              scaleType: "band",
-            },
-          ]}
+          sx={{ padding: "1.5rem" }}
+          className={className}
+          height={400}
+          xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], scaleType: "band" }]}
           series={[
             {
-              data: dataChart.basicSubcription,
-              color: "#2D9AFF",
-              label: "Bụi kim cương",
+              data:
+                dataChart.basicSubcription?.length === 12
+                  ? dataChart.basicSubcription
+                  : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+              color: "#FB8F04",
+              label: "Gói cơ bản",
               stack: "total",
             },
             {
-              data: dataChart.premiumSubcription,
-              color: "#00CB2F",
-              label: "Túi kim cương",
+              data:
+                dataChart.premiumSubcription?.length === 12
+                  ? dataChart.premiumSubcription
+                  : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+              color: "#775FFC",
+              label: "Gói tiết kiệm",
               stack: "total",
             },
             {
-              data: dataChart.premiumSuperSubcription,
-              color: "#FEA623",
-              label: "Rương kim cương",
+              data:
+                dataChart.premiumSuperSubcription?.length === 12
+                  ? dataChart.premiumSuperSubcription
+                  : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+              color: "#84D9FD",
+              label: "Gói siêu tiết kiệm",
               stack: "total",
-            },
+            }
           ]}
         />
-      ) : dataChart.basicSubcription.length === 31 ? (
-        <BarChart
-          sx={{ padding: "10px" }}
-          height={240}
-          xAxis={[
-            {
-              data: [
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                24, 25, 26, 27, 28, 29, 30, 31,
-              ],
-              scaleType: "band",
-            },
-          ]}
-          series={[
-            {
-              data: dataChart.basicSubcription,
-
-              color: "#2D9AFF",
-              label: "Bụi kim cương",
-              stack: "total",
-            },
-            {
-              data: dataChart.premiumSubcription,
-              color: "#00CB2F",
-              label: "Túi kim cương",
-              stack: "total",
-            },
-            {
-              data: dataChart.premiumSuperSubcription,
-              color: "#FEA623",
-              label: "Rương kim cương",
-              stack: "total",
-            },
-          ]}
-        />
-      ) : (
-        <p> Hết</p>
       )}
     </div>
   );

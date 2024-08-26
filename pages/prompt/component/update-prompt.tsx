@@ -27,13 +27,10 @@ export default function UpdatePromptModal({
   const handleCreatePrompt = (e: React.FormEvent) => {
     e.preventDefault();
 
-    PromptApi.updatePrompt(
-      {
-        keyword,
-        component,
-      },
-      prompt.id,
-    )
+    PromptApi.updatePrompt({
+      keyword,
+      component,
+    }, prompt.id)
       .then(() => useToast.success("Cập nhật prompt thành công"))
       .catch(() => useToast.error("Có lỗi xảy ra. Vui lòng thử lại sau!"))
       .finally(() => onFinish());

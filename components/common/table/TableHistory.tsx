@@ -24,7 +24,7 @@ export default function TableHistory() {
   const [createdTime, setCreatedTime] = useState("");
   const [mail, setMail] = useState("");
   const [answer, setAnswer] = useState("");
-  const [content, setContent] = useState("");
+  const [voice, setVoice] = useState("");
 
   const fetchData = async (page: number) => {
     setActivePage(page);
@@ -65,7 +65,7 @@ export default function TableHistory() {
           setCreatedTime(history.createdAt);
           setMail(history.familyEmail);
           setAnswer(history.answer);
-          setContent(history.content);
+          setVoice(history.voiceUrl);
         }}
       >
         <a>Xem chi tiết</a>
@@ -103,7 +103,7 @@ export default function TableHistory() {
             type="text"
             value={search}
             placeholder="Tìm kiếm tài khoản gia đình"
-            className="w-[320px] mr-2"
+            className="w-[0px] mr-2"
             radius="xl"
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -155,7 +155,7 @@ export default function TableHistory() {
           createdAt={createdTime}
           mail={mail}
           answer={answer}
-          content={content}
+          voice={voice}
         />
       </div>
     </div>

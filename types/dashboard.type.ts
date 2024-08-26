@@ -1,24 +1,52 @@
 export type DASHBOARD_TYPE = {
-  totalAccounts: number;
-  totalPackages: number;
-  totalRevenue: number;
-  monthlyPackageSold: [
+  totalSubcription: Number;
+  totalAdvertising: Number;
+  totalTransaction: Number;
+  totalUser: Number;
+  numberSubcriptions: Number;
+  totalExpert: Number;
+  percentSubcription: string;
+  numberAdvertisings: Number;
+  percentAdvertisings: string;
+  subcriptionViewModels: [
     {
-      id: string;
-      name: string;
-      total: number;
+      advertising: Number;
+      basicSubcription: Number;
+      premiumSubcription: Number;
+      premiumSuperSubcription: Number;
     },
   ];
-  monthlyTransactions: [
+  percentUser: string;
+  percentExpert: string;
+  mostViewedBlogs: [
     {
-      date: string;
-      packages: [
-        {
-          id: string;
-          name: string;
-          amount: number;
-        },
-      ];
+      id: string;
+      title: string;
+      content: string;
+      imageUrl: string;
+      voiceUrl: string;
+      view: 0;
+      createdAt: Date;
+      updatedAt: Date;
+      status: 0;
+      blogType: {
+        id: string;
+        name: string;
+        imageUrl: string;
+      };
+      createAdmin: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        gmail: string;
+        phone: string;
+        age: 0;
+        gender: string;
+        role: string;
+        avatarUrl: string;
+        status: number;
+        createdAt: string;
+      };
     },
   ];
 };

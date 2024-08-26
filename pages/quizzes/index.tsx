@@ -1,5 +1,3 @@
-"use client";
-
 import TableQuiz from "@/components/common/table/TableQuiz";
 import { useEffect, useState } from "react";
 

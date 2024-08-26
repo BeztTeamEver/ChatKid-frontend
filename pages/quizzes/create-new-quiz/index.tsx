@@ -46,9 +46,7 @@ export default function CreateNewQuiz() {
   useEffect(() => {
     TopicApi.getListTopic()
       .then((res) => {
-        res.data.items.map((topic, index) =>
-          topicData.push({ value: topic.id, label: topic.name }),
-        );
+        res.data.map((topic, index) => topicData.push({ value: topic.id, label: topic.name }));
         console.log(topicData);
       })
       .catch((err) => console.log(err));

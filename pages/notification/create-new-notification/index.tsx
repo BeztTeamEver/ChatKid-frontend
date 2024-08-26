@@ -23,11 +23,6 @@ export default function CreateNewNotification() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const timeNow = new Date();
-    if (timeNow > state.scheduleTime) {
-      useToast.error("Thời gian đăng ở quá khứ. Vui lòng thay đổi thời gian đăng");
-      return;
-    }
     await NotificationApi.createNotification(state)
       .then((res) => {
         useToast.success("Tạo thông báo thành công 🎉");

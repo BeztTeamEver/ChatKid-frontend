@@ -256,17 +256,17 @@ export default function TableQuiz() {
               ))}
             </tr>
           </thead>
-          <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={8} /> : rows}</tbody>
         </Table>
         {listQuiz.length === 0 && !isLoading ? (
           <div className="w-full items-center text-center">
             <Image src={empty.src} fit="contain" height={200} className=" py-10" />
-            <p>Danh sách hiện không có bộ câu hỏi nào phù hợp để hiển thị </p>
+            <p>Danh sách hiện không có bộ câu hỏi nào để hiển thị </p>
           </div>
         ) : null}
         <Pagination
           value={activePage}
-          onChange={(e) => fetchData(e)}
+          onChange={(e) => setActivePage(e)}
           total={Math.ceil(totalQuiz / 10)}
           color="orange"
           className="mt-2 justify-center"

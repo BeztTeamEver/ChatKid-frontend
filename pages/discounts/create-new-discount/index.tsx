@@ -18,19 +18,7 @@ export default function CreateNewDiscount() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const timeNow = new Date();
-    if (state.startTime > state.endTime) {
-      useToast.error("Thời gian bắt đầu nhỏ hơn thời gian kết thúc. Vui lòng cập nhật lại!");
-      return;
-    }
-    if (timeNow > state.endTime) {
-      useToast.error("Thời gian kết thúc nhỏ hơn thời gian hiện tại. Vui lòng cập nhật lại!");
-      return;
-    }
-    if (timeNow > state.startTime) {
-      useToast.error("Thời gian bắt đầu nhỏ hơn thời gian hiện tại. Vui lòng cập nhật lại!");
-      return;
-    }
+
     await DiscountApi.createDiscount(state)
       .then((res) => {
         useToast.success("Tạo khuyến mãi thành công 🎉");
@@ -38,11 +26,7 @@ export default function CreateNewDiscount() {
       })
       .catch((err) => {
         console.log(err.response.data.message);
-        if (err.response.data.message === "There is a discount on this time.")
-          useToast.error(
-            "Thời gian khuyến mãi của gói kim cương trùng với thời gian gói đã tạo. Vui lòng xem lại thông tin các gói.",
-          );
-        else useToast.error("Đã xảy ra sự cố!!!");
+        useToast.error("Đã xảy ra sự cố!!!");
       });
   };
 
