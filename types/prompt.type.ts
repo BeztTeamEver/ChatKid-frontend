@@ -33,3 +33,26 @@ export const PromptStatusData = [
     label: "Ẩn",
   },
 ];
+
+export const promptType = [
+  {
+    value: "Lĩnh vực không trả lời",
+    label: "Lĩnh vực không trả lời",
+  },
+  {
+    value: "Mô tả đối tượng nhận",
+    label: "Mô tả đối tượng nhận",
+  },
+  {
+    value: "Yêu cầu về hình thức câu trả lời",
+    label: "Yêu cầu về hình thức câu trả lời",
+  },
+  {
+    value: "Không dùng từ",
+    label: "Không dùng từ",
+  },
+  {
+    value: "Yêu cầu về câu văn",
+    label: "Yêu cầu về câu văn",
+  },
+];

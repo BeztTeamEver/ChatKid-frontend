@@ -49,7 +49,7 @@ export default function TableAccountFamily({ listFamily }: { listFamily?: Array<
             ))}
           </tr>
         </thead>
-        <tbody>{listFamily ? rows : <SkeletonFunction row={6} col={5} />}</tbody>
+        <tbody>{listFamily ? rows : <SkeletonFunction row={5} col={5} />}</tbody>
       </Table>
       {/* <Pagination
         value={activePage}

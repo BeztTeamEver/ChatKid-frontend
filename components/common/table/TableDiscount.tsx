@@ -190,8 +190,9 @@ export default function TableDiscount() {
 
   return (
     <>
+      <div className="mb-6 grid grid-cols-3 gap-4">{discountArray}</div>
       <div
-        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-items-center"
+        className="bg-white p-5 rounded-2xl flex h-fit w-full mb-2 justify-items-center"
         style={{
           boxShadow:
             "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",
@@ -203,8 +204,6 @@ export default function TableDiscount() {
           <p className="mx-2">{totalDiscount}</p>
         </div>
       </div>
-
-      <div className="mb-4 grid grid-cols-3 gap-4">{discountArray}</div>
 
       <div
         className="bg-white p-6 rounded-lg col-span-3 h-fit w-full"
@@ -271,7 +270,7 @@ export default function TableDiscount() {
               ))}
             </tr>
           </thead>
-          <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
         </Table>
         {listDiscount.length === 0 && !isLoading ? (
           <div className="w-full items-center text-center">

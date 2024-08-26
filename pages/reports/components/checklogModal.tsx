@@ -1,7 +1,6 @@
 import { Modal } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import moment from "moment";
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 export default function ChecklogModal({
@@ -11,7 +10,7 @@ export default function ChecklogModal({
   createdAt,
   mail,
   answer,
-  voice,
+  content,
   reasons,
 }: {
   opened: boolean;
@@ -20,7 +19,7 @@ export default function ChecklogModal({
   createdAt: string;
   mail: string;
   answer: string;
-  voice: string;
+  content: string;
   reasons: string[];
 }) {
   return (
@@ -52,7 +51,7 @@ export default function ChecklogModal({
             <p>Mail</p>
             <p>{mail}</p>
             <p>Câu hỏi</p>
-            <AudioPlayer src={voice} className="rounded-md mb-5" />
+            <p>{content}</p>
             <p>Câu trả lời</p>
             <p>{answer}</p>
             <p>Lý do</p>

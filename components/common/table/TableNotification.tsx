@@ -23,7 +23,7 @@ export default function TableNotification() {
   const fetchData = async (page: number) => {
     setActivePage(page);
     setIsLoading(true);
-    await NotificationApi.getListNotification(activePage - 1, 10, debouncedSearchTerm)
+    await NotificationApi.getListNotification(page - 1, 10, debouncedSearchTerm)
       .then((res) => {
         setListNotification(res.data.items);
         setTotalNotification(res.data.totalItem);
