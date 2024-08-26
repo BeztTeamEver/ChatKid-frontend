@@ -1,7 +1,6 @@
 import { Modal } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import moment from "moment";
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 export default function ChecklogModal({
@@ -11,7 +10,7 @@ export default function ChecklogModal({
   createdAt,
   mail,
   answer,
-  voice,
+  content,
 }: {
   opened: boolean;
   title: string;
@@ -19,7 +18,7 @@ export default function ChecklogModal({
   createdAt: string;
   mail: string;
   answer: string;
-  voice: string;
+  content: string;
 }) {
   return (
     <div>
@@ -29,7 +28,7 @@ export default function ChecklogModal({
         withCloseButton={false}
         centered
         radius={24}
-        size={960}
+        size={640}
         padding={24}
         className="[&_.mantine-jfhix9]:bg-transparent [&_.mantine-jfhix9]:shadow-none"
       >
@@ -42,15 +41,15 @@ export default function ChecklogModal({
             {title}
           </p>
           <div
-            className="grid grid-cols-7 gap-4 break-words [&>*:nth-child(odd)]:col-span-2 [&>*:nth-child(odd)]:font-semibold [&>*:nth-child(odd)]:text-[#252937]
-            [&>*:nth-child(even)]:col-span-5 [&>*:nth-child(even)]:font-normal [&>*:nth-child(even)]:text-[#464C62]"
+            className="grid grid-cols-9 gap-4 break-words [&>*:nth-child(odd)]:col-span-2 [&>*:nth-child(odd)]:font-semibold [&>*:nth-child(odd)]:text-[#252937]
+            [&>*:nth-child(even)]:col-span-7 [&>*:nth-child(even)]:font-normal [&>*:nth-child(even)]:text-[#464C62]"
           >
             <p>Thời gian tạo</p>
             <p>{moment(createdAt).format("HH:mm:ss, DD/MM/YYYY")}</p>
             <p>Mail</p>
             <p>{mail}</p>
             <p>Câu hỏi</p>
-            <AudioPlayer src={voice} className="rounded-md mb-5" />
+            <p>{content}</p>
             <p>Câu trả lời</p>
             <p>{answer}</p>
           </div>

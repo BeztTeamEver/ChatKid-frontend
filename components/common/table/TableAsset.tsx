@@ -247,12 +247,12 @@ export default function TableAsset() {
               ))}
             </tr>
           </thead>
-          <tbody>{isLoading ? <SkeletonFunction col={10} row={7} /> : rows}</tbody>
+          <tbody>{isLoading ? <SkeletonFunction col={10} row={9} /> : rows}</tbody>
         </Table>
         {listAsset.length === 0 && !isLoading ? (
           <div className="w-full items-center text-center">
             <Image src={empty.src} fit="contain" height={200} className=" py-10" />
-            <p>Danh sách hiện không có trang bị nào để hiển thị </p>
+            <p>Danh sách hiện không có trang bị nào phù hợp để hiển thị </p>
           </div>
         ) : null}
         <Pagination

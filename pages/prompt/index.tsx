@@ -1,3 +1,5 @@
+"use client";
+
 import TablePrompt from "@/components/common/table/TablePrompt";
 import { useEffect, useState } from "react";
 

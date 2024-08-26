@@ -170,7 +170,7 @@ export default function TablePrompt() {
               onChange={(e) => setSearch(e.target.value)}
             />
             <Select
-              className="w-[140px]"
+              className="w-[180px]"
               value={status}
               onChange={(e: string) => setStatus(e)}
               withAsterisk
@@ -225,7 +225,7 @@ export default function TablePrompt() {
         {listPrompt.length === 0 ? (
           <div className="w-full items-center text-center">
             <Image src={empty.src} fit="contain" height={200} className=" py-10" />
-            <p>Danh sách hiện không có prompt nào để hiển thị</p>
+            <p>Danh sách hiện không có prompt nào phù hợp để hiển thị</p>
           </div>
         ) : null}
         <Pagination

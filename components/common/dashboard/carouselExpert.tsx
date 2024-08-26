@@ -2,7 +2,6 @@
 
 import { BLOG_TYPE } from "@/types/blog.type";
 import { BlogApi } from "@/utils/blogApi";
-import Image from "next/image";
 import Link from "next/link";
 // import { Carousel } from "@mantine/carousel";
 import { useEffect, useState } from "react";

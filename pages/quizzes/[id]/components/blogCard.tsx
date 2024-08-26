@@ -68,7 +68,7 @@ export default function BlogCard({ infoBlog }: { infoBlog: BLOG_TYPE }) {
           <Button
             color="orange"
             leftIcon={<IconPlus size="1rem" />}
-            className="w-full py-[5px] w-[300px] mt-4 font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
+            className="py-[5px] w-[300px] mt-4 font-semibold bg-[#FFFBF5] border-[1px] border-primary-default text-primary-default rounded-full hover:bg-primary-default hover:text-white transition-all"
             onClick={() => router.push(`/quizzes/${id}/create-new-blog`)}
           >
             Tạo bài viết

@@ -1,3 +1,5 @@
+"use client";
+
 import TableAsset from "@/components/common/table/TableAsset";
 import { useEffect, useState } from "react";
 

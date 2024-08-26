@@ -1,6 +1,7 @@
 import { useToast } from "@/hooks/useToast/toast";
+import { promptType } from "@/types/prompt.type";
 import { PromptApi } from "@/utils/promptApi";
-import { Button, Modal, Textarea, TextInput } from "@mantine/core";
+import { Button, Modal, Select, Textarea } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -51,21 +52,21 @@ export default function CreatePromptModal({
           onSubmit={handleCreatePrompt}
           className="grid grid-cols-2 gap-2 h-fit mt-2 w-full p-0"
         >
-          <TextInput
+          <Select
             className="mb-1 col-span-2"
-            type="text"
-            label="Câu hỏi"
-            placeholder="Đặt câu hỏi"
+            label="Dạng prompt"
+            placeholder="Dạng prompt"
             value={keyword}
-            radius={100}
-            onChange={(e) => setKeyword(e.target.value)}
+            onChange={(e) => setKeyword(e)}
             withAsterisk
+            radius={100}
             required
+            data={promptType}
           />
           <Textarea
             className="mb-4 col-span-2"
-            label="Câu trả lời B"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            label="Từ khóa"
+            placeholder="Điền từ khóa mà bạn muốn"
             minRows={3}
             radius={8}
             onChange={(e) => setComponent(e.target.value)}
