@@ -115,7 +115,7 @@ export default function TableTopic() {
     </tr>
   ));
   return (
-    <div>
+    <div className=" justify-items-center">
       <div
         className="bg-white p-5 rounded-2xl flex h-fit w-full mb-3 justify-between items-center"
         style={{
@@ -140,7 +140,7 @@ export default function TableTopic() {
       </div>
 
       <div
-        className="bg-white p-5 rounded-2xl col-span-3 h-fit w-full"
+        className="bg-white p-5 rounded-2xl col-span-3 h-fit justify-items-center "
         style={{
           boxShadow:
             "0px 4px 8px 0px rgba(78, 41, 20, 0.08), 0px -1px 2px 0px rgba(78, 41, 20, 0.01)",

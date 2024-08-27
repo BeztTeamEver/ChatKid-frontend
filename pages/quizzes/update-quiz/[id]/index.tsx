@@ -46,6 +46,7 @@ export default function UpdateQuiz() {
     illustratedImageUrl: "",
     ageGroup: "",
     questions: [],
+    numberOfCoin: 1,
     status: "AVAILABLE",
   });
 
@@ -68,6 +69,7 @@ export default function UpdateQuiz() {
             illustratedImageUrl: res.data.illustratedImageUrl,
             ageGroup: res.data.ageGroup,
             questions: res.data.questions,
+            numberOfCoin: res.data.numberOfCoin,
           });
         })
         .catch((err) => console.log(err));

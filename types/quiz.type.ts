@@ -10,6 +10,7 @@ export type QUIZ_TYPE = {
   createdAt: string;
   illustratedImageUrl: string;
   questionTimeLimit: string;
+  numberOfCoin: number;
   questions: QUESTION_TYPE[];
   blog: BLOG_TYPE;
 };
@@ -20,6 +21,7 @@ export type BODY_CREATE_QUIZ = {
   questionTimeLimit: number;
   illustratedImageUrl: string;
   ageGroup: string;
+  numberOfCoin: number;
   questions: QUESTION_TYPE[];
 };
 
@@ -29,6 +31,7 @@ export type BODY_UPDATE_QUIZ = {
   questionTimeLimit: number;
   illustratedImageUrl: string;
   ageGroup: string;
+  numberOfCoin: number;
   questions: BODY_UPDATE_QUESTION[];
   status: "AVAILABLE" | "UNAVAILABLE";
 };

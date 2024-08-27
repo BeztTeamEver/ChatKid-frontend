@@ -37,9 +37,10 @@ export default function CreateNewQuiz() {
   const [state, setState] = useState<BODY_CREATE_QUIZ>({
     title: "",
     topicId: "",
-    questionTimeLimit: 1000,
+    questionTimeLimit: 10000,
     illustratedImageUrl: "",
     ageGroup: "",
+    numberOfCoin: 1,
     questions: [],
   });
 
@@ -109,7 +110,8 @@ export default function CreateNewQuiz() {
     console.log("DATA QUIZ:", state);
     await QuizApi.createQuiz({ ...state, illustratedImageUrl })
       .then((res) => {
-        useToast.success("Tạo loại công việc thành công 🎉");
+        console.log(state);
+        useToast.success("Tạo bộ câu hỏi thành công 🎉");
         router.back();
       })
       .catch((err) => {

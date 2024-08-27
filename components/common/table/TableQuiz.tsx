@@ -234,10 +234,9 @@ export default function TableQuiz() {
           </div>
           <div className="flex">
             <button
-              className="flex gap-3 items-center border-2 border-primary-500 text-primary-500 rounded-full px-6 py-2 mr-2"
+              className="flex gap-3 items-center border-2 border-primary-500 text-primary-500 rounded-full px-6 py-2 mr-4"
               onClick={() => router.push(`/topics`)}
             >
-              <IconPlus />
               Quản lý chủ đề
             </button>
             <button

@@ -103,15 +103,30 @@ export default function GeneralInformationForm({
         data={["6-7", "8-9", ">9"]}
       />
       <TextInput
+        rightSection={<p className="text-sm text-neutral-400">giây</p>}
+        rightSectionWidth={70}
         className="mb-1 col-span-2"
         type="number"
-        label="Số giây để thực hiện 1 câu hỏi"
-        placeholder="Đặt tựa đề cho bộ câu hỏi"
+        label="Thời gian thực hiện 1 câu hỏi"
+        placeholder="Thời gian cho bộ câu hỏi"
         value={state.questionTimeLimit / 1000}
         min={1}
         max={60}
         radius={100}
         onChange={(e) => setState({ ...state, questionTimeLimit: e.target.valueAsNumber * 1000 })}
+        withAsterisk
+        required
+      />
+      <TextInput
+        rightSection={<p className="text-sm text-neutral-400">Đồng KidTalkie</p>}
+        rightSectionWidth={120}
+        className="mb-1 col-span-2"
+        type="number"
+        label="Phần thưởng"
+        placeholder="Số đồng sẽ nhận"
+        value={state.numberOfCoin}
+        radius={100}
+        onChange={(e) => setState({ ...state, numberOfCoin: e.target.value })}
         withAsterisk
         required
       />
