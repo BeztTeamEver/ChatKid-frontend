@@ -46,7 +46,6 @@ export default function TableTopic() {
   }, [tempId]);
 
   const handleCreate = async () => {
-    console.log("TOPIC:", topic);
     await TopicApi.createTopic(topic)
       .then((res) => {
         useToast.success("Tạo chủ đề thành công 🎉");
@@ -59,10 +58,21 @@ export default function TableTopic() {
   };
 
   const handleUpdate = async () => {
-    console.log("TOPIC:", topic);
     await TopicApi.updateTopic(topic, tempId)
       .then((res) => {
         useToast.success("Tạo chủ đề thành công 🎉");
+        fetchData(1);
+      })
+      .catch((err) => {
+        console.log(err);
+        useToast.error("Đã xảy ra sự cố!!!");
+      });
+  };
+
+  const handleDelete = async (id: string) => {
+    await TopicApi.deleteTopic(id)
+      .then((res) => {
+        useToast.success("Xóa chủ đề thành công 🎉");
         fetchData(1);
       })
       .catch((err) => {
@@ -105,7 +115,9 @@ export default function TableTopic() {
             <Menu.Item
               icon={<IconTrash size={18} />}
               className="hover:bg-[#FFEDD1] hover:text-[#752B01]"
-              //   onClick={() => setIsConfirmDelete(topic.id)}
+              onClick={() => {
+                handleDelete(item.id);
+              }}
             >
               Xóa
             </Menu.Item>

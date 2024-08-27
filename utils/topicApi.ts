@@ -1,6 +1,6 @@
 import { BODY_CREATE_TOPIC, BODY_UPDATE_TOPIC } from "@/types/topic.type";
 
-import { get, patch, post } from "./config/ApiCaller";
+import { get, patch, post, remove } from "./config/ApiCaller";
 
 export const TopicApi = {
   getListTopic: async (pageNumber: number, pageSize: number) => {
@@ -19,5 +19,11 @@ export const TopicApi = {
 
   uploadImage: async (body: FormData) => {
     return await post({ endpoint: "/file-upload/upload", body });
+  },
+
+  deleteTopic: async (id: string) => {
+    return await remove({
+      endpoint: `/topics/${id}`,
+    });
   },
 };

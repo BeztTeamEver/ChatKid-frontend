@@ -1,9 +1,8 @@
 import { useToast } from "@/hooks/useToast/toast";
 import { BODY_CREATE_TOPIC } from "@/types/topic.type";
-import { uploadApi } from "@/utils/commonApi";
+import { TopicApi } from "@/utils/topicApi";
 import { Button, Col, FileInput, Image, Modal, rem, TextInput } from "@mantine/core";
 import { IconPhotoUp, IconTrash, IconX } from "@tabler/icons-react";
-import { useState } from "react";
 
 export default function UpdateTopicModal({
   opened,
@@ -18,52 +17,26 @@ export default function UpdateTopicModal({
   topic: BODY_CREATE_TOPIC;
   setTopic: Function;
 }) {
-  const [tempImageUrl, setTempImageUrl] = useState<string | null | undefined>();
-
-  function getBase64(file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setTopic({ ...topic, imageUrl: reader.result });
-    };
-    reader.onerror = (error) => {
-      console.log("Error: ", error);
-    };
-  }
-
-  const handleImageChange = (e) => {
-    if (e) getBase64(e);
-    else setTopic({ ...topic, imageUrl: null });
-  };
-
-  const handleUpload = async (base64): Promise<string> => {
-    if (base64.startsWith("http")) return base64;
-    if (!base64) return "";
-    const blob = await fetch(base64).then((res) => res.blob());
+  const handleUpload = async (image) => {
     const formData = new FormData();
-    formData.append("file", blob);
+    formData.append("file", image);
 
-    let result = "";
-    await uploadApi(formData)
+    TopicApi.uploadImage(formData)
       .then((res) => {
-        result = res.data.url;
+        setTopic({ ...topic, imageUrl: res.data.url });
+        console.log(res);
+        console.log("IMAGE", formData);
       })
       .catch((err) => console.log(err));
-    return result;
   };
 
   const handleCreateTopic = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (topic.imageUrl === "") {
+    if (topic.imageUrl === "" || !topic.imageUrl) {
       useToast.error("Vui lòng thêm hình ảnh minh họa cho bộ câu hỏi!");
       return;
     }
-    const imageUrl = await handleUpload(topic.imageUrl);
-    if (!imageUrl) {
-      useToast.error("Vui lòng thêm hình ảnh minh họa cho câu hỏi!");
-      return;
-    }
-    setTopic({ ...topic, imageUrl });
+
     console.log("topic.imageUrl=", topic.imageUrl);
 
     console.log(topic);
@@ -129,7 +102,7 @@ export default function UpdateTopicModal({
                 label="Hình ảnh minh họa"
                 placeholder="Đăng tải hình ảnh"
                 radius={100}
-                onChange={(e) => handleImageChange(e)}
+                onChange={(e) => handleUpload(e)}
                 withAsterisk
                 accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
               />

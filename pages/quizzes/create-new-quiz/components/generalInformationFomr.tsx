@@ -126,7 +126,7 @@ export default function GeneralInformationForm({
         placeholder="Số đồng sẽ nhận"
         value={state.numberOfCoin}
         radius={100}
-        onChange={(e) => setState({ ...state, numberOfCoin: e.target.value })}
+        onChange={(e) => setState({ ...state, numberOfCoin: e.target.valueAsNumber })}
         withAsterisk
         required
       />
