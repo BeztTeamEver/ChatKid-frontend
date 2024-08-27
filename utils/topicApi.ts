@@ -16,4 +16,8 @@ export const TopicApi = {
   createTopic: async (body: BODY_CREATE_TOPIC) => {
     return await post({ endpoint: "/topics", body });
   },
+
+  uploadImage: async (body: FormData) => {
+    return await post({ endpoint: "/file-upload/upload", body });
+  },
 };
