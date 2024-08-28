@@ -107,7 +107,7 @@ export default function TableDiscount() {
       {discount.status === "INACTIVE" ? (
         <td className="font-medium text-red-600">Đã hủy</td>
       ) : moment(discount.endTime) < moment(timeNow) ? (
-        <td className="font-medium text-neutral-500">Đã hoàn thành</td>
+        <td className="font-normal text-neutral-400">Đã hoàn thành</td>
       ) : moment(discount.startTime) > moment(timeNow) ? (
         <td className="font-medium text-[#67B8FF]">Sắp diễn ra</td>
       ) : (

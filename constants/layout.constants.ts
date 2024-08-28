@@ -16,8 +16,8 @@ export const DataNavbar = {
     { label: "Thống kê", link: "/", icon: IconChartPie },
     { label: "Tài khoản gia đình", link: "/family", icon: IconUsers },
     { label: "Lịch sử hỏi botchat", link: "/histories", icon: IconMessages },
-    { label: "Prompt", link: "/prompt", icon: IconBrandOpenai },
     { label: "Báo cáo", link: "/reports", icon: IconFlag },
+    { label: "Prompt", link: "/prompt", icon: IconBrandOpenai },
     { label: "Thông báo", link: "/notification", icon: IconBell },
   ],
   manageKidTalkie: [

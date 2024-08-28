@@ -145,7 +145,7 @@ export default function CreateNewTaskType() {
               ref={ref}
               className="mb-2"
               icon={<IconPhotoUp size={rem(20)} />}
-              label="Hình ảnh minh họa"
+              label="Hình ảnh nhỏ"
               placeholder="Đăng tải hình ảnh"
               radius={100}
               onChange={(e) => handleImageChange(e, setTempImageUrl)}
@@ -156,7 +156,7 @@ export default function CreateNewTaskType() {
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageUrl}
-                  alt="hình ảnh minh họa"
+                  alt="hình ảnh nhỏ"
                   height={80}
                   fit="contain"
                   className="border-neutral-100 border p-1 rounded-2xl"
@@ -184,7 +184,7 @@ export default function CreateNewTaskType() {
             <FileInput
               className="mb-2"
               icon={<IconPhotoUp size={rem(20)} />}
-              label="Hình ảnh thực tế"
+              label="Hình ảnh bìa"
               placeholder="Đăng tải hình ảnh"
               radius={100}
               onChange={(e) => handleImageChange(e, setTempImageHomeUrl)}
@@ -195,7 +195,7 @@ export default function CreateNewTaskType() {
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageHomeUrl}
-                  alt="hình ảnh minh họa"
+                  alt="hình ảnh bìa"
                   height={80}
                   fit="contain"
                   className="border-neutral-100 border p-1 rounded-2xl"

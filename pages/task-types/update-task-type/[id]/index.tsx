@@ -170,12 +170,12 @@ export default function UpdateNewTasktype() {
           {tempImageUrl ? (
             <Col className="m-0 p-0">
               <p className="text-sm font-bold -mb-[6px]">
-                Hình ảnh minh họa <span className="text-red-400">*</span>
+                Hình ảnh nhỏ<span className="text-red-400">*</span>
               </p>
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageUrl}
-                  alt="hình ảnh minh họa"
+                  alt="hình ảnh nhỏ"
                   height={80}
                   fit="contain"
                   className="border-neutral-100 border p-1 rounded-2xl"
@@ -195,7 +195,7 @@ export default function UpdateNewTasktype() {
             <FileInput
               className="mb-1"
               icon={<IconPhotoUp size={rem(20)} />}
-              label="Hình ảnh minh họa"
+              label="Hình ảnh nhỏ"
               placeholder="Đăng tải hình ảnh"
               radius={100}
               onChange={(e) => handleImageChange(e, setTempImageUrl)}
@@ -207,12 +207,12 @@ export default function UpdateNewTasktype() {
           {tempImageHomeUrl ? (
             <Col p={0}>
               <p className="text-sm font-bold -mb-[6px]">
-                Hình ảnh thực tế <span className="text-red-400">*</span>
+                Hình ảnh bìa<span className="text-red-400">*</span>
               </p>
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageHomeUrl}
-                  alt="hình ảnh thực tế"
+                  alt="hình ảnh bìa"
                   height={80}
                   fit="contain"
                   className="border-neutral-100 border p-1 rounded-2xl"
@@ -232,7 +232,7 @@ export default function UpdateNewTasktype() {
             <FileInput
               className="mb-1"
               icon={<IconPhotoUp size={rem(20)} />}
-              label="Hình ảnh thực tế"
+              label="Hình ảnh bìa"
               placeholder="Đăng tải hình ảnh"
               radius={100}
               onChange={(e) => handleImageChange(e, setTempImageHomeUrl)}
