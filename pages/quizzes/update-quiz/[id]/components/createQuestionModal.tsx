@@ -140,7 +140,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời A"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời A"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerA(e.target.value)}
@@ -150,7 +150,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời B"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời B"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerB(e.target.value)}
@@ -160,7 +160,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời C"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời C"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerC(e.target.value)}
@@ -170,7 +170,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời D"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời D"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerD(e.target.value)}

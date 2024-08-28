@@ -150,7 +150,7 @@ export default function UpdateNewTasktype() {
             className="mb-1 col-span-2"
             type="text"
             label="Tên loại công việc"
-            placeholder="Tiêu đề thông báo"
+            placeholder="Đặt tên cho loại công việc"
             value={state.name}
             radius={100}
             onChange={(e) => setState({ ...state, name: e.target.value })}
@@ -212,7 +212,7 @@ export default function UpdateNewTasktype() {
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
                   src={tempImageHomeUrl}
-                  alt="hình ảnh minh họa"
+                  alt="hình ảnh thực tế"
                   height={80}
                   fit="contain"
                   className="border-neutral-100 border p-1 rounded-2xl"

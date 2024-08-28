@@ -207,7 +207,7 @@ export default function UpdateAsset() {
               accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
             />
           )}
-          {tempImageUrl ? (
+          {tempPreviewImageUrl ? (
             <Col className="m-0 p-0">
               <p className="text-sm font-bold -mb-[6px]">
                 Hình ảnh thực tế <span className="text-red-400">*</span>

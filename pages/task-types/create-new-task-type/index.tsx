@@ -123,7 +123,7 @@ export default function CreateNewTaskType() {
             className="mb-1 col-span-2"
             type="text"
             label="Tên loại công việc"
-            placeholder="Tiêu đề thông báo"
+            placeholder="Đặt tên cho loại công việc"
             value={state.name}
             radius={100}
             onChange={(e) => setState({ ...state, name: e.target.value })}
