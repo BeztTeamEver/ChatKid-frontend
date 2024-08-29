@@ -25,7 +25,7 @@ export default function TableAccountFamily({ listFamily }: { listFamily?: Array<
       {family.familyRole ? <td>{family.familyRole}</td> : <td>Bé</td>}
 
       <td>{family.gender?.toLowerCase() === "male" ? "Nam" : "Nữ"}</td>
-      <td>{moment(family.dateOfBirth).format("DD/MM/YYYY")}</td>
+      <td>{family.yearOfBirth}</td>
     </tr>
   ));
 
