@@ -46,12 +46,13 @@ export default function UpdateQuiz() {
     illustratedImageUrl: "",
     ageGroup: "",
     questions: [],
+    numberOfCoin: 1,
     status: "AVAILABLE",
   });
 
   useEffect(() => {
     if (id) {
-      TopicApi.getListTopic()
+      TopicApi.getListTopic(0, 1000)
         .then((res) => {
           res.data.items.map((topic, index) =>
             topicData.push({ value: topic.id, label: topic.name }),
@@ -68,6 +69,7 @@ export default function UpdateQuiz() {
             illustratedImageUrl: res.data.illustratedImageUrl,
             ageGroup: res.data.ageGroup,
             questions: res.data.questions,
+            numberOfCoin: res.data.numberOfCoin,
           });
         })
         .catch((err) => console.log(err));
@@ -223,6 +225,7 @@ export default function UpdateQuiz() {
               Câu hỏi
             </p>
           </div>
+          {rows}
           <Button
             variant="outline"
             color="orange"
@@ -242,7 +245,6 @@ export default function UpdateQuiz() {
           >
             Thêm câu hỏi
           </Button>
-          {rows}
         </div>
       </form>
       <CreateQuestionModal

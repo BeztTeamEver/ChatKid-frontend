@@ -157,6 +157,8 @@ export default function UpdateAsset() {
             data={["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]}
           />
           <TextInput
+            rightSection={<p className="text-sm text-neutral-400">kim cương</p>}
+            rightSectionWidth={100}
             className="mb-1 col-span-2"
             type="number"
             min="0"
@@ -169,46 +171,10 @@ export default function UpdateAsset() {
             withAsterisk
             required
           />
-          {tempImageUrl ? (
+          {tempPreviewImageUrl ? (
             <Col className="m-0 p-0">
               <p className="text-sm font-bold -mb-[6px]">
-                Hình ảnh minh họa <span className="text-red-400">*</span>
-              </p>
-              <Col className="mt-3 text-center flex justify-center items-center flex-col">
-                <Image
-                  src={tempImageUrl}
-                  alt="hình ảnh minh họa"
-                  height={80}
-                  fit="contain"
-                  className="border-neutral-100 border p-1 rounded-2xl"
-                />
-                <Button
-                  leftIcon={<IconTrash size={16} />}
-                  variant="white"
-                  color="orange"
-                  className="mt-3 border-primary-500 rounded-full text-xs"
-                  onClick={() => setTempImageUrl(null)}
-                >
-                  Hủy ảnh đã đăng tải
-                </Button>
-              </Col>
-            </Col>
-          ) : (
-            <FileInput
-              className="mb-1"
-              icon={<IconPhotoUp size={rem(20)} />}
-              label="Hình ảnh minh họa"
-              placeholder="Đăng tải hình ảnh"
-              radius={100}
-              onChange={(e) => handleImageChange(e, setTempImageUrl)}
-              withAsterisk
-              accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
-            />
-          )}
-          {tempImageUrl ? (
-            <Col className="m-0 p-0">
-              <p className="text-sm font-bold -mb-[6px]">
-                Hình ảnh thực tế <span className="text-red-400">*</span>
+                Hình ảnh minh họa<span className="text-red-400">*</span>
               </p>
               <Col className="mt-3 text-center flex justify-center items-center flex-col">
                 <Image
@@ -237,6 +203,42 @@ export default function UpdateAsset() {
               placeholder="Đăng tải hình ảnh"
               radius={100}
               onChange={(e) => handleImageChange(e, setTempPreviewImageUrl)}
+              withAsterisk
+              accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
+            />
+          )}
+          {tempImageUrl ? (
+            <Col className="m-0 p-0">
+              <p className="text-sm font-bold -mb-[6px]">
+                Hình ảnh thực tế<span className="text-red-400">*</span>
+              </p>
+              <Col className="mt-3 text-center flex justify-center items-center flex-col">
+                <Image
+                  src={tempImageUrl}
+                  alt="hình ảnh minh họa"
+                  height={80}
+                  fit="contain"
+                  className="border-neutral-100 border p-1 rounded-2xl"
+                />
+                <Button
+                  leftIcon={<IconTrash size={16} />}
+                  variant="white"
+                  color="orange"
+                  className="mt-3 border-primary-500 rounded-full text-xs"
+                  onClick={() => setTempImageUrl(null)}
+                >
+                  Hủy ảnh đã đăng tải
+                </Button>
+              </Col>
+            </Col>
+          ) : (
+            <FileInput
+              className="mb-1"
+              icon={<IconPhotoUp size={rem(20)} />}
+              label="Hình ảnh minh họa"
+              placeholder="Đăng tải hình ảnh"
+              radius={100}
+              onChange={(e) => handleImageChange(e, setTempImageUrl)}
               withAsterisk
               accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
             />

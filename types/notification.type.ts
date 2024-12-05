@@ -23,7 +23,7 @@ export const DataReceiver = [
     label: "Phụ huynh",
   },
   {
-    value: "CHILDRENT",
+    value: "CHILDREN",
     label: "Trẻ",
   },
 ];

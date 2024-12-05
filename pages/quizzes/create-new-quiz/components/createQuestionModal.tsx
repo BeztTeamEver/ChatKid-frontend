@@ -1,6 +1,6 @@
 import { useToast } from "@/hooks/useToast/toast";
 import { BODY_CREATE_QUESTION } from "@/types/question.type";
-import { uploadApi } from "@/utils/commonApi";
+import { QuizApi } from "@/utils/quizApi";
 import {
   Button,
   Col,
@@ -28,43 +28,23 @@ export default function CreateQuestionModal({
   question: BODY_CREATE_QUESTION;
   setQuestion: Function;
 }) {
-  const [tempQuestionImageUrl, setTempQuestionImageUrl] = useState<string | null | undefined>();
   const [tempCorrectAnswer, setTempCorrectAnswer] = useState<string | null | undefined>();
   const [answerA, setAnswerA] = useState<string>("");
   const [answerB, setAnswerB] = useState<string>("");
   const [answerC, setAnswerC] = useState<string>("");
   const [answerD, setAnswerD] = useState<string>("");
 
-  function getBase64(file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setQuestion({ ...question, illustratedImageUrl: reader.result });
-    };
-    reader.onerror = (error) => {
-      console.log("Error: ", error);
-    };
-  }
-
-  const handleImageChange = (e) => {
-    if (e) getBase64(e);
-    else setQuestion({ ...question, illustratedImageUrl: null });
-  };
-
-  const handleUpload = async (base64): Promise<string> => {
-    if (base64.startsWith("http")) return base64;
-    if (!base64) return "";
-    const blob = await fetch(base64).then((res) => res.blob());
+  const handleUpload = async (image) => {
     const formData = new FormData();
-    formData.append("file", blob);
+    formData.append("file", image);
 
-    let result = "";
-    await uploadApi(formData)
+    QuizApi.uploadImage(formData)
       .then((res) => {
-        result = res.data.url;
+        setQuestion({ ...question, illustratedImageUrl: res.data.url });
+        console.log(res);
+        console.log("IMAGE", formData);
       })
       .catch((err) => console.log(err));
-    return result;
   };
 
   const handleCreateQuestion = async (e: React.FormEvent) => {
@@ -73,12 +53,11 @@ export default function CreateQuestionModal({
       useToast.error("Vui lòng thêm hình ảnh minh họa cho bộ câu hỏi!");
       return;
     }
-    const illustratedImageUrl = await handleUpload(question.illustratedImageUrl);
-    if (!illustratedImageUrl) {
+
+    if (!question.illustratedImageUrl) {
       useToast.error("Vui lòng thêm hình ảnh minh họa cho câu hỏi!");
       return;
     }
-    setQuestion({ ...question, illustratedImageUrl });
     console.log("question.illustratedImageUrl=", question.illustratedImageUrl);
     const tempQuestion = question.answerOptions;
     tempQuestion[0] = answerA;
@@ -136,7 +115,7 @@ export default function CreateQuestionModal({
               label="Hình ảnh minh họa"
               placeholder="Đăng tải hình ảnh"
               radius={100}
-              onChange={(e) => handleImageChange(e)}
+              onChange={(e) => handleUpload(e)}
               withAsterisk
               accept="image/png, image/jpeg, image/jpg, image/gif, image/svg"
             />
@@ -164,7 +143,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời A"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời A"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerA(e.target.value)}
@@ -174,7 +153,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời B"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời B"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerB(e.target.value)}
@@ -184,7 +163,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời C"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời C"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerC(e.target.value)}
@@ -194,7 +173,7 @@ export default function CreateQuestionModal({
           <Textarea
             className="mb-1"
             label="Câu trả lời D"
-            placeholder="Đặt tựa đề cho bộ câu hỏi"
+            placeholder="Thêm câu trả lời D"
             minRows={3}
             radius={8}
             onChange={(e) => setAnswerD(e.target.value)}

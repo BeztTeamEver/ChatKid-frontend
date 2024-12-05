@@ -98,6 +98,8 @@ export default function QuizDetailCard({
               <p>{quizInfor.questions.length}</p>
               <p>Thời gian</p>
               <p>{Number(quizInfor.questionTimeLimit) / 1000} giây/1 câu hỏi</p>
+              <p>Phần thưởng</p>
+              <p>{quizInfor.numberOfCoin} đồng KidTalkie</p>
             </div>
             <div className="w-full mt-6 flex gap-3">
               {quizInfor.status === "AVAILABLE" ? (

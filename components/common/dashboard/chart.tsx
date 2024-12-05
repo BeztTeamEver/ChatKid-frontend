@@ -113,7 +113,7 @@ export default function Chart({ className, data }: { className: string; data?: D
           ]}
         />
       ) : (
-        <p> Hết</p>
+        <p>Dữ liệu đang được cập nhật</p>
       )}
     </div>
   );

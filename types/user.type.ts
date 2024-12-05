@@ -6,7 +6,7 @@ export type USER_TYPE = {
   gmail: string;
   phone: string;
   age: number;
-  dateOfBirth: Date;
+  yearOfBirth: string;
   gender: string;
   avatarUrl: string;
   role: "ADMIN" | "PARENT" | "CHILD";

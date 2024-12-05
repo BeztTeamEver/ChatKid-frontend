@@ -98,8 +98,8 @@ export default function CreateNewDiscount() {
           />
           <Select
             className="mb-1 col-span-2"
-            label="Loại trang bị"
-            placeholder="Chọn loại trang bị"
+            label="Loại gói kim cương"
+            placeholder="Chọn loại gói kim cương"
             value={state.packageId}
             onChange={(e) => setState({ ...state, packageId: e ?? "" })}
             withAsterisk
@@ -109,8 +109,8 @@ export default function CreateNewDiscount() {
           <TextInput
             className="mb-1 col-span-2"
             type="number"
-            label="% khuyến mãi"
-            placeholder="Đặt tên cho trang bị"
+            label="% giảm giá"
+            placeholder="Nhập tỉ lệ giảm giá "
             value={state.percent}
             radius={100}
             min={1}

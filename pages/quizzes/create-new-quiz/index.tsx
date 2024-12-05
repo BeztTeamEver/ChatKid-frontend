@@ -37,14 +37,15 @@ export default function CreateNewQuiz() {
   const [state, setState] = useState<BODY_CREATE_QUIZ>({
     title: "",
     topicId: "",
-    questionTimeLimit: 1000,
+    questionTimeLimit: 10000,
     illustratedImageUrl: "",
     ageGroup: "",
+    numberOfCoin: 1,
     questions: [],
   });
 
   useEffect(() => {
-    TopicApi.getListTopic()
+    TopicApi.getListTopic(0, 1000)
       .then((res) => {
         res.data.items.map((topic, index) =>
           topicData.push({ value: topic.id, label: topic.name }),
@@ -109,7 +110,8 @@ export default function CreateNewQuiz() {
     console.log("DATA QUIZ:", state);
     await QuizApi.createQuiz({ ...state, illustratedImageUrl })
       .then((res) => {
-        useToast.success("Tạo loại công việc thành công 🎉");
+        console.log(state);
+        useToast.success("Tạo bộ câu hỏi thành công 🎉");
         router.back();
       })
       .catch((err) => {
@@ -165,6 +167,7 @@ export default function CreateNewQuiz() {
               Câu hỏi
             </p>
           </div>
+          {rows}
           <Button
             variant="outline"
             color="orange"
@@ -183,7 +186,6 @@ export default function CreateNewQuiz() {
           >
             Thêm câu hỏi
           </Button>
-          {rows}
         </div>
       </form>
       <CreateQuestionModal
